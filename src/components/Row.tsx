@@ -1,39 +1,28 @@
 import Tile from "./Tile";
 import { MouseEvent, useEffect, useRef, useState } from "react";
+import TileInterface from "../interfaces/TileInterface";
 
-interface Props {
-  row: string[];
-  rowIndex: number;
+interface PropsInterface {
+  row: TileInterface[];
   activeRow: number;
+  rowIndex: number;
   activeTile: number;
-  setActiveTile: Function;
-  states: string[];
 }
 
 export default function Row({
   row,
-  rowIndex,
   activeRow,
+  rowIndex,
   activeTile,
-  setActiveTile,
-  states,
-}: Props) {
-  const getClick = (tileIndex: number) => {
-    setActiveTile(tileIndex);
-  };
-
+}: PropsInterface) {
   return (
     <div className="flex my-2 mx-auto justify-center">
       {row.map((el, tileIndex) => (
         <Tile
           key={tileIndex}
-          letter={el}
-          tileIndex={tileIndex}
-          rowIndex={rowIndex}
-          activeRow={activeRow}
-          getClick={getClick}
+          letter={el.letter}
           isActive={tileIndex === activeTile && rowIndex === activeRow}
-          bgColor={states[tileIndex]}
+          state={el.state}
         />
       ))}
     </div>
