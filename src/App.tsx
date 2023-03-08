@@ -16,6 +16,8 @@ import {
   dayOfTheYear,
 } from "./lib/tools.js";
 import KeyboardKeysStateInterface from "./interfaces/KeyboardKeysStateInterface";
+import RemainingWords from "./components/RemainingWords";
+import Message from "./components/Message";
 
 function App() {
   const [wordOfTheDay, setWordOfTheDay] = useState(
@@ -76,6 +78,7 @@ function App() {
 
     if (e.key === "Backspace") {
       deleteTile();
+      setMessage("");
     }
 
     if (e.key === "Enter") {
@@ -109,8 +112,6 @@ function App() {
   function deleteTile() {
     if (activeTile === 0 && game[activeRow][0] === "") return;
 
-    setMessage("");
-
     const str = JSON.stringify(game);
     const updatedGame = JSON.parse(str);
 
@@ -127,49 +128,6 @@ function App() {
     }
   }
 
-  function setLetterStates(
-    wordOfTheDay: string,
-    submittedWord: TileInterface[]
-  ): RegexInterface {
-    const arr = wordOfTheDay.split("");
-
-    const str = JSON.stringify(game);
-    const updatedGame = JSON.parse(str);
-
-    const included: string[] = [];
-    const notIncluded: string[] = [];
-
-    const keyboardKeysState: KeyboardKeysStateInterface = {};
-
-    submittedWord.forEach((tile, index) => {
-      if (tile.letter === arr[index]) {
-        updatedGame[activeRow][index].state = "match";
-        keyboardKeysState[tile.letter.toUpperCase()] = "match";
-
-        included.push(tile.letter);
-      } else if (wordOfTheDay.includes(tile.letter)) {
-        updatedGame[activeRow][index].state = "present";
-        keyboardKeysState[tile.letter.toUpperCase()] = "present";
-
-        included.push(tile.letter);
-      } else {
-        updatedGame[activeRow][index].state = "absent";
-        keyboardKeysState[tile.letter.toUpperCase()] = "absent";
-
-        notIncluded.push(tile.letter);
-      }
-    });
-
-    setGame(updatedGame);
-
-    return {
-      included,
-      notIncluded,
-      pattern: createRegex(updatedGame[activeRow]),
-      keyboardKeysState,
-    };
-  }
-
   function submitRow(row: TileInterface[]) {
     if (!isFullWord(row)) {
       setMessage("missing letters");
@@ -183,7 +141,16 @@ function App() {
       return;
     }
 
-    const letterStates = setLetterStates(wordOfTheDay, row);
+    const letterStates = setLetterStates(
+      wordOfTheDay,
+      row,
+      game,
+      activeRow,
+      activeTile,
+      keyboardKeysState,
+      setKeyboardKeysState,
+      setGame
+    );
 
     // update words remaining list
     const updatedRemainingWords = updateRemainingWords(
@@ -193,11 +160,6 @@ function App() {
     );
 
     setRemainingWords(updatedRemainingWords);
-
-    setKeyboardKeysState({
-      ...keyboardKeysState,
-      ...letterStates.keyboardKeysState,
-    });
 
     if (isTheWord(row, wordOfTheDay)) {
       setMessage("you win!");
@@ -217,6 +179,7 @@ function App() {
 
     if (key === "delete") {
       deleteTile();
+      setMessage("");
     }
 
     if (key === "enter") {
@@ -227,47 +190,72 @@ function App() {
   return (
     <div className="container mx-auto max-w-xl items-center h-screen py-4 px-1">
       <h1 className="text-2xl text-center mb-4">
-        CHEATING <span className="text-base">WORDLE</span>{" "}
+        CHEATING <span className="text-base">WORDLE</span>
       </h1>
-
-      {/* <pre className="text-center">
-        active tile: {activeTile} <br />
-        active row: {activeRow} <br />
-      </pre> */}
 
       <Board game={game} activeRow={activeRow} activeTile={activeTile} />
 
-      {message.length !== 0 && (
-        <div className="flex justify-center">
-          <div className="w-64 px-8 py-4 mb-4 | border rounded-xl | bg-gray-700 text-white text-center">
-            {message}
-          </div>
-        </div>
-      )}
+      {message !== "" && <Message message={message} />}
 
       <Keyboard keysState={keyboardKeysState} onClick={handleClick} />
 
-      {remainingWords.length > 1 && (
-        <div className="text-center mb-20">
-          <h2 className="text-xl mb-2">
-            Remaining words: {remainingWords.length}
-          </h2>
-
-          {remainingWords.length < 100 && (
-            <ul className="overflow-auto h-auto border border-gray-400 flex flex-wrap justify-center py-2 rounded-lg">
-              {remainingWords.map((word, i) => (
-                <li key={i} className="mr-2 leading-snug">
-                  {word}
-
-                  {i != remainingWords.length - 1 && <span>,</span>}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+      {message === "you win!" || (
+        <RemainingWords remainingWords={remainingWords} />
       )}
     </div>
   );
+}
+
+function setLetterStates(
+  wordOfTheDay: string,
+  submittedWord: TileInterface[],
+  game: TileInterface[][],
+  activeRow: number,
+  activeTile: number,
+  keyboardKeysState: KeyboardKeysStateInterface,
+  setKeyboardKeysState: React.Dispatch<
+    React.SetStateAction<KeyboardKeysStateInterface>
+  >,
+  setGame: React.Dispatch<React.SetStateAction<TileInterface[][]>>
+): RegexInterface {
+  const arr = wordOfTheDay.split("");
+
+  const str = JSON.stringify(game);
+  const updatedGame = JSON.parse(str);
+
+  const included: string[] = [];
+  const notIncluded: string[] = [];
+
+  const newKeyboardKeysState: KeyboardKeysStateInterface = {};
+
+  submittedWord.forEach((tile, index) => {
+    if (tile.letter === arr[index]) {
+      updatedGame[activeRow][index].state = "match";
+      newKeyboardKeysState[tile.letter.toUpperCase()] = "match";
+
+      included.push(tile.letter);
+    } else if (wordOfTheDay.includes(tile.letter)) {
+      updatedGame[activeRow][index].state = "present";
+      newKeyboardKeysState[tile.letter.toUpperCase()] = "present";
+
+      included.push(tile.letter);
+    } else {
+      updatedGame[activeRow][index].state = "absent";
+      newKeyboardKeysState[tile.letter.toUpperCase()] = "absent";
+
+      notIncluded.push(tile.letter);
+    }
+  });
+
+  setGame(updatedGame);
+
+  setKeyboardKeysState({ ...keyboardKeysState, ...newKeyboardKeysState });
+
+  return {
+    included,
+    notIncluded,
+    pattern: createRegex(updatedGame[activeRow]),
+  };
 }
 findDOMNode;
 
