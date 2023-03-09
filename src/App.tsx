@@ -19,13 +19,11 @@ import KeyboardKeysStateInterface from "./interfaces/KeyboardKeysStateInterface"
 import RemainingWords from "./components/RemainingWords";
 import Message from "./components/Message";
 
-function App() {
+const App = () => {
   const [wordOfTheDay, setWordOfTheDay] = useState(
     solutions[358 + dayOfTheYear()].solution
   );
 
-  const [activeRow, setActiveRow] = useState(0);
-  const [activeTile, setActiveTile] = useState(0);
   const [message, setMessage] = useState("");
 
   // remove accents and duplicate words
@@ -35,35 +33,7 @@ function App() {
     uniqueArrWithoutTildes
   );
 
-  const [keyboardKeysState, setKeyboardKeysState] = useState({
-    Q: "",
-    W: "",
-    E: "",
-    R: "",
-    T: "",
-    Y: "",
-    U: "",
-    I: "",
-    O: "",
-    P: "",
-    A: "",
-    S: "",
-    D: "",
-    F: "",
-    G: "",
-    H: "",
-    J: "",
-    K: "",
-    L: "",
-    Ñ: "",
-    Z: "",
-    X: "",
-    C: "",
-    V: "",
-    B: "",
-    N: "",
-    M: "",
-  });
+  const [keyboardKeysState, setKeyboardKeysState] = useState({});
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -71,21 +41,48 @@ function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   });
 
-  function handleKeyDown(e: KeyboardEvent): void {
-    if (/^[a-zA-ZñÑ]$/.test(e.key)) {
-      fillTile(e.key);
+  /**
+   * Pass this function as a callback to the addEventListener window
+   * and to Keyboard component as a callback to the onClick prop
+   * @param e KeyboardEvent or string
+   * @returns void
+   */
+  function handleKeyDown(e: KeyboardEvent | string): void {
+    let key: string = "";
+
+    if (typeof e === "string") {
+      key = e.toLowerCase();
     }
 
-    if (e.key === "Backspace") {
-      deleteTile();
+    if (typeof e === "object") {
+      key = e.key;
+    }
+
+    if (/^[a-zñ]$/.test(key)) {
+      fillTile(key, game, setGame, activeRow, activeTile);
+
+      if (activeTile < 4) {
+        setActiveTile(activeTile + 1);
+      }
+    }
+
+    if (key === "backspace" || key === "Backspace") {
+      deleteTile(activeTile, activeRow, game, setGame);
+
+      if (activeTile > 0) {
+        setActiveTile(activeTile - 1);
+      }
+
       setMessage("");
     }
 
-    if (e.key === "Enter") {
+    if (key === "enter" || key === "Enter") {
       submitRow(game[activeRow]);
     }
   }
 
+  const [activeRow, setActiveRow] = useState(0);
+  const [activeTile, setActiveTile] = useState(0);
   const [game, setGame] = useState(
     Array(6).fill(
       Array(5).fill({
@@ -94,39 +91,6 @@ function App() {
       })
     )
   );
-
-  function fillTile(letter: string) {
-    if (activeTile > 4) return;
-
-    const str = JSON.stringify(game);
-    const updatedGame = JSON.parse(str);
-
-    updatedGame[activeRow][activeTile].letter = letter;
-    setGame(updatedGame);
-
-    if (activeTile < 4) {
-      setActiveTile(activeTile + 1);
-    }
-  }
-
-  function deleteTile() {
-    if (activeTile === 0 && game[activeRow][0] === "") return;
-
-    const str = JSON.stringify(game);
-    const updatedGame = JSON.parse(str);
-
-    if (updatedGame[activeRow][activeTile].letter !== "") {
-      updatedGame[activeRow][activeTile].letter = "";
-    } else {
-      updatedGame[activeRow][activeTile - 1].letter = "";
-    }
-
-    setGame(updatedGame);
-
-    if (activeTile > 0) {
-      setActiveTile(activeTile - 1);
-    }
-  }
 
   function submitRow(row: TileInterface[]) {
     if (!isFullWord(row)) {
@@ -172,39 +136,29 @@ function App() {
     setActiveRow(activeRow + 1);
   }
 
-  function handleClick(key: string) {
-    if (/^[a-zA-ZñÑ]$/.test(key)) {
-      fillTile(key);
-    }
-
-    if (key === "delete") {
-      deleteTile();
-      setMessage("");
-    }
-
-    if (key === "enter") {
-      submitRow(game[activeRow]);
-    }
-  }
-
   return (
     <div className="container mx-auto max-w-xl items-center h-screen py-4 px-1">
       <h1 className="text-2xl text-center mb-4">
         CHEATING <span className="text-base">WORDLE</span>
       </h1>
 
+      <pre>
+        activeTile: {activeTile} <br />
+        activeRow: {activeRow}
+      </pre>
+
       <Board game={game} activeRow={activeRow} activeTile={activeTile} />
 
       {message !== "" && <Message message={message} />}
 
-      <Keyboard keysState={keyboardKeysState} onClick={handleClick} />
+      <Keyboard keysState={keyboardKeysState} onClick={handleKeyDown} />
 
       {message === "you win!" || (
         <RemainingWords remainingWords={remainingWords} />
       )}
     </div>
   );
-}
+};
 
 function setLetterStates(
   wordOfTheDay: string,
@@ -257,6 +211,43 @@ function setLetterStates(
     pattern: createRegex(updatedGame[activeRow]),
   };
 }
+
+function fillTile(
+  letter: string,
+  game: TileInterface[][],
+  setGame: React.Dispatch<React.SetStateAction<TileInterface[][]>>,
+  activeRow: number,
+  activeTile: number
+) {
+  if (activeTile > 4) return;
+
+  const str = JSON.stringify(game);
+  const updatedGame = JSON.parse(str);
+
+  updatedGame[activeRow][activeTile].letter = letter;
+  setGame(updatedGame);
+}
+
+function deleteTile(
+  activeTile: number,
+  activeRow: number,
+  game: TileInterface[][],
+  setGame: React.Dispatch<React.SetStateAction<TileInterface[][]>>
+) {
+  if (activeTile === 0 && game[activeRow][0].letter === "") return;
+
+  const str = JSON.stringify(game);
+  const updatedGame = JSON.parse(str);
+
+  if (updatedGame[activeRow][activeTile].letter !== "") {
+    updatedGame[activeRow][activeTile].letter = "";
+  } else {
+    updatedGame[activeRow][activeTile - 1].letter = "";
+  }
+
+  setGame(updatedGame);
+}
+
 findDOMNode;
 
 export default App;

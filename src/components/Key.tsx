@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 interface PropsInterface {
-  children?: string | ReactNode;
+  children?: ReactNode;
   value: string;
   state: string;
   onClick: (value: string) => void;
@@ -9,10 +9,6 @@ interface PropsInterface {
 }
 
 const Key = ({ children, value, state, onClick, width }: PropsInterface) => {
-  function handleClick(value: string) {
-    onClick(value.toLowerCase());
-  }
-
   const classes =
     "flex items-center justify-center | rounded mx-0.5 | text-xs font-bold | cursor-pointer select-none";
 
@@ -31,7 +27,7 @@ const Key = ({ children, value, state, onClick, width }: PropsInterface) => {
     <button
       style={{ width: width || "30px", height: "58px" }}
       className={`${classes} ${stateClasses(state)}`}
-      onClick={() => handleClick(value)}
+      onClick={() => onClick(value)}
     >
       {children || value}
     </button>

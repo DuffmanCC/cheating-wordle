@@ -7,10 +7,6 @@ interface PropsInterface {
 }
 
 const Keyboard = ({ keysState, onClick }: PropsInterface) => {
-  function handleClick(key: string) {
-    onClick(key);
-  }
-
   const firstRow = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const secondRow = ["A", "S", "D", "F", "G", "H", "J", "K", "L", "Ñ"];
   const thirdRow = ["Z", "X", "C", "V", "B", "N", "M"];
@@ -19,12 +15,7 @@ const Keyboard = ({ keysState, onClick }: PropsInterface) => {
     <div className="mb-4">
       <div className="flex justify-center mb-1">
         {firstRow.map((key) => (
-          <Key
-            key={key}
-            value={key}
-            onClick={handleClick}
-            state={keysState[key]}
-          />
+          <Key key={key} value={key} onClick={onClick} state={keysState[key]} />
         ))}
       </div>
 
@@ -35,7 +26,7 @@ const Keyboard = ({ keysState, onClick }: PropsInterface) => {
       </div>
 
       <div className="flex justify-center">
-        <Key width={48} value="ENTER" onClick={onClick} state="">
+        <Key width={48} value="Enter" onClick={onClick} state="">
           <svg
             focusable={false}
             aria-hidden={true}
@@ -50,7 +41,7 @@ const Keyboard = ({ keysState, onClick }: PropsInterface) => {
           <Key key={key} value={key} onClick={onClick} state={keysState[key]} />
         ))}
 
-        <Key width={48} value="DELETE" onClick={onClick} state="">
+        <Key width={48} value="Backspace" onClick={onClick} state="">
           <svg
             focusable={false}
             aria-hidden={true}
