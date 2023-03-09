@@ -12,7 +12,7 @@ const Keyboard = ({ keysState, onClick }: PropsInterface) => {
   const thirdRow = ["Z", "X", "C", "V", "B", "N", "M"];
 
   return (
-    <div className="mb-4">
+    <div className="mb-2">
       <div className="flex justify-center mb-1">
         {firstRow.map((key) => (
           <Key key={key} value={key} onClick={onClick} state={keysState[key]} />

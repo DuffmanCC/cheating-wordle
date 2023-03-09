@@ -8,7 +8,7 @@ interface Props {
 
 export default function Tile({ letter, isActive, state }: Props, key: number) {
   const classes =
-    "mx-1 w-14 h-14 | text-2xl font-bold capitalize | rounded-lg border-2 | flex items-center justify-center";
+    "mx-0.5 w-14 h-14 | text-2xl font-bold capitalize | rounded-lg border-2 | flex items-center justify-center";
 
   const stateClasses = (state: string) => {
     if (state === "match") return "bg-green-600 text-white border-green-600";

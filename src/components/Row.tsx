@@ -16,7 +16,7 @@ export default function Row({
   activeTile,
 }: PropsInterface) {
   return (
-    <div className="flex my-2 mx-auto justify-center">
+    <div className="flex my-1 mx-auto justify-center">
       {row.map((el, tileIndex) => (
         <Tile
           key={tileIndex}

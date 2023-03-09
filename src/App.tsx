@@ -142,11 +142,6 @@ const App = () => {
         CHEATING <span className="text-base">WORDLE</span>
       </h1>
 
-      <pre>
-        activeTile: {activeTile} <br />
-        activeRow: {activeRow}
-      </pre>
-
       <Board game={game} activeRow={activeRow} activeTile={activeTile} />
 
       {message !== "" && <Message message={message} />}

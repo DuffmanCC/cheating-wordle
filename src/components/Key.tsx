@@ -10,7 +10,7 @@ interface PropsInterface {
 
 const Key = ({ children, value, state, onClick, width }: PropsInterface) => {
   const classes =
-    "flex items-center justify-center | rounded mx-0.5 | text-xs font-bold | cursor-pointer select-none";
+    "flex items-center justify-center | rounded mx-0.5 h-12 w-10 | text-xs font-bold | cursor-pointer select-none";
 
   const stateClasses = (state: string) => {
     if (state === "match") return "bg-green-600 text-white border-green-600";
@@ -25,7 +25,7 @@ const Key = ({ children, value, state, onClick, width }: PropsInterface) => {
 
   return (
     <button
-      style={{ width: width || "30px", height: "58px" }}
+      style={{ width: width || "30px" }}
       className={`${classes} ${stateClasses(state)}`}
       onClick={() => onClick(value)}
     >
