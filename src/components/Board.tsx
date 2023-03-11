@@ -8,21 +8,18 @@ interface PropsInterface {
   activeTile: number;
 }
 
-export default function Board({ game, activeRow, activeTile }: PropsInterface) {
-  let classes =
-    "mx-1 w-16 h-16 | text-2xl font-bold capitalize | rounded border-2 | flex items-center justify-center";
+const Board = ({ game, activeRow, activeTile }: PropsInterface) => (
+  <div className="mb-4">
+    {game.map((el, rowIndex) => (
+      <Row
+        key={rowIndex}
+        rowIndex={rowIndex}
+        row={game[rowIndex]}
+        activeRow={activeRow}
+        activeTile={activeTile}
+      />
+    ))}
+  </div>
+);
 
-  return (
-    <div className="mb-4">
-      {game.map((el, rowIndex) => (
-        <Row
-          key={rowIndex}
-          rowIndex={rowIndex}
-          row={game[rowIndex]}
-          activeRow={activeRow}
-          activeTile={activeTile}
-        />
-      ))}
-    </div>
-  );
-}
+export default Board;

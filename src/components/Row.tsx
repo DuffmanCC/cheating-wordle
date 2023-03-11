@@ -11,8 +11,8 @@ interface PropsInterface {
 
 export default function Row({
   row,
-  activeRow,
   rowIndex,
+  activeRow,
   activeTile,
 }: PropsInterface) {
   return (
