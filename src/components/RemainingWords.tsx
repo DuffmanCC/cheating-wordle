@@ -13,12 +13,14 @@ const RemainingWords = ({ remainingWords }: PropsInterface) => {
       <div className="flex justify-center items-center mb-4 gap-4">
         <h2 className="text-xl">Remaining words: {remainingWords.length}</h2>
 
-        <button
-          onClick={() => setDisplayRemainingWords(!displayRemainingWords)}
-          className=""
-        >
-          <ShowIcon width="1rem" />
-        </button>
+        {remainingWords.length < 100 && (
+          <button
+            onClick={() => setDisplayRemainingWords(!displayRemainingWords)}
+            className=""
+          >
+            <ShowIcon width="1rem" />
+          </button>
+        )}
       </div>
 
       {remainingWords.length < 100 && displayRemainingWords && (
