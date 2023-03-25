@@ -1,5 +1,6 @@
 import TileInterface from "../interfaces/TileInterface";
 import RegexInterface from "../interfaces/RegexInterface";
+import KeyboardKeysStateInterface from "../interfaces/KeyboardKeysStateInterface";
 
 export const removeTildes = (word: string): string => {
   const tildes = /[áéíóú]/g;
