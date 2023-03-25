@@ -1,22 +1,22 @@
-import { RefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { findDOMNode } from "react-dom";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboad";
 import RefreshButton from "./components/RefreshButton";
 import TileInterface from "./interfaces/TileInterface";
-import RegexInterface from "./interfaces/RegexInterface";
 import validWords from "./data/validWords";
 import solutions from "./data/solutions";
 import {
   removeTildes,
   isValidWord,
   isFullWord,
-  createRegex,
   updateRemainingWords,
   isTheWord,
   dayOfTheYear,
+  setLetterStates,
+  fillTile,
+  deleteTile,
 } from "./lib/tools.js";
-import KeyboardKeysStateInterface from "./interfaces/KeyboardKeysStateInterface";
 import RemainingWords from "./components/RemainingWords";
 import Message from "./components/Message";
 
@@ -52,7 +52,7 @@ const App = () => {
     }
 
     if (typeof e === "object") {
-      key = e.key;
+      key = e.key.toLowerCase();
     }
 
     if (/^[a-zñ]$/.test(key)) {
@@ -164,94 +164,6 @@ const App = () => {
     </div>
   );
 };
-
-function setLetterStates(
-  wordOfTheDay: string,
-  submittedWord: TileInterface[],
-  game: TileInterface[][],
-  activeRow: number,
-  activeTile: number,
-  keyboardKeysState: KeyboardKeysStateInterface,
-  setKeyboardKeysState: React.Dispatch<
-    React.SetStateAction<KeyboardKeysStateInterface>
-  >,
-  setGame: React.Dispatch<React.SetStateAction<TileInterface[][]>>
-): RegexInterface {
-  const arr = wordOfTheDay.split("");
-
-  const str = JSON.stringify(game);
-  const updatedGame = JSON.parse(str);
-
-  const included: string[] = [];
-  const notIncluded: string[] = [];
-
-  const newKeyboardKeysState: KeyboardKeysStateInterface = {};
-
-  submittedWord.forEach((tile, index) => {
-    if (tile.letter === arr[index]) {
-      updatedGame[activeRow][index].state = "match";
-      newKeyboardKeysState[tile.letter.toUpperCase()] = "match";
-
-      included.push(tile.letter);
-    } else if (wordOfTheDay.includes(tile.letter)) {
-      updatedGame[activeRow][index].state = "present";
-      newKeyboardKeysState[tile.letter.toUpperCase()] = "present";
-
-      included.push(tile.letter);
-    } else {
-      updatedGame[activeRow][index].state = "absent";
-      newKeyboardKeysState[tile.letter.toUpperCase()] = "absent";
-
-      notIncluded.push(tile.letter);
-    }
-  });
-
-  setGame(updatedGame);
-
-  setKeyboardKeysState({ ...keyboardKeysState, ...newKeyboardKeysState });
-
-  return {
-    included,
-    notIncluded,
-    pattern: createRegex(updatedGame[activeRow]),
-  };
-}
-
-function fillTile(
-  letter: string,
-  game: TileInterface[][],
-  setGame: React.Dispatch<React.SetStateAction<TileInterface[][]>>,
-  activeRow: number,
-  activeTile: number
-) {
-  if (activeTile > 4) return;
-
-  const str = JSON.stringify(game);
-  const updatedGame = JSON.parse(str);
-
-  updatedGame[activeRow][activeTile].letter = letter;
-  setGame(updatedGame);
-}
-
-function deleteTile(
-  activeTile: number,
-  activeRow: number,
-  game: TileInterface[][],
-  setGame: React.Dispatch<React.SetStateAction<TileInterface[][]>>
-) {
-  if (activeTile === 0 && game[activeRow][0].letter === "") return;
-
-  const str = JSON.stringify(game);
-  const updatedGame = JSON.parse(str);
-
-  if (updatedGame[activeRow][activeTile].letter !== "") {
-    updatedGame[activeRow][activeTile].letter = "";
-  } else {
-    updatedGame[activeRow][activeTile - 1].letter = "";
-  }
-
-  setGame(updatedGame);
-}
 
 findDOMNode;
 
