@@ -5,6 +5,8 @@ import RefreshButton from "./components/RefreshButton";
 import RemainingWords from "./components/RemainingWords";
 import Message from "./components/Message";
 import useGame from "./hooks/useGame";
+import { useState } from "react";
+import ShareGame from "./components/ShareGame";
 
 const App = () => {
   const {
@@ -22,11 +24,15 @@ const App = () => {
     setKeyboardKeysState,
     uniqueArrWithoutTildes,
     handleKeyDown,
+    isWin,
+    setIsWin,
   } = useGame();
+
+  const [displayRemainingWords, setDisplayRemainingWords] = useState(false);
 
   return (
     <div className="container mx-auto max-w-xl items-center h-screen py-4 px-1">
-      <div className="flex justify-center items-center mb-4 text-gray-600 max-w-xs mx-auto relative">
+      <div className="flex gap-8 mb-4 justify-center">
         <RefreshButton
           setGame={setGame}
           setActiveRow={setActiveRow}
@@ -35,12 +41,15 @@ const App = () => {
           setRemainingWords={setRemainingWords}
           setKeyboardKeysState={setKeyboardKeysState}
           uniqueArrWithoutTildes={uniqueArrWithoutTildes}
-          className="absolute left-0"
+          setDisplayRemainingWords={setDisplayRemainingWords}
+          setIsWin={setIsWin}
         />
 
         <h1 className="text-3xl">
           CHEATING <span className="text-base">WORDLE</span>
         </h1>
+
+        {isWin && <ShareGame clipboard={message} setMessage={setMessage} />}
       </div>
 
       <Board game={game} activeRow={activeRow} activeTile={activeTile} />
@@ -49,8 +58,12 @@ const App = () => {
 
       <Keyboard keysState={keyboardKeysState} onClick={handleKeyDown} />
 
-      {message === "you win!" || (
-        <RemainingWords remainingWords={remainingWords} />
+      {isWin || (
+        <RemainingWords
+          remainingWords={remainingWords}
+          displayRemainingWords={displayRemainingWords}
+          setDisplayRemainingWords={setDisplayRemainingWords}
+        />
       )}
     </div>
   );

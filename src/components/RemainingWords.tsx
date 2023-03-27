@@ -1,13 +1,17 @@
-import { useState } from "react";
-import ShowIcon from "./icons/ShowIcon";
+import ArrowDownIcon from "./icons/ArrowDownIcon";
+import ArrowDownWithBaseIcon from "./icons/ArrowDownWithBaseIcon";
 
 interface PropsInterface {
   remainingWords: string[];
+  displayRemainingWords: boolean;
+  setDisplayRemainingWords: (displayRemainingWords: boolean) => void;
 }
 
-const RemainingWords = ({ remainingWords }: PropsInterface) => {
-  const [displayRemainingWords, setDisplayRemainingWords] = useState(false);
-
+const RemainingWords = ({
+  remainingWords,
+  displayRemainingWords,
+  setDisplayRemainingWords,
+}: PropsInterface) => {
   return (
     <div className="text-center mb-20">
       <div className="flex justify-center items-center mb-4 gap-4">
@@ -18,7 +22,11 @@ const RemainingWords = ({ remainingWords }: PropsInterface) => {
             onClick={() => setDisplayRemainingWords(!displayRemainingWords)}
             className=""
           >
-            <ShowIcon width="1rem" />
+            {displayRemainingWords ? (
+              <ArrowDownIcon width="1rem" />
+            ) : (
+              <ArrowDownWithBaseIcon width="1rem" />
+            )}
           </button>
         )}
       </div>

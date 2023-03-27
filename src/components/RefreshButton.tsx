@@ -9,6 +9,8 @@ interface PropsInterface {
   setMessage: (message: string) => void;
   setRemainingWords: (remainingWords: string[]) => void;
   setKeyboardKeysState: (keyboardKeysState: {}) => void;
+  setDisplayRemainingWords: (displayRemainingWords: boolean) => void;
+  setIsWin: (isWin: boolean) => void;
   uniqueArrWithoutTildes: string[];
   className?: string;
 }
@@ -20,6 +22,8 @@ const RefreshButton = ({
   setMessage,
   setRemainingWords,
   setKeyboardKeysState,
+  setDisplayRemainingWords,
+  setIsWin,
   uniqueArrWithoutTildes,
   className,
 }: PropsInterface) => {
@@ -35,11 +39,13 @@ const RefreshButton = ({
       )
     );
 
+    setIsWin(false);
     setActiveRow(0);
     setActiveTile(0);
     setMessage("");
     setRemainingWords(uniqueArrWithoutTildes);
     setKeyboardKeysState({});
+    setDisplayRemainingWords(false);
 
     if (refreshButton.current) {
       refreshButton.current.blur();
@@ -50,10 +56,9 @@ const RefreshButton = ({
     <button
       title="refresh"
       onClick={handleRefresh}
-      className={[
-        "hover:text-blue-800 focus:text-blue-800 mr-12",
-        className,
-      ].join(" ")}
+      className={["hover:text-blue-800 focus:text-blue-800", className].join(
+        " "
+      )}
       ref={refreshButton}
     >
       <RefreshIcon width="1.5rem" />

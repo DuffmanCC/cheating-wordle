@@ -1,6 +1,6 @@
 import { SVGProps } from "react";
 
-const ShowIcon = (props: SVGProps<SVGSVGElement>) => (
+const ArrowDownWithBaseIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
     <path
       fill="currentColor"
@@ -9,4 +9,4 @@ const ShowIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export default ShowIcon;
+export default ArrowDownWithBaseIcon;

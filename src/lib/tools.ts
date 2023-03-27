@@ -170,7 +170,6 @@ export function setLetterStates(
   //   }
   // });
 
-  console.log("game", game[activeRow]);
   setGame(game);
 
   setKeyboardKeysState({ ...keyboardKeysState, ...newKeyboardKeysState });

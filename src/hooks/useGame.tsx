@@ -19,10 +19,15 @@ const uniqueArrWithoutTildes = [...new Set(validWords.map(removeTildes))];
 
 const useGame = () => {
   const [message, setMessage] = useState<string>("");
+  const [isWin, setIsWin] = useState<boolean>(false);
 
   const [remainingWords, setRemainingWords] = useState<string[]>(
     uniqueArrWithoutTildes
   );
+
+  const [remainingWordsTries, setRemainingWordsTries] = useState<number[]>([
+    uniqueArrWithoutTildes.length,
+  ]);
 
   const [keyboardKeysState, setKeyboardKeysState] = useState({});
 
@@ -69,6 +74,12 @@ const useGame = () => {
 
     if (key === "enter" || key === "Enter") {
       submitRow(game[activeRow]);
+
+      if (activeRow === 5) {
+        setMessage(`You fail! 
+        the solution was: ${wordOfTheDay}`);
+        return;
+      }
     }
   }
 
@@ -116,8 +127,20 @@ const useGame = () => {
 
     setRemainingWords(updatedRemainingWords);
 
+    remainingWordsTries.push(updatedRemainingWords.length);
+
+    setRemainingWordsTries(remainingWordsTries);
+
     if (isTheWord(row, wordOfTheDay)) {
-      setMessage("you win!");
+      setIsWin(true);
+      const penultimate = remainingWordsTries[remainingWordsTries.length - 2];
+      const lucky = (100 / penultimate).toFixed(2);
+
+      const msg = `You win!
+      ${penultimate.toString()} remaining words, 
+      ${lucky.toString()}% of lucky!`;
+
+      setMessage(msg);
 
       return;
     }
@@ -142,6 +165,9 @@ const useGame = () => {
     setKeyboardKeysState,
     handleKeyDown,
     uniqueArrWithoutTildes,
+    remainingWordsTries,
+    isWin,
+    setIsWin,
   };
 };
 
