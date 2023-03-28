@@ -31,58 +31,6 @@ const useGame = () => {
 
   const [keyboardKeysState, setKeyboardKeysState] = useState({});
 
-  useEffect(() => {
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  });
-
-  /**
-   * Pass this function as a callback to the addEventListener window
-   * and to Keyboard component as a callback to the onClick prop
-   * @param e KeyboardEvent or string
-   * @returns void
-   */
-  function handleKeyDown(e: KeyboardEvent | string): void {
-    let key: string = "";
-
-    if (typeof e === "string") {
-      key = e.toLowerCase();
-    }
-
-    if (typeof e === "object") {
-      key = e.key.toLowerCase();
-    }
-
-    if (/^[a-zñ]$/.test(key)) {
-      fillTile(key, game, setGame, activeRow, activeTile);
-
-      if (activeTile < 4) {
-        setActiveTile(activeTile + 1);
-      }
-    }
-
-    if (key === "backspace" || key === "Backspace") {
-      deleteTile(activeTile, activeRow, game, setGame);
-
-      if (activeTile > 0) {
-        setActiveTile(activeTile - 1);
-      }
-
-      setMessage("");
-    }
-
-    if (key === "enter" || key === "Enter") {
-      submitRow(game[activeRow]);
-
-      if (activeRow === 5) {
-        setMessage(`You fail! 
-        the solution was: ${wordOfTheDay}`);
-        return;
-      }
-    }
-  }
-
   const [activeRow, setActiveRow] = useState(0);
   const [activeTile, setActiveTile] = useState(0);
   const [game, setGame] = useState(
@@ -93,6 +41,53 @@ const useGame = () => {
       })
     )
   );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  });
+
+  useEffect(() => {
+    if (isWin) {
+      const penultimate = remainingWordsTries[remainingWordsTries.length - 2];
+      const lucky = (100 / penultimate).toFixed(2);
+
+      setMessage(`You win!
+      ${penultimate.toString()} remaining words, 
+      ${lucky.toString()}% of lucky!`);
+    }
+  }, [isWin, activeRow, activeTile]);
+
+  /**
+   * Pass this function as a callback to the addEventListener window
+   * and to Keyboard component as a callback to the onClick prop
+   * @param e KeyboardEvent or string
+   * @returns void
+   */
+  function handleKeyDown(e: KeyboardEvent | string): void {
+    let key: string = "";
+
+    if (typeof e === "string") key = e.toLowerCase();
+
+    if (typeof e === "object") key = e.key.toLowerCase();
+
+    if (/^[a-zñ]$/.test(key)) {
+      fillTile(key, game, setGame, activeRow, activeTile);
+
+      if (activeTile < 4) setActiveTile(activeTile + 1);
+    }
+
+    if (key === "backspace" || key === "Backspace") {
+      deleteTile(activeTile, activeRow, game, setGame);
+
+      if (activeTile > 0) setActiveTile(activeTile - 1);
+
+      setMessage("");
+    }
+
+    if (key === "enter" || key === "Enter") submitRow(game[activeRow]);
+  }
 
   function submitRow(row: TileInterface[]) {
     if (!isFullWord(row)) {
@@ -133,15 +128,13 @@ const useGame = () => {
 
     if (isTheWord(row, wordOfTheDay)) {
       setIsWin(true);
-      const penultimate = remainingWordsTries[remainingWordsTries.length - 2];
-      const lucky = (100 / penultimate).toFixed(2);
 
-      const msg = `You win!
-      ${penultimate.toString()} remaining words, 
-      ${lucky.toString()}% of lucky!`;
+      return;
+    }
 
-      setMessage(msg);
-
+    if (activeRow === 5 && activeTile === 4 && !isWin) {
+      setMessage(`You fail! 
+      the solution was: ${wordOfTheDay}`);
       return;
     }
 
