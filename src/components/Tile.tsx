@@ -11,10 +11,10 @@ export default function Tile({ letter, isActive, state }: Props, key: number) {
   let [showLetter, setShowLetter] = useState(false);
 
   const classes =
-    "mx-0.5 | text-3xl font-bold capitalize | rounded-lg border-2 | flex items-center justify-center";
+    "mx-0.5 w-16 h-16 | text-3xl font-bold capitalize | rounded-lg border-2 | flex items-center justify-center | absolute inset-0";
 
-  const transition = "transition duration-200";
-  const showLetterClasses = showLetter ? "w-17 h-17" : "w-16 h-16";
+  const transition = "transition-colors transition-transform duration-50";
+  const showLetterClasses = showLetter && "scale-125";
 
   useEffect(() => {
     if (letter !== "") {
@@ -22,26 +22,33 @@ export default function Tile({ letter, isActive, state }: Props, key: number) {
 
       const timerID = setTimeout(() => {
         setShowLetter(false);
-      }, 200);
+      }, 100);
 
       return () => clearTimeout(timerID);
     }
   }, [letter, state]);
 
   return (
-    <div
-      key={key}
-      className={
-        isActive
-          ? ["border-blue-500", classes, showLetterClasses, stateClasses(state)]
-              .join(" ")
-              .trim()
-          : [classes, transition, showLetterClasses, stateClasses(state)]
-              .join(" ")
-              .trim()
-      }
-    >
-      {letter}
+    <div className="relative w-16 h-16">
+      <div
+        key={key}
+        className={
+          isActive
+            ? [
+                "border-blue-500",
+                classes,
+                showLetterClasses,
+                stateClasses(state),
+              ]
+                .join(" ")
+                .trim()
+            : [classes, transition, showLetterClasses, stateClasses(state)]
+                .join(" ")
+                .trim()
+        }
+      >
+        {letter}
+      </div>
     </div>
   );
 }
