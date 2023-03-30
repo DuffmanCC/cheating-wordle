@@ -1,6 +1,5 @@
-import Tile from "./Tile";
-import { MouseEvent, useEffect, useRef, useState } from "react";
 import TileInterface from "../interfaces/TileInterface";
+import Tile from "./Tile";
 
 interface PropsInterface {
   row: TileInterface[];
@@ -16,7 +15,7 @@ export default function Row({
   activeTile,
 }: PropsInterface) {
   return (
-    <div className="flex my-1 mx-auto justify-center">
+    <div className="flex my-1 gap-1 mx-auto justify-center">
       {row.map((el, tileIndex) => (
         <Tile
           key={tileIndex}

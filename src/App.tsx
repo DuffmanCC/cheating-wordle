@@ -1,12 +1,12 @@
+import { useState } from "react";
 import { findDOMNode } from "react-dom";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboad";
+import Message from "./components/Message";
 import RefreshButton from "./components/RefreshButton";
 import RemainingWords from "./components/RemainingWords";
-import Message from "./components/Message";
-import useGame from "./hooks/useGame";
-import { useState } from "react";
 import ShareGame from "./components/ShareGame";
+import useGame from "./hooks/useGame";
 
 const App = () => {
   const {
@@ -46,7 +46,7 @@ const App = () => {
         />
 
         <h1 className="text-3xl">
-          CHEATING <span className="text-base">WORDLE</span>
+          CHEATING <span className="text-base text-gray-500">WORDLE</span>
         </h1>
 
         {isWin && <ShareGame clipboard={message} setMessage={setMessage} />}

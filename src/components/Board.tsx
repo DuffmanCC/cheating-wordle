@@ -1,6 +1,5 @@
-import Row from "./Row";
-import Tile from "./Tile";
 import TileInterface from "../interfaces/TileInterface";
+import Row from "./Row";
 
 interface PropsInterface {
   game: TileInterface[][];
