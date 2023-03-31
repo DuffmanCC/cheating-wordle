@@ -3,15 +3,15 @@ import solutions from "../data/solutions";
 import validWords from "../data/validWords";
 import TileInterface from "../interfaces/TileInterface";
 import {
-  removeTildes,
-  isValidWord,
-  isFullWord,
-  updateRemainingWords,
-  isTheWord,
   dayOfTheYear,
-  setLetterStates,
-  fillTile,
   deleteTile,
+  fillTile,
+  isFullWord,
+  isTheWord,
+  isValidWord,
+  removeTildes,
+  setLetterStates,
+  updateRemainingWords,
 } from "../lib/tools.js";
 
 const wordOfTheDay = solutions[358 + dayOfTheYear()].solution;
@@ -33,14 +33,20 @@ const useGame = () => {
 
   const [activeRow, setActiveRow] = useState(0);
   const [activeTile, setActiveTile] = useState(0);
-  const [game, setGame] = useState(
-    Array(6).fill(
-      Array(5).fill({
-        state: "",
-        letter: "",
-      })
-    )
+
+  const emptyGame: TileInterface[][] = Array(6).fill(
+    Array(5).fill({
+      state: "",
+      letter: "",
+    })
   );
+
+  const localStorageGame: string | null = localStorage.getItem("game");
+  let initialGame: TileInterface[][] = emptyGame;
+
+  if (localStorageGame) initialGame = JSON.parse(localStorageGame);
+
+  const [game, setGame] = useState(initialGame);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -52,6 +58,8 @@ const useGame = () => {
     if (isWin) {
       const penultimate = remainingWordsTries[remainingWordsTries.length - 2];
       const lucky = (100 / penultimate).toFixed(2);
+
+      localStorage.setItem("game", JSON.stringify(game));
 
       setMessage(`You win!
       ${penultimate.toString()} remaining words, 
@@ -135,6 +143,7 @@ const useGame = () => {
     if (activeRow === 5 && activeTile === 4 && !isWin) {
       setMessage(`You fail! 
       the solution was: ${wordOfTheDay}`);
+
       return;
     }
 
