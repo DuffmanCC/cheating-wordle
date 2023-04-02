@@ -1,16 +1,26 @@
+import TileInterface from "../interfaces/TileInterface";
+import { createGameClipboard } from "../lib/tools";
 import CopyIcon from "./icons/CopyIcon";
 
 type PropsInterface = {
-  clipboard: string;
   setMessage: (message: string) => void;
+  game: TileInterface[][];
+  activeRow: number;
 };
 
-const ShareGame = ({ clipboard, setMessage }: PropsInterface) => {
+const ShareGame = ({ setMessage, game, activeRow }: PropsInterface) => {
   const handleClick = async () => {
+    const gameTiles = createGameClipboard(game);
+
+    const htmlString =
+      `To keep cheating: \n` +
+      `https://duffmancc.github.io/cheating-wordle/ \n\n` +
+      `Cheating Wordle: ${activeRow + 1}/6 \n\n` +
+      gameTiles;
+
     try {
-      await navigator.clipboard.writeText(clipboard);
+      await navigator.clipboard.writeText(htmlString);
       setMessage("copied to clipboard");
-      console.log(clipboard);
     } catch (err) {
       setMessage(`Failed to copy: ${err}`);
     }
