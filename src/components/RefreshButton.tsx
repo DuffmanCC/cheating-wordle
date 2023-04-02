@@ -46,6 +46,7 @@ const RefreshButton = ({
     setRemainingWords(uniqueArrWithoutTildes);
     setKeyboardKeysState({});
     setDisplayRemainingWords(false);
+    localStorage.removeItem("game");
 
     if (refreshButton.current) {
       refreshButton.current.blur();

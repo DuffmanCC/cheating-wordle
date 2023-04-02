@@ -1,6 +1,6 @@
-import TileInterface from "../interfaces/TileInterface";
-import RegexInterface from "../interfaces/RegexInterface";
 import KeyboardKeysStateInterface from "../interfaces/KeyboardKeysStateInterface";
+import RegexInterface from "../interfaces/RegexInterface";
+import TileInterface from "../interfaces/TileInterface";
 
 export const removeTildes = (word: string): string => {
   const tildes = /[áéíóú]/g;
@@ -215,4 +215,18 @@ export function deleteTile(
   }
 
   setGame(updatedGame);
+}
+
+export function createGameClipboard(game: TileInterface[][]) {
+  const arr = game.map((row) => {
+    return row
+      .map((tile) => {
+        if (tile.state === "present") return `🟨`;
+        if (tile.state === "absent") return `⬜`;
+        if (tile.state === "match") return `🟩`;
+      })
+      .join("");
+  });
+
+  return arr.join("\n").trim();
 }

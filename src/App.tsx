@@ -49,7 +49,13 @@ const App = () => {
           CHEATING <span className="text-base text-gray-500">WORDLE</span>
         </h1>
 
-        {isWin && <ShareGame clipboard={message} setMessage={setMessage} />}
+        {isWin && (
+          <ShareGame
+            setMessage={setMessage}
+            game={game}
+            activeRow={activeRow}
+          />
+        )}
       </div>
 
       <Board game={game} activeRow={activeRow} activeTile={activeTile} />
