@@ -1,23 +1,16 @@
-import { useEffect, useState } from "react";
-import solutions from "../data/solutions";
-import validWords from "../data/validWords";
+import { useEffect, useRef, useState } from "react";
 import TileInterface from "../interfaces/TileInterface";
 import {
-  dayOfTheYear,
   deleteTile,
   fillTile,
   isFullWord,
   isTheWord,
   isValidWord,
-  removeTildes,
   setLetterStates,
   updateRemainingWords,
 } from "../lib/tools.js";
 
-const wordOfTheDay = solutions[358 + dayOfTheYear()].solution;
-const uniqueArrWithoutTildes = [...new Set(validWords.map(removeTildes))];
-
-const useGame = () => {
+const useGame = (wordOfTheDay: string, uniqueArrWithoutTildes: string[]) => {
   const [message, setMessage] = useState<string>("");
   const [isWin, setIsWin] = useState<boolean>(false);
 
@@ -31,8 +24,8 @@ const useGame = () => {
 
   const [keyboardKeysState, setKeyboardKeysState] = useState({});
 
-  const [activeRow, setActiveRow] = useState(0);
-  const [activeTile, setActiveTile] = useState(0);
+  const activeRow = useRef(0);
+  const activeTile = useRef(0);
 
   const emptyGame: TileInterface[][] = Array(6).fill(
     Array(5).fill({
@@ -83,18 +76,18 @@ const useGame = () => {
     if (/^[a-zñ]$/.test(key)) {
       fillTile(key, game, setGame, activeRow, activeTile);
 
-      if (activeTile < 4) setActiveTile(activeTile + 1);
+      if (activeTile.current < 4) activeTile.current++;
     }
 
     if (key === "backspace" || key === "Backspace") {
       deleteTile(activeTile, activeRow, game, setGame);
 
-      if (activeTile > 0) setActiveTile(activeTile - 1);
+      if (activeTile.current > 0) activeTile.current--;
 
       setMessage("");
     }
 
-    if (key === "enter" || key === "Enter") submitRow(game[activeRow]);
+    if (key === "enter" || key === "Enter") submitRow(game[activeRow.current]);
   }
 
   function submitRow(row: TileInterface[]) {
@@ -115,7 +108,6 @@ const useGame = () => {
       row,
       game,
       activeRow,
-      activeTile,
       keyboardKeysState,
       setKeyboardKeysState,
       setGame
@@ -124,7 +116,6 @@ const useGame = () => {
     // update words remaining list
     const updatedRemainingWords = updateRemainingWords(
       remainingWords,
-      row,
       letterStates
     );
 
@@ -140,7 +131,7 @@ const useGame = () => {
       return;
     }
 
-    if (activeRow === 5 && activeTile === 4 && !isWin) {
+    if (activeRow.current === 5 && activeTile.current === 4 && !isWin) {
       setMessage(`You fail! 
       the solution was: ${wordOfTheDay}`);
 
@@ -148,17 +139,15 @@ const useGame = () => {
     }
 
     // reset
-    setActiveTile(0);
-    setActiveRow(activeRow + 1);
+    activeTile.current = 0;
+    activeRow.current++;
   }
 
   return {
     game,
     setGame,
     activeRow,
-    setActiveRow,
     activeTile,
-    setActiveTile,
     message,
     setMessage,
     remainingWords,

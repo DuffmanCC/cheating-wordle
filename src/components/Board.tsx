@@ -3,8 +3,8 @@ import Row from "./Row";
 
 interface PropsInterface {
   game: TileInterface[][];
-  activeRow: number;
-  activeTile: number;
+  activeRow: { current: number };
+  activeTile: { current: number };
 }
 
 const Board = ({ game, activeRow, activeTile }: PropsInterface) => (

@@ -6,27 +6,30 @@ import Message from "./components/Message";
 import RefreshButton from "./components/RefreshButton";
 import RemainingWords from "./components/RemainingWords";
 import ShareGame from "./components/ShareGame";
+import solutions from "./data/solutions";
+import validWords from "./data/validWords";
 import useGame from "./hooks/useGame";
+import { dayOfTheYear, removeTildes } from "./lib/tools";
+
+const wordOfTheDay = solutions[358 + dayOfTheYear()].solution;
+const uniqueArrWithoutTildes = [...new Set(validWords.map(removeTildes))];
 
 const App = () => {
   const {
     game,
     setGame,
     activeRow,
-    setActiveRow,
     activeTile,
-    setActiveTile,
     message,
     setMessage,
     remainingWords,
     setRemainingWords,
     keyboardKeysState,
     setKeyboardKeysState,
-    uniqueArrWithoutTildes,
     handleKeyDown,
     isWin,
     setIsWin,
-  } = useGame();
+  } = useGame(wordOfTheDay, uniqueArrWithoutTildes);
 
   const [displayRemainingWords, setDisplayRemainingWords] = useState(false);
 
@@ -34,9 +37,9 @@ const App = () => {
     <div className="container mx-auto max-w-xl items-center h-screen py-4 px-1">
       <div className="flex gap-8 mb-4 justify-center">
         <RefreshButton
+          activeRow={activeRow}
+          activeTile={activeTile}
           setGame={setGame}
-          setActiveRow={setActiveRow}
-          setActiveTile={setActiveTile}
           setMessage={setMessage}
           setRemainingWords={setRemainingWords}
           setKeyboardKeysState={setKeyboardKeysState}

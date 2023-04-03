@@ -4,8 +4,8 @@ import RefreshIcon from "./icons/RefreshIcon";
 
 interface PropsInterface {
   setGame: (game: TileInterface[][]) => void;
-  setActiveRow: (activeRow: number) => void;
-  setActiveTile: (activeTile: number) => void;
+  activeRow: { current: number };
+  activeTile: { current: number };
   setMessage: (message: string) => void;
   setRemainingWords: (remainingWords: string[]) => void;
   setKeyboardKeysState: (keyboardKeysState: {}) => void;
@@ -17,8 +17,8 @@ interface PropsInterface {
 
 const RefreshButton = ({
   setGame,
-  setActiveRow,
-  setActiveTile,
+  activeRow,
+  activeTile,
   setMessage,
   setRemainingWords,
   setKeyboardKeysState,
@@ -40,8 +40,8 @@ const RefreshButton = ({
     );
 
     setIsWin(false);
-    setActiveRow(0);
-    setActiveTile(0);
+    activeRow.current = 0;
+    activeTile.current = 0;
     setMessage("");
     setRemainingWords(uniqueArrWithoutTildes);
     setKeyboardKeysState({});

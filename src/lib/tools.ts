@@ -53,7 +53,6 @@ export function createRegex(row: TileInterface[]) {
 
 export function updateRemainingWords(
   remainingWordsDefault: string[],
-  currentGuess: TileInterface[],
   { included, notIncluded, pattern }: RegexInterface
 ) {
   let includedPattern = "";
@@ -111,8 +110,7 @@ export function setLetterStates(
   wordOfTheDay: string,
   submittedWord: TileInterface[],
   game: TileInterface[][],
-  activeRow: number,
-  activeTile: number,
+  activeRow: { current: number },
   keyboardKeysState: KeyboardKeysStateInterface,
   setKeyboardKeysState: React.Dispatch<
     React.SetStateAction<KeyboardKeysStateInterface>
@@ -128,20 +126,20 @@ export function setLetterStates(
 
   submittedWord.forEach((tile, index) => {
     if (wordOfTheDay.indexOf(tile.letter) !== -1) {
-      game[activeRow][index].state = "present";
+      game[activeRow.current][index].state = "present";
       newKeyboardKeysState[tile.letter.toUpperCase()] = "present";
       repeatedLetters.push(tile.letter);
 
       included.push(tile.letter);
     } else {
-      game[activeRow][index].state = "absent";
+      game[activeRow.current][index].state = "absent";
       newKeyboardKeysState[tile.letter.toUpperCase()] = "absent";
 
       notIncluded.push(tile.letter);
     }
 
     if (tile.letter === wordOfTheDay[index]) {
-      game[activeRow][index].state = "match";
+      game[activeRow.current][index].state = "match";
       newKeyboardKeysState[tile.letter.toUpperCase()] = "match";
 
       included.push(tile.letter);
@@ -177,7 +175,7 @@ export function setLetterStates(
   return {
     included,
     notIncluded,
-    pattern: createRegex(game[activeRow]),
+    pattern: createRegex(game[activeRow.current]),
   };
 }
 
@@ -185,33 +183,34 @@ export function fillTile(
   letter: string,
   game: TileInterface[][],
   setGame: React.Dispatch<React.SetStateAction<TileInterface[][]>>,
-  activeRow: number,
-  activeTile: number
+  activeRow: { current: number },
+  activeTile: { current: number }
 ) {
-  if (activeTile > 4) return;
+  if (activeTile.current > 4) return;
 
   const str = JSON.stringify(game);
   const updatedGame = JSON.parse(str);
 
-  updatedGame[activeRow][activeTile].letter = letter;
+  updatedGame[activeRow.current][activeTile.current].letter = letter;
   setGame(updatedGame);
 }
 
 export function deleteTile(
-  activeTile: number,
-  activeRow: number,
+  activeTile: { current: number },
+  activeRow: { current: number },
   game: TileInterface[][],
   setGame: React.Dispatch<React.SetStateAction<TileInterface[][]>>
 ) {
-  if (activeTile === 0 && game[activeRow][0].letter === "") return;
+  if (activeTile.current === 0 && game[activeRow.current][0].letter === "")
+    return;
 
   const str = JSON.stringify(game);
   const updatedGame = JSON.parse(str);
 
-  if (updatedGame[activeRow][activeTile].letter !== "") {
-    updatedGame[activeRow][activeTile].letter = "";
+  if (updatedGame[activeRow.current][activeTile.current].letter !== "") {
+    updatedGame[activeRow.current][activeTile.current].letter = "";
   } else {
-    updatedGame[activeRow][activeTile - 1].letter = "";
+    updatedGame[activeRow.current][activeTile.current - 1].letter = "";
   }
 
   setGame(updatedGame);

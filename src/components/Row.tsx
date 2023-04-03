@@ -3,9 +3,9 @@ import Tile from "./Tile";
 
 interface PropsInterface {
   row: TileInterface[];
-  activeRow: number;
+  activeRow: { current: number };
   rowIndex: number;
-  activeTile: number;
+  activeTile: { current: number };
 }
 
 export default function Row({
@@ -20,7 +20,9 @@ export default function Row({
         <Tile
           key={tileIndex}
           letter={el.letter}
-          isActive={tileIndex === activeTile && rowIndex === activeRow}
+          isActive={
+            tileIndex === activeTile.current && rowIndex === activeRow.current
+          }
           state={el.state}
         />
       ))}
