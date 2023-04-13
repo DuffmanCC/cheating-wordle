@@ -125,7 +125,18 @@ export function setLetterStates(
   const repeatedLetters: string[] = [];
 
   submittedWord.forEach((tile, index) => {
-    if (wordOfTheDay.indexOf(tile.letter) !== -1) {
+    if (!wordOfTheDay.includes(tile.letter)) {
+      game[activeRow.current][index].state = "absent";
+      newKeyboardKeysState[tile.letter.toUpperCase()] = "absent";
+
+      notIncluded.push(tile.letter);
+    }
+
+    if (
+      wordOfTheDay.includes(tile.letter) &&
+      !included.includes(tile.letter) &&
+      tile.letter !== wordOfTheDay[index]
+    ) {
       game[activeRow.current][index].state = "present";
       newKeyboardKeysState[tile.letter.toUpperCase()] = "present";
       repeatedLetters.push(tile.letter);
@@ -133,9 +144,6 @@ export function setLetterStates(
       included.push(tile.letter);
     } else {
       game[activeRow.current][index].state = "absent";
-      newKeyboardKeysState[tile.letter.toUpperCase()] = "absent";
-
-      notIncluded.push(tile.letter);
     }
 
     if (tile.letter === wordOfTheDay[index]) {
@@ -145,28 +153,6 @@ export function setLetterStates(
       included.push(tile.letter);
     }
   });
-
-  // check for included and repeated letters
-  // const submittedRepeated: { [key: string]: number } =
-  //   countingRepeatedLetters(repeatedLetters);
-
-  // const wordOfTheDayRepeated: { [key: string]: number } =
-  //   countingRepeatedLetters(wordOfTheDay.split(""));
-
-  // console.log("try", submittedRepeated);
-  // console.log("wordOfTheDay", wordOfTheDayRepeated);
-
-  // check for repeated letters
-  // TODO
-  // submittedWord.forEach((tile, index) => {
-  //   if (game[activeRow][index].state !== "present") {
-  //     return;
-  //   }
-
-  //   if (submittedRepeated[tile.letter] > wordOfTheDayRepeated[tile.letter]) {
-  //     game[activeRow][index].state = "repeated";
-  //   }
-  // });
 
   setGame(game);
 
