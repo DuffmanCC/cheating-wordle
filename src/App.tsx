@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { findDOMNode } from "react-dom";
+import { version } from "../package.json";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboad";
 import Message from "./components/Message";
@@ -34,7 +35,7 @@ const App = () => {
   const [displayRemainingWords, setDisplayRemainingWords] = useState(false);
 
   return (
-    <div className="container mx-auto max-w-xl items-center h-screen py-4 px-1">
+    <div className="container mx-auto items-center h-screen py-4 px-1 relative max-w-sm">
       <div className="flex gap-8 mb-4 justify-center">
         <RefreshButton
           activeRow={activeRow}
@@ -48,8 +49,12 @@ const App = () => {
           setIsWin={setIsWin}
         />
 
-        <h1 className="text-3xl">
-          CHEATING <span className="text-base text-gray-500">WORDLE</span>
+        <h1 className="text-3xl flex items-baseline">
+          CHEATING
+          <span className="ml-2 text-base text-gray-500">WORDLE</span>
+          <span className="ml-2 text-xs text-gray-500 absolute right-0 top-0 px-6">
+            {version}
+          </span>
         </h1>
 
         {isWin && (
