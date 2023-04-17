@@ -11,6 +11,8 @@ interface PropsInterface {
   setKeyboardKeysState: (keyboardKeysState: {}) => void;
   setDisplayRemainingWords: (displayRemainingWords: boolean) => void;
   setIsWin: (isWin: boolean) => void;
+  setWordOfTheDay: (wordOfTheDay: string) => void;
+  wordOfTheDayDefault: string;
   uniqueArrWithoutTildes: string[];
   className?: string;
 }
@@ -24,6 +26,8 @@ const RefreshButton = ({
   setKeyboardKeysState,
   setDisplayRemainingWords,
   setIsWin,
+  setWordOfTheDay,
+  wordOfTheDayDefault,
   uniqueArrWithoutTildes,
   className,
 }: PropsInterface) => {
@@ -46,6 +50,7 @@ const RefreshButton = ({
     setRemainingWords(uniqueArrWithoutTildes);
     setKeyboardKeysState({});
     setDisplayRemainingWords(false);
+    setWordOfTheDay(wordOfTheDayDefault);
     localStorage.removeItem("game");
 
     if (refreshButton.current) {
