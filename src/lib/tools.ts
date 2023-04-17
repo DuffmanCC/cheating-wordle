@@ -202,7 +202,7 @@ export function deleteTile(
   setGame(updatedGame);
 }
 
-export function createGameClipboard(game: TileInterface[][]) {
+export function createGameBoardResult(game: TileInterface[][]): Array<string> {
   const arr = game.map((row) => {
     return row
       .map((tile) => {
@@ -213,5 +213,16 @@ export function createGameClipboard(game: TileInterface[][]) {
       .join("");
   });
 
-  return arr.join("\n").trim();
+  return arr.filter((element) => element !== "");
+}
+
+export function createClipboardString(gameBoardResult: string[]) {
+  const gameTiles = gameBoardResult.join("\n");
+  return (
+    `Cheating Wordle #${359 + dayOfTheYear()} ${gameTiles.length + 1}/6 \n\n` +
+    gameTiles +
+    `\n\n` +
+    `To keep cheating: \n` +
+    `https://duffmancc.github.io/cheating-wordle/`
+  );
 }

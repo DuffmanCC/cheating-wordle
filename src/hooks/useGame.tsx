@@ -10,7 +10,12 @@ import {
   updateRemainingWords,
 } from "../lib/tools.js";
 
-const useGame = (wordOfTheDay: string, uniqueArrWithoutTildes: string[]) => {
+const useGame = (
+  wordOfTheDay: string,
+  uniqueArrWithoutTildes: string[],
+  isSettingsPanelOpen: boolean,
+  setIsSettingsPanelOpen: (isSettingsPanelOpen: boolean) => void
+) => {
   const [message, setMessage] = useState<string>("");
   const [isWin, setIsWin] = useState<boolean>(false);
 
@@ -67,6 +72,8 @@ const useGame = (wordOfTheDay: string, uniqueArrWithoutTildes: string[]) => {
    * @returns void
    */
   function handleKeyDown(e: KeyboardEvent | string): void {
+    if (isSettingsPanelOpen) return;
+
     let key: string = "";
 
     if (typeof e === "string") key = e.toLowerCase();
@@ -124,9 +131,12 @@ const useGame = (wordOfTheDay: string, uniqueArrWithoutTildes: string[]) => {
     remainingWordsTries.push(updatedRemainingWords.length);
 
     setRemainingWordsTries(remainingWordsTries);
-
     if (isTheWord(row, wordOfTheDay)) {
       setIsWin(true);
+
+      setTimeout(() => {
+        setIsSettingsPanelOpen(true);
+      }, 2000);
 
       return;
     }
@@ -145,6 +155,7 @@ const useGame = (wordOfTheDay: string, uniqueArrWithoutTildes: string[]) => {
 
   return {
     game,
+    emptyGame,
     setGame,
     activeRow,
     activeTile,
