@@ -40,7 +40,7 @@ export function createRegex(row: TileInterface[]) {
     .map((el, index) => {
       if (el.state === "match") {
         return el.letter;
-      } else if (el.state === "present") {
+      } else if (el.state === "present" || el.state === "absent") {
         return `[^${el.letter}]`;
       } else {
         return ".";
