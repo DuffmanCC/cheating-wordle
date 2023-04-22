@@ -84,18 +84,20 @@ const SettingsPanel = ({
           </label>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <h3>Share board:</h3>
+        {isWin && (
+          <div className="flex flex-col gap-2">
+            <h3>Share board:</h3>
 
-          <div className="mb-12">
-            <ShareGame
-              setMessage={setMessage}
-              clipboardString={clipboardString}
-            />
+            <div className="mb-12">
+              <ShareGame
+                setMessage={setMessage}
+                clipboardString={clipboardString}
+              />
+            </div>
+
+            <BoardResult game={game} />
           </div>
-
-          {isWin && <BoardResult game={game} />}
-        </div>
+        )}
       </div>
 
       <footer className="text-xs text-gray-500 text-center">
