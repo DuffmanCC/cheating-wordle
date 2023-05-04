@@ -12,7 +12,9 @@ import validWords from "./data/validWords";
 import useGame from "./hooks/useGame";
 import { dayOfTheYear, removeTildes } from "./lib/tools";
 
-const wordOfTheDayDefault = solutions[358 + dayOfTheYear()].solution;
+const wordOfTheDayDefault = removeTildes(
+  solutions[358 + dayOfTheYear()].solution
+);
 const uniqueArrWithoutTildes = [...new Set(validWords.map(removeTildes))];
 
 const App = () => {
@@ -108,6 +110,7 @@ const App = () => {
           setMessage={setMessage}
           game={game}
           isWin={isWin}
+          solutions={solutions}
         />
       )}
     </div>
