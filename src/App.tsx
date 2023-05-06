@@ -110,7 +110,6 @@ const App = () => {
           setMessage={setMessage}
           game={game}
           isWin={isWin}
-          solutions={solutions}
         />
       )}
     </div>
