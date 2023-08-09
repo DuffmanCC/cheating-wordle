@@ -131,6 +131,7 @@ const useGame = (
     remainingWordsTries.push(updatedRemainingWords.length);
 
     setRemainingWordsTries(remainingWordsTries);
+
     if (isTheWord(row, wordOfTheDay)) {
       setIsWin(true);
 

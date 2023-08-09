@@ -1,3 +1,5 @@
+import solutions from "../data/solutions";
+import { dayOfTheYear } from "../lib/tools";
 import ArrowDownIcon from "./icons/ArrowDownIcon";
 import ArrowDownWithBaseIcon from "./icons/ArrowDownWithBaseIcon";
 
@@ -12,6 +14,20 @@ const RemainingWords = ({
   displayRemainingWords,
   setDisplayRemainingWords,
 }: PropsInterface) => {
+  const solutionsToWordOfTheDay = solutions.slice(0, 358 + dayOfTheYear());
+
+  const lineThrough = function (word: string): string {
+    if (
+      solutionsToWordOfTheDay.find(
+        (solution) => solution.solution === word.toLowerCase()
+      )
+    ) {
+      return "line-through";
+    }
+
+    return "";
+  };
+
   return (
     <div className="text-center mb-20">
       <div className="flex justify-center items-center mb-4 gap-4">
@@ -20,7 +36,6 @@ const RemainingWords = ({
         {remainingWords.length < 100 && (
           <button
             onClick={() => setDisplayRemainingWords(!displayRemainingWords)}
-            className=""
           >
             {displayRemainingWords ? (
               <ArrowDownIcon width="1rem" />
@@ -35,7 +50,7 @@ const RemainingWords = ({
         <ul className="overflow-auto h-auto border border-gray-400 flex flex-wrap justify-center py-2 rounded-lg">
           {remainingWords.map((word, i) => (
             <li key={i} className="mr-2 leading-snug">
-              {word}
+              <span className={lineThrough(word)}>{word}</span>
 
               {i != remainingWords.length - 1 && <span>,</span>}
             </li>

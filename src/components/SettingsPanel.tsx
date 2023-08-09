@@ -26,7 +26,7 @@ const SettingsPanel = ({
   const clipboardString = createClipboardString(gameTiles);
 
   return (
-    <div className="absolute inset-0 bg-white p-4 rounded-lg shadow-lg border flex flex-col justify-between">
+    <div className="absolute inset-0 bg-white p-4 flex flex-col justify-between">
       <header className="flex items-center mb-4">
         <h2 className="text-xl font-bold">Settings</h2>
 

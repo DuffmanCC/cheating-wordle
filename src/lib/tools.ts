@@ -94,14 +94,24 @@ export function dayOfTheYear(): number {
   return Math.floor(diff / oneDay);
 }
 
-export function countingRepeatedLetters(arr: string[]): {
-  [key: string]: number;
+export function countingRepeatedLetters(wordOfTheDay: string): {
+  [key: string]: { number: number };
 } {
-  const count: { [key: string]: number } = {};
+  const count: {
+    [key: string]: {
+      number: number;
+      position: number;
+    };
+  } = {};
 
-  for (let letter of arr) {
-    count[letter] = (count[letter] || 0) + 1;
-  }
+  const arr = wordOfTheDay.split("");
+
+  arr.forEach((letter) => {
+    count[letter] = {
+      number: (count[letter]?.number || 0) + 1,
+      position: arr.indexOf(letter),
+    };
+  });
 
   return count;
 }
@@ -122,35 +132,50 @@ export function setLetterStates(
 
   const newKeyboardKeysState: KeyboardKeysStateInterface = {};
 
-  const repeatedLetters: string[] = [];
+  // check for repeated letters
+  const repeatedLettersWordOfTheDay = countingRepeatedLetters(wordOfTheDay);
+  const repeatedLettersSubmittedWord = countingRepeatedLetters(
+    submittedWord.map((tile) => tile.letter).join("")
+  );
+
+  console.log("repeatedLettersWordOfTheDay: ", repeatedLettersWordOfTheDay);
+  console.log("repeatedLettersSubmittedWord: ", repeatedLettersSubmittedWord);
 
   submittedWord.forEach((tile, index) => {
-    if (!wordOfTheDay.includes(tile.letter)) {
-      game[activeRow.current][index].state = "absent";
-      newKeyboardKeysState[tile.letter.toUpperCase()] = "absent";
-
-      notIncluded.push(tile.letter);
-    }
-
-    if (
-      wordOfTheDay.includes(tile.letter) &&
-      !included.includes(tile.letter) &&
-      tile.letter !== wordOfTheDay[index]
-    ) {
-      game[activeRow.current][index].state = "present";
-      newKeyboardKeysState[tile.letter.toUpperCase()] = "present";
-      repeatedLetters.push(tile.letter);
-
-      included.push(tile.letter);
-    } else {
-      game[activeRow.current][index].state = "absent";
-    }
-
     if (tile.letter === wordOfTheDay[index]) {
       game[activeRow.current][index].state = "match";
       newKeyboardKeysState[tile.letter.toUpperCase()] = "match";
 
       included.push(tile.letter);
+
+      // console.log("1 -", tile.letter);
+
+      return;
+    }
+
+    if (!wordOfTheDay.includes(tile.letter)) {
+      game[activeRow.current][index].state = "absent";
+      newKeyboardKeysState[tile.letter.toUpperCase()] = "absent";
+
+      notIncluded.push(tile.letter);
+
+      // console.log("2 -", tile.letter);
+
+      return;
+    }
+
+    if (
+      Object.keys(repeatedLettersWordOfTheDay).includes(tile.letter) &&
+      repeatedLettersWordOfTheDay[tile.letter].number >= 1
+    ) {
+      game[activeRow.current][index].state = "present";
+      newKeyboardKeysState[tile.letter.toUpperCase()] = "present";
+
+      included.push(tile.letter);
+
+      // console.log("3 -", tile.letter);
+
+      return;
     }
   });
 
