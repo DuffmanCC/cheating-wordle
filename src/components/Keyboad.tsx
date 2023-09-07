@@ -1,5 +1,4 @@
 import Key from "./Key";
-import { useEffect, useState } from "react";
 
 interface PropsInterface {
   keysState: { [key: string]: string };
@@ -12,20 +11,20 @@ const Keyboard = ({ keysState, onClick }: PropsInterface) => {
   const thirdRow = ["Z", "X", "C", "V", "B", "N", "M"];
 
   return (
-    <div className="mb-2">
-      <div className="flex justify-center mb-1">
+    <div className="mb-2 flex flex-col gap-1">
+      <div className="flex justify-center gap-1">
         {firstRow.map((key) => (
           <Key key={key} value={key} onClick={onClick} state={keysState[key]} />
         ))}
       </div>
 
-      <div className="flex justify-center mb-1">
+      <div className="flex justify-center gap-1">
         {secondRow.map((key) => (
           <Key key={key} value={key} onClick={onClick} state={keysState[key]} />
         ))}
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center gap-1">
         <Key width={48} value="Enter" onClick={onClick} state="">
           <svg
             focusable={false}

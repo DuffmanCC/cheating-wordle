@@ -10,7 +10,7 @@ interface PropsInterface {
 
 const Key = ({ children, value, state, onClick, width }: PropsInterface) => {
   const classes =
-    "flex items-center justify-center | rounded mx-0.5 h-12 w-10 | text-xs font-bold | cursor-pointer select-none | hover:bg-gray-200";
+    "flex items-center justify-center | rounded px-1 h-12 w-10 | text-xs font-bold | cursor-pointer select-none | hover:bg-gray-200";
 
   const [isActive, setIsActive] = useState(false);
 

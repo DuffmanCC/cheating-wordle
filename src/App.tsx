@@ -84,7 +84,10 @@ const App = () => {
           <span className="ml-2 text-base text-gray-500">WORDLE</span>
         </h1>
 
-        <button onClick={() => setIsSettingsPanelOpen(true)}>
+        <button
+          onClick={() => setIsSettingsPanelOpen(true)}
+          className="hover:text-blue-800 focus:text-blue-800 text-gray-500"
+        >
           <GearIcon width="1.5rem" />
         </button>
       </div>

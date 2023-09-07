@@ -62,9 +62,10 @@ const RefreshButton = ({
     <button
       title="refresh"
       onClick={handleRefresh}
-      className={["hover:text-blue-800 focus:text-blue-800", className].join(
-        " "
-      )}
+      className={[
+        "hover:text-blue-800 focus:text-blue-800 text-gray-500",
+        className,
+      ].join(" ")}
       ref={refreshButton}
     >
       <RefreshIcon width="1.5rem" />

@@ -3041,7 +3041,7 @@ const solutions = [
   },
   {
     id: 609,
-    solution: "doblo",
+    solution: "chica",
     desc: "",
   },
   {
@@ -4312,6 +4312,21 @@ const solutions = [
   {
     id: 863,
     solution: "muero",
+    desc: "",
+  },
+  {
+    id: 864,
+    solution: "aforo",
+    desc: "",
+  },
+  {
+    id: 865,
+    solution: "cieno",
+    desc: "",
+  },
+  {
+    id: 866,
+    solution: "doblo",
     desc: "",
   },
 ];
