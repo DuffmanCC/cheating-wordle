@@ -65,7 +65,7 @@ const App = () => {
 
   return (
     <div className="container mx-auto items-center h-screen py-4 px-1 relative max-w-sm">
-      <div className="flex gap-8 mb-4 justify-between items-center">
+      <div className="flex gap-8 mb-4 px-4 justify-between items-center">
         <RefreshButton
           activeRow={activeRow}
           activeTile={activeTile}
@@ -80,16 +80,17 @@ const App = () => {
           setIsWin={setIsWin}
         />
 
-        <h1 className="text-3xl flex flex-col items-center">
-          <div>CHEATING</div>
-          <div className="ml-2 text-base text-gray-500">WORDLE</div>
+        <h1 className="text-2xl flex flex-col items-center">
+          <div className="font-bold">CHEATING</div>
+
+          <div className="ml-2 text-sm text-gray-500">WORDLE</div>
         </h1>
 
         <button
           onClick={() => setIsSettingsPanelOpen(true)}
           className="hover:text-blue-800 focus:text-blue-800 text-gray-500"
         >
-          <GearIcon width="1rem" />
+          <GearIcon width="1.25rem" />
         </button>
       </div>
 

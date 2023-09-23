@@ -68,7 +68,7 @@ const RefreshButton = ({
       ].join(" ")}
       ref={refreshButton}
     >
-      <RefreshIcon width="1rem" />
+      <RefreshIcon width="1.25rem" />
     </button>
   );
 };
