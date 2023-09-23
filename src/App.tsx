@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { findDOMNode } from "react-dom";
 import Board from "./components/Board";
+import Footer from "./components/Footer";
 import Keyboard from "./components/Keyboad";
 import Message from "./components/Message";
 import RefreshButton from "./components/RefreshButton";
@@ -64,7 +65,7 @@ const App = () => {
 
   return (
     <div className="container mx-auto items-center h-screen py-4 px-1 relative max-w-sm">
-      <div className="flex gap-8 mb-4 justify-center">
+      <div className="flex gap-8 mb-4 justify-between items-center">
         <RefreshButton
           activeRow={activeRow}
           activeTile={activeTile}
@@ -79,16 +80,16 @@ const App = () => {
           setIsWin={setIsWin}
         />
 
-        <h1 className="text-3xl flex items-baseline">
-          CHEATING
-          <span className="ml-2 text-base text-gray-500">WORDLE</span>
+        <h1 className="text-3xl flex flex-col items-center">
+          <div>CHEATING</div>
+          <div className="ml-2 text-base text-gray-500">WORDLE</div>
         </h1>
 
         <button
           onClick={() => setIsSettingsPanelOpen(true)}
           className="hover:text-blue-800 focus:text-blue-800 text-gray-500"
         >
-          <GearIcon width="1.5rem" />
+          <GearIcon width="1rem" />
         </button>
       </div>
 
@@ -115,6 +116,8 @@ const App = () => {
           isWin={isWin}
         />
       )}
+
+      <Footer />
     </div>
   );
 };

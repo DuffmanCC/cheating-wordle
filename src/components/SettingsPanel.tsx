@@ -1,4 +1,3 @@
-import { version } from "../../package.json";
 import TileInterface from "../interfaces/TileInterface";
 import { createClipboardString, createGameBoardResult } from "../lib/tools";
 import BoardResult from "./BoardResult";
@@ -26,7 +25,7 @@ const SettingsPanel = ({
   const clipboardString = createClipboardString(gameTiles);
 
   return (
-    <div className="absolute inset-0 bg-white p-4 flex flex-col justify-between">
+    <div className="absolute inset-0 bg-white p-4">
       <header className="flex items-center mb-4">
         <h2 className="text-xl font-bold">Settings</h2>
 
@@ -61,10 +60,6 @@ const SettingsPanel = ({
           </div>
         )}
       </div>
-
-      <footer className="text-xs text-gray-500 text-center">
-        Copyright © 2023 Carlos Ortiz. Cheating Wordle v{version}
-      </footer>
     </div>
   );
 };

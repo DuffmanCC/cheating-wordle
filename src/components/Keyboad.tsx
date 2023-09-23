@@ -12,19 +12,19 @@ const Keyboard = ({ keysState, onClick }: PropsInterface) => {
 
   return (
     <div className="mb-2 flex flex-col gap-1">
-      <div className="flex justify-center gap-1">
+      <div className="flex justify-between">
         {firstRow.map((key) => (
           <Key key={key} value={key} onClick={onClick} state={keysState[key]} />
         ))}
       </div>
 
-      <div className="flex justify-center gap-1">
+      <div className="flex justify-between">
         {secondRow.map((key) => (
           <Key key={key} value={key} onClick={onClick} state={keysState[key]} />
         ))}
       </div>
 
-      <div className="flex justify-center gap-1">
+      <div className="flex justify-between">
         <Key width={48} value="Enter" onClick={onClick} state="">
           <svg
             focusable={false}
