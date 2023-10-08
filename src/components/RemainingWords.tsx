@@ -1,5 +1,5 @@
 import solutions from "../data/solutions";
-import { dayOfTheYear } from "../lib/tools";
+import { dayOfTheYear, removeTildes } from "../lib/tools";
 import ArrowDownIcon from "./icons/ArrowDownIcon";
 import ArrowDownWithBaseIcon from "./icons/ArrowDownWithBaseIcon";
 
@@ -18,9 +18,9 @@ const RemainingWords = ({
 
   const lineThrough = function (word: string): string {
     if (
-      solutionsToWordOfTheDay.find(
-        (solution) => solution.solution === word.toLowerCase()
-      )
+      solutionsToWordOfTheDay.find((solution) => {
+        return removeTildes(solution.solution) === word.toLowerCase();
+      })
     ) {
       return "line-through";
     }
