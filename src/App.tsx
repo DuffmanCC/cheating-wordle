@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { findDOMNode } from "react-dom";
+import ArchivePanel from "./components/ArchivePanel";
 import Board from "./components/Board";
 import Footer from "./components/Footer";
 import Keyboard from "./components/Keyboad";
@@ -7,6 +8,7 @@ import Message from "./components/Message";
 import RefreshButton from "./components/RefreshButton";
 import RemainingWords from "./components/RemainingWords";
 import SettingsPanel from "./components/SettingsPanel";
+import CalendarIcon from "./components/icons/CalendarIcon";
 import GearIcon from "./components/icons/GearIcon";
 import solutions from "./data/solutions";
 import validWords from "./data/validWords";
@@ -22,6 +24,7 @@ const App = () => {
   const [wordOfTheDay, setWordOfTheDay] = useState(wordOfTheDayDefault);
   const [displayRemainingWords, setDisplayRemainingWords] = useState(false);
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false);
+  const [isArchivePanelOpen, setIsArchivePanelOpen] = useState(false);
 
   const {
     game,
@@ -66,19 +69,28 @@ const App = () => {
   return (
     <div className="container mx-auto items-center h-screen py-4 px-1 relative max-w-sm">
       <div className="flex gap-8 mb-4 px-4 justify-between items-center">
-        <RefreshButton
-          activeRow={activeRow}
-          activeTile={activeTile}
-          setGame={setGame}
-          setMessage={setMessage}
-          setRemainingWords={setRemainingWords}
-          setKeyboardKeysState={setKeyboardKeysState}
-          uniqueArrWithoutTildes={uniqueArrWithoutTildes}
-          setDisplayRemainingWords={setDisplayRemainingWords}
-          setWordOfTheDay={setWordOfTheDay}
-          wordOfTheDayDefault={wordOfTheDayDefault}
-          setIsWin={setIsWin}
-        />
+        <div className="flex gap-4">
+          <RefreshButton
+            activeRow={activeRow}
+            activeTile={activeTile}
+            setGame={setGame}
+            setMessage={setMessage}
+            setRemainingWords={setRemainingWords}
+            setKeyboardKeysState={setKeyboardKeysState}
+            uniqueArrWithoutTildes={uniqueArrWithoutTildes}
+            setDisplayRemainingWords={setDisplayRemainingWords}
+            setWordOfTheDay={setWordOfTheDay}
+            wordOfTheDayDefault={wordOfTheDayDefault}
+            setIsWin={setIsWin}
+          />
+
+          <button
+            className="hover:text-blue-800 focus:text-blue-800 text-gray-500"
+            onClick={() => setIsArchivePanelOpen(true)}
+          >
+            <CalendarIcon width="1.25rem" />
+          </button>
+        </div>
 
         <h1 className="text-2xl flex flex-col items-center">
           <div className="font-bold">CHEATING</div>
@@ -116,6 +128,10 @@ const App = () => {
           game={game}
           isWin={isWin}
         />
+      )}
+
+      {isArchivePanelOpen && (
+        <ArchivePanel setIsArchivePanelOpen={setIsArchivePanelOpen} />
       )}
 
       <Footer />

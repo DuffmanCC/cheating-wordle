@@ -23,6 +23,18 @@ export const removeTildes = (word: string): string => {
   });
 };
 
+export const formatDate = (date: string) => {
+  const dateObj = new Date(date);
+
+  const options: Intl.DateTimeFormatOptions = {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+  };
+
+  return dateObj.toLocaleDateString("es-ES", options);
+};
+
 export const isValidWord = (word: TileInterface[], validWords: string[]) => {
   const arr = word.map((tile) => tile.letter);
 
@@ -250,4 +262,44 @@ export function createClipboardString(gameBoardResult: string[]) {
     `To keep cheating: \n` +
     `https://duffmancc.github.io/cheating-wordle/`
   );
+}
+
+export function mapStats(arr: (string | number)[][]): Object {
+  interface Entry {
+    jornada: string;
+    word: string;
+    attempts: number;
+  }
+
+  interface Result {
+    [key: string]: Entry[];
+  }
+
+  const obj: Result = {};
+  // Iterate over the rows in arr
+  for (let i = 0; i < arr.length; i++) {
+    const row = arr[i];
+    const name = row[0] as string;
+    const values = row.slice(1) as number[];
+
+    // Initialize an array to hold the objects for this name
+    obj[name] = [];
+
+    // Iterate over the values and create objects for each one
+    for (let j = 0; j < values.length; j++) {
+      const attempts = values[j];
+      const jor = arr[arr.length - 1][j + 1] as string;
+      const jornada = jor.split(" ")[0]; // Extract the jornada from jornada
+      const word = jor.split(" ")[1]; // Extract the word from jornada
+
+      // Create the object and push it into the array
+      obj[name].push({
+        jornada: jornada,
+        word: word,
+        attempts: attempts,
+      });
+    }
+  }
+
+  return obj;
 }
