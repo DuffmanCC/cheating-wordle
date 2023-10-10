@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import players from "../data/players";
+import { GOOGLE_SPREADSHEET_URL, PLAYERS } from "../data/constants";
 import { fetchGoogleSheet } from "../lib/requests";
-import { mapStats } from "../lib/tools";
+import { bgColorFromAttemps, mapStats } from "../lib/tools";
 import CloseIcon from "./icons/CloseIcon";
 
 interface PropsInterface {
@@ -9,8 +9,8 @@ interface PropsInterface {
 }
 
 const ArchivePanel = ({ setIsArchivePanelOpen }: PropsInterface) => {
-  const url =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKCgLqldtMHldCfmCGx8F8WBH2H3dWkw4KBDQBgBu31ABlvv2EDpKNIoQDjHZ_VdlDR_AZB3IrCbE_/pub?gid=0&single=true&output=csv";
+  const spreadsheetUrl: string = GOOGLE_SPREADSHEET_URL;
+  const players: string[] = PLAYERS;
 
   interface Entry {
     jornada: string;
@@ -25,20 +25,12 @@ const ArchivePanel = ({ setIsArchivePanelOpen }: PropsInterface) => {
   const [mappedStats, setMappedStats] = useState<Result>({});
 
   useEffect(() => {
-    fetchGoogleSheet(url).then((data) => {
+    fetchGoogleSheet(spreadsheetUrl).then((data) => {
       const arr: Result = mapStats(data) as Result;
 
       setMappedStats(arr);
     });
   }, []);
-
-  const bgClass = (attempts: string | number) => {
-    if (attempts) {
-      return "bg-green-600";
-    }
-
-    return "bg-gray-600";
-  };
 
   const [player, setPlayer] = useState("Ort");
 
@@ -46,19 +38,6 @@ const ArchivePanel = ({ setIsArchivePanelOpen }: PropsInterface) => {
     <div className="absolute inset-0 bg-white p-4">
       <header className="flex items-center mb-4 gap-2">
         <h2 className="text-xl font-bold">Archive</h2>
-
-        <select
-          className="border px-4 py-2 rounded-md"
-          onChange={(e) => setPlayer(e.target.value)}
-        >
-          {players.map((player) => {
-            return (
-              <option key={player} value={player}>
-                {player}
-              </option>
-            );
-          })}
-        </select>
 
         <button
           className="ml-auto"
@@ -70,17 +49,32 @@ const ArchivePanel = ({ setIsArchivePanelOpen }: PropsInterface) => {
         </button>
       </header>
 
-      <p>Archive for: {player}</p>
+      <div className="flex gap-4 mb-4 items-center">
+        <div>Select player:</div>
+
+        <select
+          className="border px-4 py-2 rounded-md"
+          onChange={(e) => setPlayer(e.target.value)}
+        >
+          {players.map((player: string) => {
+            return (
+              <option key={player} value={player}>
+                {player}
+              </option>
+            );
+          })}
+        </select>
+      </div>
 
       <div className="flex gap-2 flex-wrap">
         {(mappedStats[player] || []).map(({ jornada, word, attempts }) => {
           return (
             <div
               key={jornada}
-              className={
-                bgClass(attempts) +
-                " p-1 border flex flex-col items-center text-xs rounded-md text-white w-20 h-20"
-              }
+              className={[
+                bgColorFromAttemps(attempts),
+                "p-1 border flex flex-col items-center text-xs rounded-md text-white w-20 h-20",
+              ].join(" ")}
             >
               <div className="text-4xl">{attempts || "X"}</div>
               <div className="flex font-mono">{jornada}</div>

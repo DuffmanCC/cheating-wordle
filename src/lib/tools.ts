@@ -303,3 +303,35 @@ export function mapStats(arr: (string | number)[][]): Object {
 
   return obj;
 }
+
+export function bgColorFromAttemps(attempts: string | number) {
+  if (attempts === "1") {
+    return "bg-yellow-300";
+  }
+
+  if (attempts === "2") {
+    return "bg-yellow-400";
+  }
+
+  if (attempts === "3") {
+    return "bg-yellow-500";
+  }
+
+  if (attempts === "4") {
+    return "bg-yellow-600";
+  }
+
+  if (attempts === "5") {
+    return "bg-yellow-700";
+  }
+
+  if (attempts === "6") {
+    return "bg-yellow-800";
+  }
+
+  if (attempts === "7") {
+    return "bg-yellow-900";
+  }
+
+  return "bg-gray-600";
+}
