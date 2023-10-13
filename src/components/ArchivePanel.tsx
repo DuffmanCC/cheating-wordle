@@ -35,7 +35,7 @@ const ArchivePanel = ({ setIsArchivePanelOpen }: PropsInterface) => {
   const [player, setPlayer] = useState("Ort");
 
   return (
-    <div className="absolute inset-0 bg-white p-4">
+    <div className="absolute inset-0 bg-white p-4 flex flex-col gap-4">
       <header className="flex items-center mb-4 gap-2">
         <h2 className="text-xl font-bold">Archive</h2>
 
@@ -66,22 +66,24 @@ const ArchivePanel = ({ setIsArchivePanelOpen }: PropsInterface) => {
         </select>
       </div>
 
-      <div className="flex gap-2 flex-wrap">
-        {(mappedStats[player] || []).map(({ jornada, word, attempts }) => {
-          return (
-            <div
-              key={jornada}
-              className={[
-                bgColorFromAttemps(attempts),
-                "p-1 border flex flex-col items-center text-xs rounded-md text-white w-20 h-20",
-              ].join(" ")}
-            >
-              <div className="text-4xl">{attempts || "X"}</div>
-              <div className="flex font-mono">{jornada}</div>
-              <div className="flex font-mono">{word}</div>
-            </div>
-          );
-        })}
+      <div className="flex justify-center overflow-h-auto overflow-scroll">
+        <div className="flex gap-1 flex-wrap">
+          {(mappedStats[player] || []).map(({ jornada, word, attempts }) => {
+            return (
+              <div
+                key={jornada}
+                className={[
+                  bgColorFromAttemps(attempts),
+                  "p-1 border flex flex-col items-center text-xs rounded-md text-white w-16 h-20",
+                ].join(" ")}
+              >
+                <div className="text-4xl">{attempts || "X"}</div>
+                <div className="flex font-mono">{jornada}</div>
+                <div className="flex font-mono">{word}</div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

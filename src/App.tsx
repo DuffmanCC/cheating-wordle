@@ -8,8 +8,10 @@ import Message from "./components/Message";
 import RefreshButton from "./components/RefreshButton";
 import RemainingWords from "./components/RemainingWords";
 import SettingsPanel from "./components/SettingsPanel";
+import StatsPanel from "./components/StatsPanel";
 import CalendarIcon from "./components/icons/CalendarIcon";
 import GearIcon from "./components/icons/GearIcon";
+import StatsIcon from "./components/icons/StatsIcon";
 import solutions from "./data/solutions";
 import validWords from "./data/validWords";
 import useGame from "./hooks/useGame";
@@ -25,6 +27,7 @@ const App = () => {
   const [displayRemainingWords, setDisplayRemainingWords] = useState(false);
   const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false);
   const [isArchivePanelOpen, setIsArchivePanelOpen] = useState(false);
+  const [isStatsPanelOpen, setIsStatsPanelOpen] = useState(false);
 
   const {
     game,
@@ -85,10 +88,10 @@ const App = () => {
           />
 
           <button
+            onClick={() => setIsSettingsPanelOpen(true)}
             className="hover:text-blue-800 focus:text-blue-800 text-gray-500"
-            onClick={() => setIsArchivePanelOpen(true)}
           >
-            <CalendarIcon width="1.25rem" />
+            <GearIcon width="1.25rem" />
           </button>
         </div>
 
@@ -98,12 +101,21 @@ const App = () => {
           <div className="ml-2 text-sm text-gray-500">WORDLE</div>
         </h1>
 
-        <button
-          onClick={() => setIsSettingsPanelOpen(true)}
-          className="hover:text-blue-800 focus:text-blue-800 text-gray-500"
-        >
-          <GearIcon width="1.25rem" />
-        </button>
+        <div className="flex gap-4">
+          <button
+            className="hover:text-blue-800 focus:text-blue-800 text-gray-500"
+            onClick={() => setIsArchivePanelOpen(true)}
+          >
+            <CalendarIcon width="1.25rem" />
+          </button>
+
+          <button
+            onClick={() => setIsStatsPanelOpen(true)}
+            className="hover:text-blue-800 focus:text-blue-800 text-gray-500"
+          >
+            <StatsIcon width="1.25rem" />
+          </button>
+        </div>
       </div>
 
       <Board game={game} activeRow={activeRow} activeTile={activeTile} />
@@ -112,13 +124,16 @@ const App = () => {
 
       <Keyboard keysState={keyboardKeysState} onClick={handleKeyDown} />
 
-      {isWin || (
-        <RemainingWords
-          remainingWords={remainingWords}
-          displayRemainingWords={displayRemainingWords}
-          setDisplayRemainingWords={setDisplayRemainingWords}
-        />
-      )}
+      {isWin ||
+        isArchivePanelOpen ||
+        isSettingsPanelOpen ||
+        isStatsPanelOpen || (
+          <RemainingWords
+            remainingWords={remainingWords}
+            displayRemainingWords={displayRemainingWords}
+            setDisplayRemainingWords={setDisplayRemainingWords}
+          />
+        )}
 
       {isSettingsPanelOpen && (
         <SettingsPanel
@@ -132,6 +147,10 @@ const App = () => {
 
       {isArchivePanelOpen && (
         <ArchivePanel setIsArchivePanelOpen={setIsArchivePanelOpen} />
+      )}
+
+      {isStatsPanelOpen && (
+        <StatsPanel setIsStatsPanelOpen={setIsStatsPanelOpen} />
       )}
 
       <Footer />

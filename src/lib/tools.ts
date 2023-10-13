@@ -1,3 +1,4 @@
+import { NUMBER_OF_DECIMALS } from "../data/constants";
 import KeyboardKeysStateInterface from "../interfaces/KeyboardKeysStateInterface";
 import RegexInterface from "../interfaces/RegexInterface";
 import TileInterface from "../interfaces/TileInterface";
@@ -264,11 +265,11 @@ export function createClipboardString(gameBoardResult: string[]) {
   );
 }
 
-export function mapStats(arr: (string | number)[][]): Object {
+export function mapStats(arr: string[][]): Object {
   interface Entry {
     jornada: string;
     word: string;
-    attempts: number;
+    attempts: number | null;
   }
 
   interface Result {
@@ -280,7 +281,7 @@ export function mapStats(arr: (string | number)[][]): Object {
   for (let i = 0; i < arr.length; i++) {
     const row = arr[i];
     const name = row[0] as string;
-    const values = row.slice(1) as number[];
+    const values = row.slice(1);
 
     // Initialize an array to hold the objects for this name
     obj[name] = [];
@@ -296,7 +297,7 @@ export function mapStats(arr: (string | number)[][]): Object {
       obj[name].push({
         jornada: jornada,
         word: word,
-        attempts: attempts,
+        attempts: !isNaN(parseInt(attempts)) ? parseInt(attempts) : null,
       });
     }
   }
@@ -305,33 +306,148 @@ export function mapStats(arr: (string | number)[][]): Object {
 }
 
 export function bgColorFromAttemps(attempts: string | number) {
-  if (attempts === "1") {
+  if (attempts === 1) {
     return "bg-yellow-300";
   }
 
-  if (attempts === "2") {
+  if (attempts === 2) {
     return "bg-yellow-400";
   }
 
-  if (attempts === "3") {
+  if (attempts === 3) {
     return "bg-yellow-500";
   }
 
-  if (attempts === "4") {
+  if (attempts === 4) {
     return "bg-yellow-600";
   }
 
-  if (attempts === "5") {
+  if (attempts === 5) {
     return "bg-yellow-700";
   }
 
-  if (attempts === "6") {
+  if (attempts === 6) {
     return "bg-yellow-800";
   }
 
-  if (attempts === "7") {
+  if (attempts === 7) {
     return "bg-yellow-900";
   }
 
   return "bg-gray-600";
 }
+
+export function rank(value: number, values: number[], descending = false) {
+  const clonedValues = [...values];
+
+  // Sort the cloned array in descending order if needed
+  if (descending) {
+    clonedValues.sort((a, b) => b - a);
+  } else {
+    clonedValues.sort((a, b) => a - b);
+  }
+
+  // Find the index of the value in the sorted array
+  const sortedIndex = clonedValues.indexOf(value);
+
+  // Calculate the rank (add 1 to start from 1-based ranking)
+  const rank = sortedIndex + 1;
+
+  return rank;
+}
+
+export function symbol(a: number, b: number) {
+  return a > b ? "▲" : a < b ? "▼" : "=";
+}
+
+export const media = (arr: number[]) => {
+  const sum = arr.reduce((acc, curr) => acc + curr, 0);
+  const rawResult = sum / roundsPlayed(arr);
+  const roundedResult = rawResult.toFixed(NUMBER_OF_DECIMALS);
+
+  return parseFloat(roundedResult);
+};
+
+export const mediaPrev = (arr: number[]) => {
+  const newArr = arr.slice(0, arr.length - 1);
+
+  const sum = newArr.reduce((acc, curr) => acc + curr, 0);
+
+  const rawResult = sum / (roundsPlayed(arr) - 1);
+  const roundedResult = rawResult.toFixed(NUMBER_OF_DECIMALS);
+
+  return parseFloat(roundedResult);
+};
+
+export const roundsPlayed = (arr: number[]) => {
+  const elementosNoNulos = arr.filter((elemento) => elemento !== null);
+
+  return elementosNoNulos.length;
+};
+
+export const diffPlayer = (players: any, rank: number) => {
+  const currentPlayer = players.find((player: any) => player.rank === rank);
+  const prevPlayer = players.find((player: any) => player.rank === rank - 1);
+
+  if (prevPlayer === undefined) {
+    return 0;
+  }
+
+  const rawResult = (prevPlayer.media - currentPlayer.media).toFixed(
+    NUMBER_OF_DECIMALS
+  );
+
+  return parseFloat(rawResult);
+};
+
+export const drs = (players: any, rank: number) => {
+  const currentPlayer = players.find((player: any) => player.rank === rank);
+  const prevPlayer = players.find((player: any) => player.rank === rank - 1);
+
+  if (prevPlayer === undefined || currentPlayer === undefined) {
+    return 0;
+  }
+
+  const mediaPreviousPlayer = prevPlayer.media;
+  const roundsPlayed = currentPlayer.roundsPlayed;
+  const sumaAllAttempts = currentPlayer.attempts.reduce(
+    (acc: number, curr: number | null) => {
+      if (curr === null) {
+        return acc;
+      } else {
+        return acc + curr;
+      }
+    },
+    0
+  );
+
+  const rawResult =
+    mediaPreviousPlayer -
+    (mediaPreviousPlayer * (roundsPlayed + 1) - sumaAllAttempts);
+
+  return -1 * Math.ceil(rawResult);
+};
+
+export const bgDrsColor = (drs: number | null) => {
+  if (drs === null) {
+    return false;
+  }
+
+  if (drs >= -3) {
+    return "bg-red-500 text-white";
+  }
+
+  return false;
+};
+
+export const arrowColor = (symbol: string) => {
+  if (symbol === "▲") {
+    return "text-green-500";
+  }
+
+  if (symbol === "▼") {
+    return "text-red-500";
+  }
+
+  return "";
+};

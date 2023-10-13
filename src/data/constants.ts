@@ -13,3 +13,6 @@ export const PLAYERS: string[] = [
   "Pati",
   "Sao",
 ];
+
+export const LAST_NUMBER_OF_ROUNDS_TO_SHOW: number = -7;
+export const NUMBER_OF_DECIMALS: number = 4;
