@@ -57,7 +57,7 @@ const Table = ({ data }: Props) => {
       };
     });
 
-  players.sort((a: any, b: any) => b.media + a.media);
+  players.sort((a: any, b: any) => a.media - b.media);
 
   players.forEach((player: any) => {
     player.diff = diffPlayer(players, player.rank);
