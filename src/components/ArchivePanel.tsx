@@ -49,13 +49,12 @@ const ArchivePanel = ({ setIsArchivePanelOpen }: PropsInterface) => {
         </button>
       </header>
 
-      <div className="flex gap-4 mb-4 items-center">
-        <div>Select player:</div>
-
+      <div className="flex gap-4 mb-4 items-center flex-col ">
         <select
           className="border px-4 py-2 rounded-md"
           onChange={(e) => setPlayer(e.target.value)}
         >
+          <option value="">Select player</option>
           {players.map((player: string) => {
             return (
               <option key={player} value={player}>

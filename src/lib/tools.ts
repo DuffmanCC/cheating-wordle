@@ -451,3 +451,84 @@ export const arrowColor = (symbol: string) => {
 
   return "";
 };
+
+interface WeekInterface {
+  weekNumber: number;
+  start: Date;
+  end: Date;
+}
+
+export function getFullWeeksStartingOnMondayBetweenDates(
+  startDate: Date,
+  endDate: Date
+): WeekInterface[] {
+  const weeks = [];
+  const currentDate = new Date(startDate);
+
+  // Find the next Monday from the start date
+  currentDate.setDate(startDate.getDate() + (8 - startDate.getDay()));
+  let num = 0;
+
+  while (currentDate <= endDate) {
+    const weekStart = new Date(currentDate);
+    const weekEnd = new Date(currentDate);
+    weekEnd.setDate(currentDate.getDate() + 6);
+
+    weeks.push({
+      weekNumber: num + 1,
+      start: weekStart,
+      end: weekEnd,
+    });
+
+    // Move to the next Monday
+    currentDate.setDate(currentDate.getDate() + 7);
+    num++;
+  }
+
+  return weeks;
+}
+
+interface MonthInterface {
+  monthName: string;
+  monthYear: number;
+  start: Date;
+  end: Date;
+}
+
+export function getMonthsBetweenDates(startDate: Date): MonthInterface[] {
+  const today = new Date();
+  const months = [];
+
+  let currentMonth = startDate;
+  while (currentMonth <= today) {
+    const monthName = currentMonth.toLocaleString("en-US", { month: "long" });
+    const monthYear = currentMonth.getFullYear();
+
+    const firstDayOfMonth = new Date(currentMonth);
+    firstDayOfMonth.setDate(1);
+    const lastDayOfMonth = new Date(currentMonth);
+    lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1);
+    lastDayOfMonth.setDate(0);
+
+    const monthObject = {
+      monthName,
+      monthYear,
+      start: firstDayOfMonth,
+      end: lastDayOfMonth,
+    };
+
+    months.push(monthObject);
+
+    currentMonth.setMonth(currentMonth.getMonth() + 1);
+  }
+
+  return months;
+}
+
+export function daysUntilToday(date: Date, arrayLength: number) {
+  const toDay = new Date();
+
+  const timeDifference = toDay.getTime() - date.getTime();
+
+  return arrayLength - Math.floor(timeDifference / (1000 * 3600 * 24));
+}
