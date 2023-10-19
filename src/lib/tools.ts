@@ -1,4 +1,4 @@
-import { NUMBER_OF_DECIMALS } from "../data/constants";
+import { NUMBER_OF_DECIMALS, STARTING_DATE } from "../data/constants";
 import KeyboardKeysStateInterface from "../interfaces/KeyboardKeysStateInterface";
 import RegexInterface from "../interfaces/RegexInterface";
 import TileInterface from "../interfaces/TileInterface";
@@ -265,11 +265,20 @@ export function createClipboardString(gameBoardResult: string[]) {
   );
 }
 
+export function formatDateToDDMMYY(date: Date) {
+  const day = date.getDate().toString().padStart(2, "0"); // Get day and pad with leading zero if needed
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Get month (months are 0-based) and pad with leading zero if needed
+  const year = date.getFullYear().toString().slice(-2); // Get last two digits of the year
+
+  return `${day}/${month}/${year}`;
+}
+
 export function mapStats(arr: string[][]): Object {
   interface Entry {
     jornada: string;
     word: string;
     attempts: number | null;
+    date: string;
   }
 
   interface Result {
@@ -277,6 +286,7 @@ export function mapStats(arr: string[][]): Object {
   }
 
   const obj: Result = {};
+
   // Iterate over the rows in arr
   for (let i = 0; i < arr.length; i++) {
     const row = arr[i];
@@ -293,11 +303,16 @@ export function mapStats(arr: string[][]): Object {
       const jornada = jor.split(" ")[0]; // Extract the jornada from jornada
       const word = jor.split(" ")[1]; // Extract the word from jornada
 
+      const startingDate = new Date(STARTING_DATE);
+      const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
+      const date = new Date(startingDate.getTime() + j * oneDayInMilliseconds);
+
       // Create the object and push it into the array
       obj[name].push({
         jornada: jornada,
         word: word,
         attempts: !isNaN(parseInt(attempts)) ? parseInt(attempts) : null,
+        date: formatDateToDDMMYY(date),
       });
     }
   }
@@ -459,17 +474,17 @@ interface WeekInterface {
 }
 
 export function getFullWeeksStartingOnMondayBetweenDates(
-  startDate: Date,
-  endDate: Date
+  startDate: Date
 ): WeekInterface[] {
   const weeks = [];
   const currentDate = new Date(startDate);
+  const toDay = new Date();
 
   // Find the next Monday from the start date
   currentDate.setDate(startDate.getDate() + (8 - startDate.getDay()));
   let num = 0;
 
-  while (currentDate <= endDate) {
+  while (currentDate <= toDay) {
     const weekStart = new Date(currentDate);
     const weekEnd = new Date(currentDate);
     weekEnd.setDate(currentDate.getDate() + 6);
@@ -485,7 +500,9 @@ export function getFullWeeksStartingOnMondayBetweenDates(
     num++;
   }
 
-  return weeks;
+  const arr = weeks.filter((week) => week.end <= toDay);
+
+  return arr;
 }
 
 interface MonthInterface {
@@ -500,6 +517,7 @@ export function getMonthsBetweenDates(startDate: Date): MonthInterface[] {
   const months = [];
 
   let currentMonth = startDate;
+
   while (currentMonth <= today) {
     const monthName = currentMonth.toLocaleString("en-US", { month: "long" });
     const monthYear = currentMonth.getFullYear();
@@ -522,13 +540,33 @@ export function getMonthsBetweenDates(startDate: Date): MonthInterface[] {
     currentMonth.setMonth(currentMonth.getMonth() + 1);
   }
 
+  // console.log(
+  //   "🚀 ~ file: tools.ts:530 ~ getMonthsBetweenDates ~ months:",
+  //   months
+  // );
+
   return months;
 }
 
 export function daysUntilToday(date: Date, arrayLength: number) {
   const toDay = new Date();
-
+  const milisecondsInADay = 1000 * 3600 * 24;
   const timeDifference = toDay.getTime() - date.getTime();
 
-  return arrayLength - Math.floor(timeDifference / (1000 * 3600 * 24));
+  return arrayLength - Math.floor(timeDifference / milisecondsInADay);
 }
+
+export const getStateClasses = (state: string) => {
+  const classes = "transition-colors duration-200 text-white";
+
+  if (state === "match")
+    return ["bg-green-600 border-green-600", classes].join(" ");
+
+  if (state === "present")
+    return ["bg-yellow-600 border-yellow-600", classes].join(" ");
+
+  if (state === "absent")
+    return ["bg-gray-500 border-gray-500", classes].join(" ");
+
+  return "";
+};

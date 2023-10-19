@@ -1,18 +1,14 @@
 import {
   arrowColor,
   bgDrsColor,
-  daysUntilToday,
   diffPlayer,
   drs,
-  getFullWeeksStartingOnMondayBetweenDates,
-  getMonthsBetweenDates,
   media,
   mediaPrev,
   roundsPlayed,
 } from "../lib/tools";
 
-import { useEffect, useState } from "react";
-import { STARTING_DATE } from "../data/constants";
+import usePeriod from "../hooks/usePeriod";
 import { bgColorFromAttemps, rank, symbol } from "../lib/tools";
 
 interface Player {
@@ -28,6 +24,8 @@ interface Props {
 }
 
 const Table = ({ data }: Props) => {
+  const numberOfRounds = data.JORNADA.length;
+
   const medias = Object.keys(data)
     .filter((player) => player !== "JORNADA")
     .map((player) => media(data[player].map((item: any) => item.attempts)));
@@ -68,40 +66,8 @@ const Table = ({ data }: Props) => {
 
   players.sort((a: any, b: any) => a.media - b.media);
 
-  const startingDate = new Date(STARTING_DATE);
-  const currentDate = new Date();
-
-  const weeksBetweenDates = getFullWeeksStartingOnMondayBetweenDates(
-    startingDate,
-    currentDate
-  );
-
-  const monthsBetweenDates = getMonthsBetweenDates(startingDate);
-
-  const [week, setWeek] = useState<number | null>(null);
-  const [month, setMonth] = useState<number | null>(null);
-  const [from, setFrom] = useState<number>(-7);
-  const [to, setTo] = useState<number>(data.JORNADA.length);
-
-  useEffect(() => {
-    if (!week) return;
-
-    setFrom(daysUntilToday(weeksBetweenDates[week].start, data.JORNADA.length));
-    setTo(daysUntilToday(weeksBetweenDates[week].end, data.JORNADA.length));
-    setMonth(null);
-    console.log("week changed");
-  }, [week]);
-
-  useEffect(() => {
-    if (!month) return;
-
-    setFrom(
-      daysUntilToday(monthsBetweenDates[month].start, data.JORNADA.length)
-    );
-    setTo(daysUntilToday(monthsBetweenDates[month].end, data.JORNADA.length));
-    setWeek(null);
-    console.log("month changed");
-  }, [month]);
+  const { from, to, setWeek, setMonth, weeksBetweenDates, monthsBetweenDates } =
+    usePeriod(data, numberOfRounds);
 
   return (
     <div className="flex flex-col">
@@ -109,18 +75,15 @@ const Table = ({ data }: Props) => {
         <select
           className="border px-4 py-2 rounded-md"
           onChange={(e) => setWeek(Number(e.target.value))}
+          defaultValue={0}
         >
-          <option value="" selected={week === null ? true : false}>
-            {week ?? "Select week"}
+          <option value={0} disabled hidden>
+            Select week
           </option>
 
-          {weeksBetweenDates.map(({ weekNumber }, index) => {
+          {weeksBetweenDates.map(({ weekNumber }) => {
             return (
-              <option
-                value={index}
-                key={index}
-                selected={week === weekNumber ? true : false}
-              >
+              <option value={weekNumber} key={weekNumber}>
                 Week - {weekNumber}
               </option>
             );
@@ -129,18 +92,18 @@ const Table = ({ data }: Props) => {
 
         <select
           className="border px-4 py-2 rounded-md"
-          onChange={(e) => setMonth(Number(e.target.value))}
+          onChange={(e) => setMonth(e.target.value)}
+          defaultValue={0}
         >
-          <option value="" selected={month === null ? true : false}>
-            {month ?? "Select month"}
+          <option value={0} disabled hidden>
+            Select month
           </option>
 
-          {monthsBetweenDates.map(({ monthName, monthYear }, index) => {
+          {monthsBetweenDates.map(({ monthName, monthYear }) => {
             return (
               <option
-                value={index}
-                key={index}
-                selected={month === index ? true : false}
+                value={`${monthName}-${monthYear}`}
+                key={`${monthName}-${monthYear}`}
               >
                 {monthName} - {monthYear}
               </option>
@@ -152,6 +115,19 @@ const Table = ({ data }: Props) => {
       <div className="inline-block py-1 overflow-auto">
         <table className="text-sm font-light">
           <thead className="border-b font-medium">
+            <tr>
+              <th scope="col" className="px-2 py-1"></th>
+              <th scope="col" className="px-2 py-1"></th>
+              {data.JORNADA.slice(from, to).map((item: any) => (
+                <td
+                  scope="col"
+                  className="py-1 text-right text-2xs"
+                  key={item.jornada}
+                >
+                  {item.date}
+                </td>
+              ))}
+            </tr>
             <tr>
               <th scope="col" className="px-2 py-1"></th>
               <th scope="col" className="px-2 py-1 text-left">

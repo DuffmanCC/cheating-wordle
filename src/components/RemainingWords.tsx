@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import solutions from "../data/solutions";
 import { dayOfTheYear, removeTildes } from "../lib/tools";
 import ArrowDownIcon from "./icons/ArrowDownIcon";
@@ -16,17 +17,13 @@ const RemainingWords = ({
 }: PropsInterface) => {
   const solutionsToWordOfTheDay = solutions.slice(0, 358 + dayOfTheYear());
 
-  const lineThrough = function (word: string): string {
-    if (
-      solutionsToWordOfTheDay.find((solution) => {
-        return removeTildes(solution.solution) === word.toLowerCase();
-      })
-    ) {
-      return "line-through";
-    }
-
-    return "";
-  };
+  const isRepeatedWord = useCallback(
+    (word: string) =>
+      solutionsToWordOfTheDay.find(
+        (solution) => removeTildes(solution.solution) === word.toLowerCase()
+      ),
+    [remainingWords]
+  );
 
   return (
     <div className="text-center mb-20">
@@ -50,7 +47,9 @@ const RemainingWords = ({
         <ul className="overflow-auto h-auto border border-gray-400 flex flex-wrap justify-center py-2 rounded-lg">
           {remainingWords.map((word, i) => (
             <li key={i} className="mr-2 leading-snug">
-              <span className={lineThrough(word)}>{word}</span>
+              <span className={isRepeatedWord(word) && "line-through"}>
+                {word}
+              </span>
 
               {i != remainingWords.length - 1 && <span>,</span>}
             </li>

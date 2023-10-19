@@ -12,21 +12,18 @@ const Message = ({ message, setMessage }: PropsInterface) => {
     if (message !== "") {
       setAnimation("scale-125 transition-transform duration-50");
 
-      const timerID = setTimeout(() => {
+      const timerID1 = setTimeout(() => {
         setAnimation("");
       }, 100);
 
-      return () => clearTimeout(timerID);
-    }
-  }, [message]);
-
-  useEffect(() => {
-    if (message !== "") {
-      const timerID = setTimeout(() => {
+      const timerID2 = setTimeout(() => {
         setMessage("");
-      }, 2000);
+      }, 1000);
 
-      return () => clearTimeout(timerID);
+      return () => {
+        clearTimeout(timerID1);
+        clearTimeout(timerID2);
+      };
     }
   }, [message]);
 
