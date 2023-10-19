@@ -1,4 +1,5 @@
 import { ReactNode, useState } from "react";
+import { getStateClasses } from "../lib/tools";
 
 interface PropsInterface {
   children?: ReactNode;
@@ -10,7 +11,7 @@ interface PropsInterface {
 
 const Key = ({ children, value, state, onClick, width }: PropsInterface) => {
   const classes =
-    "flex items-center justify-center | rounded px-1 h-12 | text-xs font-bold | cursor-pointer select-none | hover:bg-gray-200";
+    "flex items-center justify-center | rounded px-1 h-12 | text-xs font-bold | cursor-pointer select-none | hover:bg-gray-200 bg-gray-100";
 
   const [isActive, setIsActive] = useState(false);
 
@@ -29,7 +30,7 @@ const Key = ({ children, value, state, onClick, width }: PropsInterface) => {
   return (
     <button
       style={{ width: width || "34px" }}
-      className={[classes, stateClasses(state), isActiveClasses].join(" ")}
+      className={[classes, getStateClasses(state), isActiveClasses].join(" ")}
       onClick={() => handleClick(value)}
     >
       {children || value}
@@ -38,15 +39,3 @@ const Key = ({ children, value, state, onClick, width }: PropsInterface) => {
 };
 
 export default Key;
-
-const stateClasses = (state: string) => {
-  const classes = "transition-colors duration-200 text-white";
-
-  if (state === "match") return "bg-green-600 border-green-600" + classes;
-
-  if (state === "present") return "bg-yellow-600 border-yellow-600" + classes;
-
-  if (state === "absent") return "bg-gray-500 border-gray-500" + classes;
-
-  return "bg-gray-100";
-};

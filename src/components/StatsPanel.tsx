@@ -12,21 +12,11 @@ interface PropsInterface {
 const StatsPanel = ({ setIsStatsPanelOpen }: PropsInterface) => {
   const spreadsheetUrl: string = GOOGLE_SPREADSHEET_URL;
 
-  interface Entry {
-    jornada: string;
-    word: string;
-    attempts: number | null;
-  }
-
-  interface Result {
-    [key: string]: Entry[];
-  }
-
-  const [mappedStats, setMappedStats] = useState<Result | null>(null);
+  const [mappedStats, setMappedStats] = useState(null);
 
   useEffect(() => {
     fetchGoogleSheet(spreadsheetUrl).then((data) => {
-      const arr: Result = mapStats(data) as Result;
+      const arr: any = mapStats(data);
 
       setMappedStats(arr);
     });
@@ -47,7 +37,7 @@ const StatsPanel = ({ setIsStatsPanelOpen }: PropsInterface) => {
         </button>
       </header>
 
-      {mappedStats && <Table data={mappedStats} />}
+      <main>{mappedStats && <Table data={mappedStats} />}</main>
     </div>
   );
 };
