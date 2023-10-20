@@ -117,10 +117,10 @@ export default function useTable(data: DataInterface) {
     const daysFrom = daysUntilToday(from, numberOfRounds);
     const daysTo = daysUntilToday(to, numberOfRounds);
 
-    setFrom(daysFrom);
-    setMediaFrom(daysFrom);
-    setTo(daysTo + 1);
-    setMediaTo(daysTo + 1);
+    setFrom(daysFrom - 1);
+    setMediaFrom(daysFrom - 1);
+    setTo(daysTo);
+    setMediaTo(daysTo);
     setMonth("0");
     setIsPeriod(true);
   }, [week]);
@@ -154,10 +154,10 @@ export default function useTable(data: DataInterface) {
       const daysFrom = daysUntilToday(from, numberOfRounds);
       const daysTo = daysUntilToday(to, numberOfRounds);
 
-      setFrom(daysFrom);
-      setMediaFrom(daysFrom);
-      setTo(daysTo + 1);
-      setMediaTo(daysTo + 1);
+      setFrom(daysFrom - 1);
+      setMediaFrom(daysFrom - 1);
+      setTo(daysTo);
+      setMediaTo(daysTo);
     }
 
     setWeek(0);
