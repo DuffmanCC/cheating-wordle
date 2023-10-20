@@ -1,22 +1,13 @@
+import { DataInterface } from "../interfaces/interfaces";
 import { mediaAllJornadas } from "../lib/tools";
 
-interface Player {
-  jornada: string;
-  word: string;
-  attempts: number | null;
-}
-
-interface Data {
-  [key: string]: Player[];
-}
-
-interface Props {
-  data: Data;
+interface PropsInterface {
+  data: DataInterface;
   reverse?: boolean;
   title?: string;
 }
 
-const tableTopWords = ({ data, reverse, title }: Props) => {
+const tableTopWords = ({ data, reverse, title }: PropsInterface) => {
   const mediaAllJornadasArr = mediaAllJornadas(data);
 
   const mediaAllJornadasSortedByMedia = [...mediaAllJornadasArr].sort(

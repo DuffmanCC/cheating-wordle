@@ -2,14 +2,17 @@ import { useMemo } from "react";
 import useTile from "../hooks/useTile";
 import { getStateClasses } from "../lib/tools";
 
-interface Props {
+interface PropsInterface {
   letter: string;
   isActive: boolean;
   state: string;
   key: number;
 }
 
-export default function Tile({ letter, isActive, state }: Props, key: number) {
+export default function Tile(
+  { letter, isActive, state }: PropsInterface,
+  key: number
+) {
   const { commonClasses, transitionClasses, showLetterClasses } = useTile(
     letter,
     state

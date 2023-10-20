@@ -6,17 +6,9 @@ import {
   getMonthsBetweenDates,
 } from "../lib/tools";
 
-interface Player {
-  jornada: string;
-  word: string;
-  attempts: number | null;
-}
+import { DataInterface } from "../interfaces/interfaces";
 
-interface Data {
-  [key: string]: Player[];
-}
-
-export default function usePeriod(data: Data, numberOfRounds: number) {
+export default function usePeriod(data: DataInterface, numberOfRounds: number) {
   const [week, setWeek] = useState<number>(0);
   const [month, setMonth] = useState<string>("0");
   const [from, setFrom] = useState<number>(-7);

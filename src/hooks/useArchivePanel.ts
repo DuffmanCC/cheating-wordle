@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { GOOGLE_SPREADSHEET_URL, PLAYERS } from "../data/constants";
+import { DataInterface } from "../interfaces/interfaces";
 import { fetchGoogleSheet } from "../lib/requests";
 import { mapStats } from "../lib/tools";
 
@@ -7,21 +8,11 @@ export default function useArchivePanel() {
   const spreadsheetUrl: string = GOOGLE_SPREADSHEET_URL;
   const players: string[] = PLAYERS;
 
-  interface Entry {
-    jornada: string;
-    word: string;
-    attempts: number | string;
-  }
-
-  interface Result {
-    [key: string]: Entry[];
-  }
-
-  const [mappedStats, setMappedStats] = useState<Result>({});
+  const [mappedStats, setMappedStats] = useState<DataInterface>({});
 
   useEffect(() => {
     fetchGoogleSheet(spreadsheetUrl).then((data) => {
-      const arr: Result = mapStats(data) as Result;
+      const arr: DataInterface = mapStats(data) as DataInterface;
 
       setMappedStats(arr);
     });

@@ -10,23 +10,14 @@ import {
 } from "../lib/tools";
 
 import usePeriod from "../hooks/usePeriod";
+import { DataInterface } from "../interfaces/interfaces";
 import { bgColorFromAttemps, rank, symbol } from "../lib/tools";
 
-interface Player {
-  jornada: string;
-  word: string;
-  attempts: number | null;
+interface PropsInterface {
+  data: DataInterface;
 }
 
-interface Data {
-  [key: string]: Player[];
-}
-
-interface Props {
-  data: Data;
-}
-
-const Table = ({ data }: Props) => {
+const Table = ({ data }: PropsInterface) => {
   const numberOfRounds = data.JORNADA.length;
 
   const medias = Object.keys(data)

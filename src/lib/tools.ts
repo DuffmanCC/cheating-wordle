@@ -1,9 +1,14 @@
 import { NUMBER_OF_DECIMALS, STARTING_DATE } from "../data/constants";
-import KeyboardKeysStateInterface from "../interfaces/KeyboardKeysStateInterface";
-import RegexInterface from "../interfaces/RegexInterface";
-import TileInterface from "../interfaces/TileInterface";
+import {
+  DataInterface,
+  KeyboardKeysStateInterface,
+  MonthInterface,
+  RegexInterface,
+  TileInterface,
+  WeekInterface,
+} from "../interfaces/interfaces";
 
-export const removeTildes = (word: string): string => {
+export function removeTildes(word: string): string {
   const tildes = /[áéíóú]/g;
 
   return word.replace(tildes, (match: string): string => {
@@ -22,9 +27,9 @@ export const removeTildes = (word: string): string => {
         return match;
     }
   });
-};
+}
 
-export const formatDate = (date: string) => {
+export function formatDate(date: string) {
   const dateObj = new Date(date);
 
   const options: Intl.DateTimeFormatOptions = {
@@ -34,13 +39,13 @@ export const formatDate = (date: string) => {
   };
 
   return dateObj.toLocaleDateString("es-ES", options);
-};
+}
 
-export const isValidWord = (word: TileInterface[], validWords: string[]) => {
+export function isValidWord(word: TileInterface[], validWords: string[]) {
   const arr = word.map((tile) => tile.letter);
 
   return validWords.includes(arr.join(""));
-};
+}
 
 export function isFullWord(word: TileInterface[]): boolean {
   const arr = word.map((el) => (el.letter ? true : false));
@@ -375,15 +380,15 @@ export function symbol(a: number, b: number) {
   return a > b ? "▲" : a < b ? "▼" : "=";
 }
 
-export const media = (arr: number[]) => {
+export function media(arr: number[]) {
   const sum = arr.reduce((acc, curr) => acc + curr, 0);
   const rawResult = sum / roundsPlayed(arr);
   const roundedResult = rawResult.toFixed(NUMBER_OF_DECIMALS);
 
   return parseFloat(roundedResult);
-};
+}
 
-export const mediaPrev = (arr: number[]) => {
+export function mediaPrev(arr: number[]) {
   const newArr = arr.slice(0, arr.length - 1);
 
   const sum = newArr.reduce((acc, curr) => acc + curr, 0);
@@ -392,15 +397,15 @@ export const mediaPrev = (arr: number[]) => {
   const roundedResult = rawResult.toFixed(NUMBER_OF_DECIMALS);
 
   return parseFloat(roundedResult);
-};
+}
 
-export const roundsPlayed = (arr: number[]) => {
+export function roundsPlayed(arr: number[]) {
   const elementosNoNulos = arr.filter((elemento) => elemento !== null);
 
   return elementosNoNulos.length;
-};
+}
 
-export const diffPlayer = (players: any, rank: number) => {
+export function diffPlayer(players: any, rank: number) {
   const currentPlayer = players.find((player: any) => player.rank === rank);
   const prevPlayer = players.find((player: any) => player.rank === rank - 1);
 
@@ -413,9 +418,9 @@ export const diffPlayer = (players: any, rank: number) => {
   );
 
   return parseFloat(rawResult);
-};
+}
 
-export const drs = (players: any, rank: number) => {
+export function drs(players: any, rank: number) {
   const currentPlayer = players.find((player: any) => player.rank === rank);
   const prevPlayer = players.find((player: any) => player.rank === rank - 1);
 
@@ -441,9 +446,9 @@ export const drs = (players: any, rank: number) => {
     (mediaPreviousPlayer * (roundsPlayed + 1) - sumaAllAttempts);
 
   return -1 * Math.ceil(rawResult);
-};
+}
 
-export const bgDrsColor = (drs: number | null) => {
+export function bgDrsColor(drs: number | null) {
   if (drs === null) {
     return false;
   }
@@ -453,9 +458,9 @@ export const bgDrsColor = (drs: number | null) => {
   }
 
   return false;
-};
+}
 
-export const arrowColor = (symbol: string) => {
+export function arrowColor(symbol: string) {
   if (symbol === "▲") {
     return "text-green-500";
   }
@@ -465,12 +470,6 @@ export const arrowColor = (symbol: string) => {
   }
 
   return "";
-};
-
-interface WeekInterface {
-  weekNumber: number;
-  start: Date;
-  end: Date;
 }
 
 export function getFullWeeksStartingOnMondayBetweenDates(
@@ -503,13 +502,6 @@ export function getFullWeeksStartingOnMondayBetweenDates(
   const arr = weeks.filter((week) => week.end <= toDay);
 
   return arr;
-}
-
-interface MonthInterface {
-  monthName: string;
-  monthYear: number;
-  start: Date;
-  end: Date;
 }
 
 export function getMonthsBetweenDates(startDate: Date): MonthInterface[] {
@@ -556,7 +548,7 @@ export function daysUntilToday(date: Date, arrayLength: number) {
   return arrayLength - Math.floor(timeDifference / milisecondsInADay);
 }
 
-export const getStateClasses = (state: string) => {
+export function getStateClasses(state: string) {
   const classes = "transition-colors duration-200 text-white";
 
   if (state === "match")
@@ -569,18 +561,9 @@ export const getStateClasses = (state: string) => {
     return ["bg-gray-500 border-gray-500", classes].join(" ");
 
   return "";
-};
-interface Player {
-  jornada: string;
-  word: string;
-  attempts: number | null;
 }
 
-interface Data {
-  [key: string]: Player[];
-}
-
-export function mediaJornada(data: Data, round: number = 0): Number {
+export function mediaJornada(data: DataInterface, round: number = 0): Number {
   const players = Object.keys(data).filter((player) => {
     return player !== "JORNADA";
   });
@@ -610,7 +593,9 @@ export function mediaJornada(data: Data, round: number = 0): Number {
   return sumNonNull / nonNullValues.length;
 }
 
-export function mediaAllJornadas(data: Data): { mediaJornada: Number }[] {
+export function mediaAllJornadas(
+  data: DataInterface
+): { mediaJornada: Number }[] {
   const arr = [];
   const numberOfRounds = data.JORNADA.length;
 

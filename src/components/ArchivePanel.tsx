@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import useArchivePanel from "../hooks/useArchivePanel";
 import { bgColorFromAttemps } from "../lib/tools";
 import CloseIcon from "./icons/CloseIcon";
@@ -8,6 +9,11 @@ interface PropsInterface {
 
 const ArchivePanel = ({ setIsArchivePanelOpen }: PropsInterface) => {
   const { players, player, setPlayer, mappedStats } = useArchivePanel();
+
+  const bgColor = useCallback(
+    (attempts: any) => bgColorFromAttemps(attempts),
+    []
+  );
 
   return (
     <div className="absolute inset-0 bg-white p-4 flex flex-col gap-4">
@@ -50,7 +56,7 @@ const ArchivePanel = ({ setIsArchivePanelOpen }: PropsInterface) => {
                   <div
                     key={jornada}
                     className={[
-                      bgColorFromAttemps(attempts),
+                      bgColor(attempts),
                       "p-1 border flex flex-col items-center text-xs rounded-md text-white w-16 h-20",
                     ].join(" ")}
                   >
