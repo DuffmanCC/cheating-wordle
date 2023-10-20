@@ -1,113 +1,78 @@
-import {
-  arrowColor,
-  bgDrsColor,
-  diffPlayer,
-  drs,
-  media,
-  mediaAllJornadas,
-  mediaPrev,
-  roundsPlayed,
-} from "../lib/tools";
+import { arrowColor, bgDrsColor } from "../lib/tools";
 
-import usePeriod from "../hooks/usePeriod";
+import useTable from "../hooks/useTable";
 import { DataInterface } from "../interfaces/interfaces";
-import { bgColorFromAttemps, rank, symbol } from "../lib/tools";
+import { bgColorFromAttemps } from "../lib/tools";
 
 interface PropsInterface {
   data: DataInterface;
 }
 
 const Table = ({ data }: PropsInterface) => {
-  const numberOfRounds = data.JORNADA.length;
-
-  const medias = Object.keys(data)
-    .filter((player) => player !== "JORNADA")
-    .map((player) => media(data[player].map((item: any) => item.attempts)));
-
-  const mediasPrev = Object.keys(data)
-    .filter((player) => player !== "JORNADA")
-    .map((player) => mediaPrev(data[player].map((item: any) => item.attempts)));
-
-  const players = Object.keys(data)
-    .filter((player) => player !== "JORNADA")
-    .map((player) => {
-      const attempts = data[player].map((item: any) => item.attempts);
-
-      return {
-        name: player,
-        media: media(attempts),
-        mediaPrev: mediaPrev(attempts),
-        rank: rank(media(attempts), medias),
-        rankPrev: rank(mediaPrev(attempts), mediasPrev),
-        symbol: symbol(
-          rank(mediaPrev(attempts), mediasPrev),
-          rank(media(attempts), medias)
-        ),
-        roundsPlayed: roundsPlayed(attempts),
-        attempts: attempts,
-        diff: null,
-        drs: null,
-      };
-    });
-
-  const mediaAllJornadasArr = mediaAllJornadas(data);
-
-  players.sort((a: any, b: any) => a.media - b.media);
-
-  players.forEach((player: any) => {
-    player.diff = diffPlayer(players, player.rank);
-  });
-
-  players.forEach((player: any) => {
-    player.drs = drs(players, player.rank);
-  });
-
-  players.sort((a: any, b: any) => a.media - b.media);
-
-  const { from, to, setWeek, setMonth, weeksBetweenDates, monthsBetweenDates } =
-    usePeriod(data, numberOfRounds);
+  const {
+    from,
+    to,
+    setWeek,
+    setMonth,
+    weeksBetweenDates,
+    monthsBetweenDates,
+    mediaAllJornadasArr,
+    players,
+    isPeriod,
+    setIsPeriod,
+  } = useTable(data);
 
   return (
     <div className="flex flex-col">
       <div className="flex gap-4 mb-4 flex-col items-start">
-        <select
-          className="border px-4 py-2 rounded-md"
-          onChange={(e) => setWeek(Number(e.target.value))}
-          defaultValue={0}
+        {isPeriod && (
+          <select
+            className="border px-4 py-2 rounded-md"
+            onChange={(e) => setWeek(Number(e.target.value))}
+            defaultValue={0}
+          >
+            <option value={0} disabled hidden>
+              Select week
+            </option>
+
+            {weeksBetweenDates.map(({ weekNumber }) => {
+              return (
+                <option value={weekNumber} key={weekNumber}>
+                  Week - {weekNumber}
+                </option>
+              );
+            })}
+          </select>
+        )}
+        {isPeriod && (
+          <select
+            className="border px-4 py-2 rounded-md"
+            onChange={(e) => setMonth(e.target.value)}
+            defaultValue={0}
+          >
+            <option value={0} disabled hidden>
+              Select month
+            </option>
+
+            {monthsBetweenDates.map(({ monthName, monthYear }) => {
+              return (
+                <option
+                  value={`${monthName}-${monthYear}`}
+                  key={`${monthName}-${monthYear}`}
+                >
+                  {monthName} - {monthYear}
+                </option>
+              );
+            })}
+          </select>
+        )}
+
+        <button
+          className="px-2 py-1 border rounded-md"
+          onClick={() => setIsPeriod(!isPeriod)}
         >
-          <option value={0} disabled hidden>
-            Select week
-          </option>
-
-          {weeksBetweenDates.map(({ weekNumber }) => {
-            return (
-              <option value={weekNumber} key={weekNumber}>
-                Week - {weekNumber}
-              </option>
-            );
-          })}
-        </select>
-
-        <select
-          className="border px-4 py-2 rounded-md"
-          onChange={(e) => setMonth(e.target.value)}
-          defaultValue={0}
-        >
-          <option value={0} disabled hidden>
-            Select month
-          </option>
-
-          {monthsBetweenDates.map(({ monthName, monthYear }) => {
-            return (
-              <option
-                value={`${monthName}-${monthYear}`}
-                key={`${monthName}-${monthYear}`}
-              >
-                {monthName} - {monthYear}
-              </option>
-            );
-          })}
-        </select>
+          {isPeriod ? "All" : "By period"}
+        </button>
       </div>
 
       <div className="inline-block py-1 overflow-auto">
@@ -142,25 +107,37 @@ const Table = ({ data }: PropsInterface) => {
                 </th>
               ))}
               <th scope="col" className="px-2 py-1 text-right">
-                Media
+                {isPeriod ? "Media Period" : "Media"}
               </th>
-              <th scope="col" className="px-2 py-1 text-right"></th>
+
+              {!isPeriod && (
+                <th scope="col" className="px-2 py-1 text-right"></th>
+              )}
+
               <th scope="col" className="px-2 py-1 text-right">
                 PJ
               </th>
-              <th scope="col" className="px-2 py-1 text-right">
-                Diff
-              </th>
-              <th scope="col" className="px-2 py-1 text-right">
-                DRS
-              </th>
+
+              {!isPeriod && (
+                <th scope="col" className="px-2 py-1 text-right">
+                  Diff
+                </th>
+              )}
+
+              {!isPeriod && (
+                <th scope="col" className="px-2 py-1 text-right">
+                  DRS
+                </th>
+              )}
             </tr>
           </thead>
 
           <tbody>
             {players.map((playerData, index) => (
               <tr className="border-b" key={index}>
-                <td className="px-2 py-1 text-right">{playerData.rank}</td>
+                <td className="px-2 py-1 text-right">
+                  {isPeriod ? playerData.rankPeriod : playerData.rank}
+                </td>
                 <td className="px-2 py-1">{playerData.name}</td>
                 {data[playerData.name].slice(from, to).map((item: any) => (
                   <td
@@ -174,28 +151,42 @@ const Table = ({ data }: PropsInterface) => {
                   </td>
                 ))}
                 <td className="px-2 py-1 text-right font-mono">
-                  {playerData.media.toFixed(4)}
+                  {isPeriod
+                    ? playerData.mediaPeriod.toFixed(4)
+                    : playerData.media.toFixed(4)}
                 </td>
-                <td
-                  className={[
-                    "px-2 py-1 text-right",
-                    arrowColor(playerData.symbol),
-                  ].join(" ")}
-                >
-                  {playerData.symbol}
-                </td>
+
+                {!isPeriod && (
+                  <td
+                    className={[
+                      "px-2 py-1 text-right",
+                      arrowColor(playerData.symbol),
+                    ].join(" ")}
+                  >
+                    {playerData.symbol}
+                  </td>
+                )}
+
                 <td className="px-2 py-1 text-right">
-                  {playerData.roundsPlayed}
+                  {!isPeriod
+                    ? playerData.roundsPlayed
+                    : playerData.roundsPlayedPeriod}
                 </td>
-                <td className="px-2 py-1 text-right">{playerData.diff}</td>
-                <td
-                  className={[
-                    bgDrsColor(playerData.drs),
-                    "px-2 py-1 text-right",
-                  ].join(" ")}
-                >
-                  {playerData.drs}
-                </td>
+
+                {!isPeriod && (
+                  <td className="px-2 py-1 text-right">{playerData.diff}</td>
+                )}
+
+                {!isPeriod && (
+                  <td
+                    className={[
+                      bgDrsColor(playerData.drs),
+                      "px-2 py-1 text-right",
+                    ].join(" ")}
+                  >
+                    {playerData.drs}
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
