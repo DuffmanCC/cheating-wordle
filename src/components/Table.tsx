@@ -4,6 +4,7 @@ import {
   diffPlayer,
   drs,
   media,
+  mediaAllJornadas,
   mediaPrev,
   roundsPlayed,
 } from "../lib/tools";
@@ -17,10 +18,12 @@ interface Player {
   attempts: number | null;
 }
 
+interface Data {
+  [key: string]: Player[];
+}
+
 interface Props {
-  data: {
-    [key: string]: Player[];
-  };
+  data: Data;
 }
 
 const Table = ({ data }: Props) => {
@@ -55,6 +58,8 @@ const Table = ({ data }: Props) => {
         drs: null,
       };
     });
+
+  const mediaAllJornadasArr = mediaAllJornadas(data);
 
   players.sort((a: any, b: any) => a.media - b.media);
 
@@ -118,31 +123,32 @@ const Table = ({ data }: Props) => {
         <table className="text-sm font-light">
           <thead className="border-b font-medium">
             <tr>
-              <th scope="col" className="px-2 py-1"></th>
-              <th scope="col" className="px-2 py-1"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
               {data.JORNADA.slice(from, to).map((item: any) => (
-                <td
+                <th
                   scope="col"
                   className="py-1 text-right text-2xs"
                   key={item.jornada}
                 >
                   {item.date}
-                </td>
+                </th>
               ))}
             </tr>
+
             <tr>
               <th scope="col" className="px-2 py-1"></th>
               <th scope="col" className="px-2 py-1 text-left">
                 Player
               </th>
               {data.JORNADA.slice(from, to).map((item: any) => (
-                <td
+                <th
                   scope="col"
                   className="px-2 py-1 text-right"
                   key={item.jornada}
                 >
                   {item.jornada}
-                </td>
+                </th>
               ))}
               <th scope="col" className="px-2 py-1 text-right">
                 Media
@@ -159,6 +165,7 @@ const Table = ({ data }: Props) => {
               </th>
             </tr>
           </thead>
+
           <tbody>
             {players.map((playerData, index) => (
               <tr className="border-b" key={index}>
@@ -175,7 +182,9 @@ const Table = ({ data }: Props) => {
                     {item.attempts}
                   </td>
                 ))}
-                <td className="px-2 py-1 text-right">{playerData.media}</td>
+                <td className="px-2 py-1 text-right font-mono">
+                  {playerData.media.toFixed(4)}
+                </td>
                 <td
                   className={[
                     "px-2 py-1 text-right",
@@ -198,10 +207,12 @@ const Table = ({ data }: Props) => {
                 </td>
               </tr>
             ))}
+          </tbody>
 
+          <tfoot>
             <tr className="border-b">
-              <td className="px-2 py-1 text-right"></td>
-              <td className="px-2 py-1">Jornada</td>
+              <td></td>
+              <td className="px-2 py-1 text-right">Jornada</td>
               {data.JORNADA.slice(from, to).map((item: any) => (
                 <td
                   className="px-2 py-1 text-right font-mono"
@@ -212,7 +223,17 @@ const Table = ({ data }: Props) => {
               ))}
               <td className="px-2 py-1 text-right"></td>
             </tr>
-          </tbody>
+
+            <tr>
+              <td className="px-2 py-1"></td>
+              <td className="px-2 py-1 text-right">Media</td>
+              {mediaAllJornadasArr.slice(from, to).map((item: any) => (
+                <td className="px-2 py-1 text-right" key={item.jornada}>
+                  {item.mediaJornada.toFixed(3)}
+                </td>
+              ))}
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>

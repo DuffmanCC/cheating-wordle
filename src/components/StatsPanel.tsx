@@ -3,6 +3,7 @@ import { GOOGLE_SPREADSHEET_URL } from "../data/constants";
 import { fetchGoogleSheet } from "../lib/requests";
 import { mapStats } from "../lib/tools";
 import Table from "./Table";
+import TableTopWords from "./TableTopWords";
 import CloseIcon from "./icons/CloseIcon";
 
 interface PropsInterface {
@@ -14,11 +15,15 @@ const StatsPanel = ({ setIsStatsPanelOpen }: PropsInterface) => {
 
   const [mappedStats, setMappedStats] = useState(null);
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     fetchGoogleSheet(spreadsheetUrl).then((data) => {
-      const arr: any = mapStats(data);
+      const stats: any = mapStats(data);
 
-      setMappedStats(arr);
+      setIsLoading(false);
+
+      setMappedStats(stats);
     });
   }, []);
 
@@ -37,7 +42,19 @@ const StatsPanel = ({ setIsStatsPanelOpen }: PropsInterface) => {
         </button>
       </header>
 
-      <main>{mappedStats && <Table data={mappedStats} />}</main>
+      <main>
+        {isLoading && <p>Loading...</p>}
+        {mappedStats && (
+          <div className="flex flex-col gap-8">
+            <Table data={mappedStats} />
+
+            <div className="flex justify-between">
+              <TableTopWords data={mappedStats} title="Top words ⬇" />
+              <TableTopWords data={mappedStats} reverse title="Top words ⬆" />
+            </div>
+          </div>
+        )}
+      </main>
     </div>
   );
 };

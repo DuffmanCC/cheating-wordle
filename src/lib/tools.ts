@@ -570,3 +570,57 @@ export const getStateClasses = (state: string) => {
 
   return "";
 };
+interface Player {
+  jornada: string;
+  word: string;
+  attempts: number | null;
+}
+
+interface Data {
+  [key: string]: Player[];
+}
+
+export function mediaJornada(data: Data, round: number = 0): Number {
+  const players = Object.keys(data).filter((player) => {
+    return player !== "JORNADA";
+  });
+
+  const arr = players.map((player) => {
+    return data[player][round].attempts;
+  });
+
+  const nonNullValues = arr.filter((item) => item !== null);
+
+  if (nonNullValues.length === 0) {
+    return 0;
+  }
+
+  const sumNonNull = nonNullValues.reduce((acc, currentValue) => {
+    if (acc === null || currentValue === null) {
+      return 0;
+    }
+
+    return acc + currentValue;
+  }, 0);
+
+  if (sumNonNull === null) {
+    return 0;
+  }
+
+  return sumNonNull / nonNullValues.length;
+}
+
+export function mediaAllJornadas(data: Data): { mediaJornada: Number }[] {
+  const arr = [];
+  const numberOfRounds = data.JORNADA.length;
+
+  for (let i = 0; i < numberOfRounds; i++) {
+    arr.push({
+      mediaJornada: mediaJornada(data, i),
+      jornada: i + 6,
+      word: data.JORNADA[i].word,
+    });
+  }
+
+  return arr;
+}
