@@ -35,47 +35,63 @@ export default function useTable(data: DataInterface) {
     [data]
   );
 
-  const medias = dataWithoutJornada.map((player) => {
-    const attempts = data[player].map((item: any) => item.attempts);
+  const medias = useMemo(
+    () =>
+      dataWithoutJornada.map((player) => {
+        const attempts = data[player].map((item: any) => item.attempts);
 
-    return media(attempts);
-  });
-
-  const mediasPeriod = dataWithoutJornada.map((player) => {
-    const attempts = data[player].map((item: any) => item.attempts);
-
-    return media(attempts.slice(mediaFrom, mediaTo));
-  });
-
-  const mediasPrev = dataWithoutJornada.map((player) =>
-    mediaPrev(data[player].map((item: any) => item.attempts))
+        return media(attempts);
+      }),
+    [data]
   );
 
-  const players = dataWithoutJornada.map((player) => {
-    const attempts = data[player].map((item: any) => item.attempts);
-    const attemptsPeriod = attempts.slice(mediaFrom, mediaTo);
+  const mediasPeriod = useMemo(
+    () =>
+      dataWithoutJornada.map((player) => {
+        const attempts = data[player].map((item: any) => item.attempts);
 
-    return {
-      name: player,
-      media: media(attempts),
-      mediaPeriod: media(attemptsPeriod),
-      mediaPrev: mediaPrev(attempts),
-      rank: rank(media(attempts), medias),
-      rankPeriod: rank(media(attemptsPeriod), mediasPeriod),
-      rankPrev: rank(mediaPrev(attempts), mediasPrev),
-      symbol: symbol(
-        rank(mediaPrev(attempts), mediasPrev),
-        rank(media(attempts), medias)
+        return media(attempts.slice(mediaFrom, mediaTo));
+      }),
+    [data, mediaFrom, mediaTo]
+  );
+
+  const mediasPrev = useMemo(
+    () =>
+      dataWithoutJornada.map((player) =>
+        mediaPrev(data[player].map((item: any) => item.attempts))
       ),
-      roundsPlayed: roundsPlayed(attempts),
-      roundsPlayedPeriod: roundsPlayed(attemptsPeriod),
-      attempts: attempts,
-      diff: null,
-      drs: null,
-    };
-  });
+    [data]
+  );
 
-  const mediaAllJornadasArr = mediaAllJornadas(data);
+  const players = useMemo(
+    () =>
+      dataWithoutJornada.map((player) => {
+        const attempts = data[player].map((item: any) => item.attempts);
+        const attemptsPeriod = attempts.slice(mediaFrom, mediaTo);
+
+        return {
+          name: player,
+          media: media(attempts),
+          mediaPeriod: media(attemptsPeriod),
+          mediaPrev: mediaPrev(attempts),
+          rank: rank(media(attempts), medias),
+          rankPeriod: rank(media(attemptsPeriod), mediasPeriod),
+          rankPrev: rank(mediaPrev(attempts), mediasPrev),
+          symbol: symbol(
+            rank(mediaPrev(attempts), mediasPrev),
+            rank(media(attempts), medias)
+          ),
+          roundsPlayed: roundsPlayed(attempts),
+          roundsPlayedPeriod: roundsPlayed(attemptsPeriod),
+          attempts: attempts,
+          diff: null,
+          drs: null,
+        };
+      }),
+    [data, medias, mediasPeriod, mediasPrev, mediaFrom, mediaTo]
+  );
+
+  const mediaAllJornadasArr = useMemo(() => mediaAllJornadas(data), [data]);
 
   players.forEach((player: any) => {
     player.diff = diffPlayer(players, player.rank);
@@ -86,7 +102,7 @@ export default function useTable(data: DataInterface) {
   });
 
   if (isPeriod) {
-    players.sort((a: any, b: any) => a.mediaPeriod - b.mediaPeriod);
+    players.sort((a: any, b: any) => a.rankPeriod - b.rankPeriod);
   } else {
     players.sort((a: any, b: any) => a.media - b.media);
   }
