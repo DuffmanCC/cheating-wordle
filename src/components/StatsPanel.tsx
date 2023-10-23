@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { GOOGLE_SPREADSHEET_URL } from "../data/constants";
+import useGame from "../hooks/useGame";
 import { fetchGoogleSheet } from "../lib/requests";
 import { mapStats } from "../lib/tools";
+import HeaderPanel from "./HeaderPanel";
+import Panel from "./Panel";
 import Table from "./Table";
 import TableTopWords from "./TableTopWords";
 import CloseIcon from "./icons/CloseIcon";
 
-interface PropsInterface {
-  setIsStatsPanelOpen: (isStatsPanelOpen: boolean) => void;
-}
-
-const StatsPanel = ({ setIsStatsPanelOpen }: PropsInterface) => {
+const StatsPanel = () => {
+  const { setIsStatsPanelOpen } = useGame();
   const spreadsheetUrl: string = GOOGLE_SPREADSHEET_URL;
 
   const [mappedStats, setMappedStats] = useState(null);
@@ -28,19 +28,16 @@ const StatsPanel = ({ setIsStatsPanelOpen }: PropsInterface) => {
   }, []);
 
   return (
-    <div className="absolute inset-0 bg-white p-4">
-      <header className="flex items-center mb-4 gap-2">
-        <h2 className="text-xl font-bold">Stats</h2>
-
+    <Panel>
+      <HeaderPanel name="Stats">
         <button
-          className="ml-auto"
           onClick={() => {
             setIsStatsPanelOpen(false);
           }}
         >
           <CloseIcon width="1.5rem" />
         </button>
-      </header>
+      </HeaderPanel>
 
       <main>
         {isLoading && <p>Loading...</p>}
@@ -55,7 +52,7 @@ const StatsPanel = ({ setIsStatsPanelOpen }: PropsInterface) => {
           </div>
         )}
       </main>
-    </div>
+    </Panel>
   );
 };
 

@@ -1,24 +1,21 @@
-import TileInterface from "../interfaces/TileInterface";
+import useGame from "../hooks/useGame";
 import Row from "./Row";
 
-interface PropsInterface {
-  game: TileInterface[][];
-  activeRow: { current: number };
-  activeTile: { current: number };
-}
+const Board = () => {
+  const { game, activeRow, activeTile } = useGame();
 
-const Board = ({ game, activeRow, activeTile }: PropsInterface) => (
-  <div className="mb-4">
-    {game.map((el, rowIndex) => (
-      <Row
-        key={rowIndex}
-        rowIndex={rowIndex}
-        row={game[rowIndex]}
-        activeRow={activeRow}
-        activeTile={activeTile}
-      />
-    ))}
-  </div>
-);
-
+  return (
+    <div className="mb-4">
+      {game.map((el, rowIndex) => (
+        <Row
+          key={rowIndex}
+          rowIndex={rowIndex}
+          row={game[rowIndex]}
+          activeRow={activeRow}
+          activeTile={activeTile}
+        />
+      ))}
+    </div>
+  );
+};
 export default Board;

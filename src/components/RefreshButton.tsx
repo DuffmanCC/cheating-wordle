@@ -1,37 +1,23 @@
 import { RefObject, useRef } from "react";
-import TileInterface from "../interfaces/TileInterface";
+import useGame from "../hooks/useGame";
 import RefreshIcon from "./icons/RefreshIcon";
 
-interface PropsInterface {
-  setGame: (game: TileInterface[][]) => void;
-  activeRow: { current: number };
-  activeTile: { current: number };
-  setMessage: (message: string) => void;
-  setRemainingWords: (remainingWords: string[]) => void;
-  setKeyboardKeysState: (keyboardKeysState: {}) => void;
-  setDisplayRemainingWords: (displayRemainingWords: boolean) => void;
-  setIsWin: (isWin: boolean) => void;
-  setWordOfTheDay: (wordOfTheDay: string) => void;
-  wordOfTheDayDefault: string;
-  uniqueArrWithoutTildes: string[];
-  className?: string;
-}
-
-const RefreshButton = ({
-  setGame,
-  activeRow,
-  activeTile,
-  setMessage,
-  setRemainingWords,
-  setKeyboardKeysState,
-  setDisplayRemainingWords,
-  setIsWin,
-  setWordOfTheDay,
-  wordOfTheDayDefault,
-  uniqueArrWithoutTildes,
-  className,
-}: PropsInterface) => {
+const RefreshButton = () => {
   const refreshButton: RefObject<HTMLButtonElement> = useRef(null);
+
+  const {
+    setGame,
+    activeRow,
+    activeTile,
+    setMessage,
+    setRemainingWords,
+    setKeyboardKeysState,
+    setIsWin,
+    setWordOfTheDay,
+    setDisplayRemainingWords,
+    wordOfTheDayDefault,
+    uniqueArrWithoutTildes,
+  } = useGame();
 
   function handleRefresh() {
     setGame(
@@ -62,10 +48,7 @@ const RefreshButton = ({
     <button
       title="refresh"
       onClick={handleRefresh}
-      className={[
-        "hover:text-blue-800 focus:text-blue-800 text-gray-500",
-        className,
-      ].join(" ")}
+      className="hover:text-blue-800 focus:text-blue-800 text-gray-500"
       ref={refreshButton}
     >
       <RefreshIcon width="1.25rem" />
