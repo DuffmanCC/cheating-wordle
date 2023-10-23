@@ -1,36 +1,54 @@
-import TileInterface from "../interfaces/TileInterface";
+import useGame from "../hooks/useGame";
 import { createClipboardString, createGameBoardResult } from "../lib/tools";
 import BoardResult from "./BoardResult";
 import CheckRepeatedWord from "./CheckRepeatedWord";
+import HeaderPanel from "./HeaderPanel";
+import Panel from "./Panel";
 import SetNewWord from "./SetNewWord";
 import ShareGame from "./ShareGame";
 import CloseIcon from "./icons/CloseIcon";
 
-interface PropsInterface {
-  setNewWordOfTheDay: (newWordOfTheDay: string) => void;
-  setIsSettingsPanelOpen: (isSettingsPanelOpen: boolean) => void;
-  setMessage: (message: string) => void;
-  game: TileInterface[][];
-  isWin: boolean;
-}
-
-const SettingsPanel = ({
-  setNewWordOfTheDay,
-  setIsSettingsPanelOpen,
-  setMessage,
-  game,
-  isWin,
-}: PropsInterface) => {
+const SettingsPanel = () => {
+  const {
+    setIsSettingsPanelOpen,
+    setMessage,
+    game,
+    isWin,
+    setWordOfTheDay,
+    setGame,
+    setKeyboardKeysState,
+    setIsWin,
+    activeRow,
+    activeTile,
+    setRemainingWords,
+    emptyGame,
+    uniqueArrWithoutTildes,
+  } = useGame();
   const gameTiles = createGameBoardResult(game);
   const clipboardString = createClipboardString(gameTiles);
 
-  return (
-    <div className="absolute inset-0 bg-white p-4">
-      <header className="flex items-center mb-4">
-        <h2 className="text-xl font-bold">Settings</h2>
+  const handleSetNewWordOfTheDay = (word: string) => {
+    if (word.length !== 5 || !uniqueArrWithoutTildes.includes(word)) {
+      setMessage(`${word.toUpperCase()} is not a valid word`);
 
+      return;
+    }
+
+    setWordOfTheDay(word);
+    setMessage(`new word set to ${word}`);
+    setGame(emptyGame);
+    setKeyboardKeysState({});
+    setIsWin(false);
+    activeRow.current = 0;
+    activeTile.current = 0;
+    setRemainingWords(uniqueArrWithoutTildes);
+    setIsSettingsPanelOpen(false);
+  };
+
+  return (
+    <Panel>
+      <HeaderPanel name="Settings">
         <button
-          className="ml-auto"
           onClick={() => {
             setIsSettingsPanelOpen(false);
             setMessage("");
@@ -38,10 +56,10 @@ const SettingsPanel = ({
         >
           <CloseIcon width="1.5rem" />
         </button>
-      </header>
+      </HeaderPanel>
 
       <div className="flex flex-col gap-2 flex-grow">
-        <SetNewWord setNewWordOfTheDay={setNewWordOfTheDay} />
+        <SetNewWord setNewWordOfTheDay={handleSetNewWordOfTheDay} />
 
         <CheckRepeatedWord />
 
@@ -60,7 +78,7 @@ const SettingsPanel = ({
           </div>
         )}
       </div>
-    </div>
+    </Panel>
   );
 };
 

@@ -1,13 +1,13 @@
 import { useCallback } from "react";
 import useArchivePanel from "../hooks/useArchivePanel";
+import useGame from "../hooks/useGame";
 import { bgColorFromAttemps } from "../lib/tools";
+import HeaderPanel from "./HeaderPanel";
+import Panel from "./Panel";
 import CloseIcon from "./icons/CloseIcon";
 
-interface PropsInterface {
-  setIsArchivePanelOpen: (isSettingsPanelOpen: boolean) => void;
-}
-
-const ArchivePanel = ({ setIsArchivePanelOpen }: PropsInterface) => {
+const ArchivePanel = () => {
+  const { setIsArchivePanelOpen } = useGame();
   const { players, player, setPlayer, mappedStats } = useArchivePanel();
 
   const bgColor = useCallback(
@@ -16,19 +16,16 @@ const ArchivePanel = ({ setIsArchivePanelOpen }: PropsInterface) => {
   );
 
   return (
-    <div className="absolute inset-0 bg-white p-4 flex flex-col gap-4">
-      <header className="flex items-center mb-4 gap-2">
-        <h2 className="text-xl font-bold">Archive</h2>
-
+    <Panel>
+      <HeaderPanel name="Archive">
         <button
-          className="ml-auto"
           onClick={() => {
             setIsArchivePanelOpen(false);
           }}
         >
           <CloseIcon width="1.5rem" />
         </button>
-      </header>
+      </HeaderPanel>
 
       <div className="flex gap-4 mb-4 items-center flex-col ">
         <select
@@ -68,7 +65,7 @@ const ArchivePanel = ({ setIsArchivePanelOpen }: PropsInterface) => {
               })}
         </div>
       </div>
-    </div>
+    </Panel>
   );
 };
 

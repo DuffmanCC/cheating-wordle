@@ -1,21 +1,15 @@
 import { useCallback } from "react";
 import solutions from "../data/solutions";
+import useGame from "../hooks/useGame";
 import { dayOfTheYear, removeTildes } from "../lib/tools";
 import ArrowDownIcon from "./icons/ArrowDownIcon";
 import ArrowDownWithBaseIcon from "./icons/ArrowDownWithBaseIcon";
 
-interface PropsInterface {
-  remainingWords: string[];
-  displayRemainingWords: boolean;
-  setDisplayRemainingWords: (displayRemainingWords: boolean) => void;
-}
-
-const RemainingWords = ({
-  remainingWords,
-  displayRemainingWords,
-  setDisplayRemainingWords,
-}: PropsInterface) => {
+const RemainingWords = () => {
   const solutionsToWordOfTheDay = solutions.slice(0, 358 + dayOfTheYear());
+
+  const { remainingWords, displayRemainingWords, setDisplayRemainingWords } =
+    useGame();
 
   const isRepeatedWord = useCallback(
     (word: string) =>

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect } from "react";
+import { GameContext } from "../context/game";
 import TileInterface from "../interfaces/TileInterface";
 import {
   deleteTile,
@@ -10,41 +11,36 @@ import {
   updateRemainingWords,
 } from "../lib/tools.js";
 
-const useGame = (
-  wordOfTheDay: string,
-  uniqueArrWithoutTildes: string[],
-  isSettingsPanelOpen: boolean,
-  setIsSettingsPanelOpen: (isSettingsPanelOpen: boolean) => void
-) => {
-  const [message, setMessage] = useState<string>("");
-  const [isWin, setIsWin] = useState<boolean>(false);
-
-  const [remainingWords, setRemainingWords] = useState<string[]>(
-    uniqueArrWithoutTildes
-  );
-
-  const [remainingWordsTries, setRemainingWordsTries] = useState<number[]>([
-    uniqueArrWithoutTildes.length,
-  ]);
-
-  const [keyboardKeysState, setKeyboardKeysState] = useState({});
-
-  const activeRow = useRef(0);
-  const activeTile = useRef(0);
-
-  const emptyGame: TileInterface[][] = Array(6).fill(
-    Array(5).fill({
-      state: "",
-      letter: "",
-    })
-  );
-
-  const localStorageGame: string | null = localStorage.getItem("game");
-  let initialGame: TileInterface[][] = emptyGame;
-
-  if (localStorageGame) initialGame = JSON.parse(localStorageGame);
-
-  const [game, setGame] = useState(initialGame);
+const useGame = () => {
+  const {
+    wordOfTheDay,
+    wordOfTheDayDefault,
+    setWordOfTheDay,
+    uniqueArrWithoutTildes,
+    displayRemainingWords,
+    setDisplayRemainingWords,
+    isSettingsPanelOpen,
+    setIsSettingsPanelOpen,
+    isArchivePanelOpen,
+    setIsArchivePanelOpen,
+    isStatsPanelOpen,
+    setIsStatsPanelOpen,
+    message,
+    setMessage,
+    isWin,
+    setIsWin,
+    remainingWords,
+    setRemainingWords,
+    remainingWordsTries,
+    setRemainingWordsTries,
+    keyboardKeysState,
+    setKeyboardKeysState,
+    activeRow,
+    activeTile,
+    emptyGame,
+    game,
+    setGame,
+  } = useContext(GameContext);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
@@ -171,6 +167,16 @@ const useGame = (
     remainingWordsTries,
     isWin,
     setIsWin,
+    setWordOfTheDay,
+    displayRemainingWords,
+    setDisplayRemainingWords,
+    isArchivePanelOpen,
+    setIsArchivePanelOpen,
+    isSettingsPanelOpen,
+    setIsSettingsPanelOpen,
+    isStatsPanelOpen,
+    setIsStatsPanelOpen,
+    wordOfTheDayDefault,
   };
 };
 

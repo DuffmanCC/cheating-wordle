@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
+import useGame from "../hooks/useGame";
 
-interface PropsInterface {
-  message: string;
-  setMessage: (message: string) => void;
-}
-
-const Message = ({ message, setMessage }: PropsInterface) => {
+const Message = () => {
   const [animation, setAnimation] = useState("");
+
+  const { message, setMessage } = useGame();
 
   useEffect(() => {
     if (message !== "") {
