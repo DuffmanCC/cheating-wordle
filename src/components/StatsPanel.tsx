@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { GameContext } from "../context/game";
 import { GOOGLE_SPREADSHEET_URL } from "../data/constants";
-import useGame from "../hooks/useGame";
 import { fetchGoogleSheet } from "../lib/requests";
 import { mapStats } from "../lib/tools";
 import HeaderPanel from "./HeaderPanel";
@@ -10,7 +10,7 @@ import TableTopWords from "./TableTopWords";
 import CloseIcon from "./icons/CloseIcon";
 
 const StatsPanel = () => {
-  const { setIsStatsPanelOpen } = useGame();
+  const { setIsStatsPanelOpen } = useContext(GameContext);
   const spreadsheetUrl: string = GOOGLE_SPREADSHEET_URL;
 
   const [mappedStats, setMappedStats] = useState(null);

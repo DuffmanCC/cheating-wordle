@@ -1,46 +1,8 @@
-import {
-  Dispatch,
-  MutableRefObject,
-  ReactNode,
-  SetStateAction,
-  createContext,
-  useRef,
-  useState,
-} from "react";
+import { ReactNode, createContext, useRef, useState } from "react";
 import solutions from "../data/solutions";
 import validWords from "../data/validWords";
-import TileInterface from "../interfaces/TileInterface";
+import { GameContextType, TileInterface } from "../interfaces/interfaces";
 import { dayOfTheYear, removeTildes } from "../lib/tools";
-
-type GameContextType = {
-  wordOfTheDay: string;
-  wordOfTheDayDefault: string;
-  setWordOfTheDay: Dispatch<SetStateAction<string>>;
-  uniqueArrWithoutTildes: string[];
-  isSettingsPanelOpen: boolean;
-  setIsSettingsPanelOpen: Dispatch<SetStateAction<boolean>>;
-  displayRemainingWords: boolean;
-  setDisplayRemainingWords: Dispatch<SetStateAction<boolean>>;
-  isArchivePanelOpen: boolean;
-  setIsArchivePanelOpen: Dispatch<SetStateAction<boolean>>;
-  isStatsPanelOpen: boolean;
-  setIsStatsPanelOpen: Dispatch<SetStateAction<boolean>>;
-  message: string;
-  setMessage: Dispatch<SetStateAction<string>>;
-  isWin: boolean;
-  setIsWin: Dispatch<SetStateAction<boolean>>;
-  remainingWords: string[];
-  setRemainingWords: Dispatch<SetStateAction<string[]>>;
-  remainingWordsTries: number[];
-  setRemainingWordsTries: Dispatch<SetStateAction<number[]>>;
-  keyboardKeysState: { [key: string]: string };
-  setKeyboardKeysState: Dispatch<SetStateAction<{}>>;
-  activeRow: MutableRefObject<number>;
-  activeTile: MutableRefObject<number>;
-  emptyGame: TileInterface[][];
-  game: TileInterface[][];
-  setGame: Dispatch<SetStateAction<TileInterface[][]>>;
-};
 
 export const GameContext = createContext<GameContextType>({
   wordOfTheDay: "",

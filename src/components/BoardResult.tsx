@@ -1,4 +1,4 @@
-import TileInterface from "../interfaces/TileInterface";
+import { TileInterface } from "../interfaces/interfaces";
 import { createGameBoardResult, dayOfTheYear } from "../lib/tools";
 
 type PropsInterface = {

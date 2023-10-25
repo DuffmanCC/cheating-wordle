@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { GameContext } from "../context/game";
 import useGame from "../hooks/useGame";
 import RefreshButton from "./RefreshButton";
 import CalendarIcon from "./icons/CalendarIcon";
@@ -5,8 +7,10 @@ import GearIcon from "./icons/GearIcon";
 import StatsIcon from "./icons/StatsIcon";
 
 export default function Header() {
-  const { setIsSettingsPanelOpen, setIsArchivePanelOpen, setIsStatsPanelOpen } =
-    useGame();
+  const { setIsArchivePanelOpen, setIsStatsPanelOpen } =
+    useContext(GameContext);
+
+  const { setIsSettingsPanelOpen } = useGame();
 
   return (
     <div className="flex gap-8 mb-4 px-4 justify-between items-center">

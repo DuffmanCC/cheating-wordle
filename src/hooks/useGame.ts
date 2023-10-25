@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { GameContext } from "../context/game";
-import TileInterface from "../interfaces/TileInterface";
+import { TileInterface } from "../interfaces/interfaces";
 import {
   deleteTile,
   fillTile,
@@ -14,18 +14,9 @@ import {
 const useGame = () => {
   const {
     wordOfTheDay,
-    wordOfTheDayDefault,
-    setWordOfTheDay,
     uniqueArrWithoutTildes,
-    displayRemainingWords,
-    setDisplayRemainingWords,
     isSettingsPanelOpen,
     setIsSettingsPanelOpen,
-    isArchivePanelOpen,
-    setIsArchivePanelOpen,
-    isStatsPanelOpen,
-    setIsStatsPanelOpen,
-    message,
     setMessage,
     isWin,
     setIsWin,
@@ -37,7 +28,6 @@ const useGame = () => {
     setKeyboardKeysState,
     activeRow,
     activeTile,
-    emptyGame,
     game,
     setGame,
   } = useContext(GameContext);
@@ -152,11 +142,9 @@ const useGame = () => {
 
   return {
     game,
-    emptyGame,
     setGame,
     activeRow,
     activeTile,
-    message,
     setMessage,
     remainingWords,
     setRemainingWords,
@@ -167,16 +155,8 @@ const useGame = () => {
     remainingWordsTries,
     isWin,
     setIsWin,
-    setWordOfTheDay,
-    displayRemainingWords,
-    setDisplayRemainingWords,
-    isArchivePanelOpen,
-    setIsArchivePanelOpen,
     isSettingsPanelOpen,
     setIsSettingsPanelOpen,
-    isStatsPanelOpen,
-    setIsStatsPanelOpen,
-    wordOfTheDayDefault,
   };
 };
 

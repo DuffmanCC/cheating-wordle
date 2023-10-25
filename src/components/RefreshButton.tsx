@@ -1,9 +1,12 @@
-import { RefObject, useRef } from "react";
+import { RefObject, useContext, useRef } from "react";
+import { GameContext } from "../context/game";
 import useGame from "../hooks/useGame";
 import RefreshIcon from "./icons/RefreshIcon";
 
 const RefreshButton = () => {
   const refreshButton: RefObject<HTMLButtonElement> = useRef(null);
+  const { wordOfTheDayDefault, setWordOfTheDay, setDisplayRemainingWords } =
+    useContext(GameContext);
 
   const {
     setGame,
@@ -13,9 +16,6 @@ const RefreshButton = () => {
     setRemainingWords,
     setKeyboardKeysState,
     setIsWin,
-    setWordOfTheDay,
-    setDisplayRemainingWords,
-    wordOfTheDayDefault,
     uniqueArrWithoutTildes,
   } = useGame();
 

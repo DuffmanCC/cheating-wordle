@@ -1,13 +1,13 @@
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
+import { GameContext } from "../context/game";
 import useArchivePanel from "../hooks/useArchivePanel";
-import useGame from "../hooks/useGame";
 import { bgColorFromAttemps } from "../lib/tools";
 import HeaderPanel from "./HeaderPanel";
 import Panel from "./Panel";
 import CloseIcon from "./icons/CloseIcon";
 
 const ArchivePanel = () => {
-  const { setIsArchivePanelOpen } = useGame();
+  const { setIsArchivePanelOpen } = useContext(GameContext);
   const { players, player, setPlayer, mappedStats } = useArchivePanel();
 
   const bgColor = useCallback(

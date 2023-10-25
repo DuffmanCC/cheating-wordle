@@ -1,4 +1,5 @@
-import { useCallback } from "react";
+import { useCallback, useContext } from "react";
+import { GameContext } from "../context/game";
 import solutions from "../data/solutions";
 import useGame from "../hooks/useGame";
 import { dayOfTheYear, removeTildes } from "../lib/tools";
@@ -6,10 +7,12 @@ import ArrowDownIcon from "./icons/ArrowDownIcon";
 import ArrowDownWithBaseIcon from "./icons/ArrowDownWithBaseIcon";
 
 const RemainingWords = () => {
+  const { displayRemainingWords, setDisplayRemainingWords } =
+    useContext(GameContext);
+
   const solutionsToWordOfTheDay = solutions.slice(0, 358 + dayOfTheYear());
 
-  const { remainingWords, displayRemainingWords, setDisplayRemainingWords } =
-    useGame();
+  const { remainingWords } = useGame();
 
   const isRepeatedWord = useCallback(
     (word: string) =>

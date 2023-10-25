@@ -1,4 +1,4 @@
-import TileInterface from "../interfaces/TileInterface";
+import { TileInterface } from "../interfaces/interfaces";
 import Tile from "./Tile";
 
 interface PropsInterface {

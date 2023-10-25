@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { GameContext } from "../context/game";
 import useGame from "../hooks/useGame";
 import { createClipboardString, createGameBoardResult } from "../lib/tools";
 import BoardResult from "./BoardResult";
@@ -9,19 +11,19 @@ import ShareGame from "./ShareGame";
 import CloseIcon from "./icons/CloseIcon";
 
 const SettingsPanel = () => {
+  const { setWordOfTheDay, emptyGame } = useContext(GameContext);
+
   const {
     setIsSettingsPanelOpen,
     setMessage,
     game,
     isWin,
-    setWordOfTheDay,
     setGame,
     setKeyboardKeysState,
     setIsWin,
     activeRow,
     activeTile,
     setRemainingWords,
-    emptyGame,
     uniqueArrWithoutTildes,
   } = useGame();
   const gameTiles = createGameBoardResult(game);

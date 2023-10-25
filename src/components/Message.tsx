@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { GameContext } from "../context/game";
 import useGame from "../hooks/useGame";
 
 const Message = () => {
   const [animation, setAnimation] = useState("");
 
-  const { message, setMessage } = useGame();
+  const { message } = useContext(GameContext);
+  const { setMessage } = useGame();
 
   useEffect(() => {
     if (message !== "") {
