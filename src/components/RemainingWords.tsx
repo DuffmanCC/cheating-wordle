@@ -23,7 +23,7 @@ const RemainingWords = () => {
   );
 
   return (
-    <div className="text-center mb-20">
+    <div className="text-center">
       <div className="flex justify-center items-center mb-4 gap-4">
         <h2 className="text-xl">Remaining words: {remainingWords.length}</h2>
 
@@ -41,7 +41,7 @@ const RemainingWords = () => {
       </div>
 
       {remainingWords.length < 100 && displayRemainingWords && (
-        <ul className="overflow-auto h-auto border border-gray-400 flex flex-wrap justify-center py-2 rounded-lg">
+        <ul className="overflow-auto h-auto border border-gray-400 flex flex-wrap justify-center py-1 rounded-lg">
           {remainingWords.map((word, i) => (
             <li key={i} className="mr-2 leading-snug">
               <span className={isRepeatedWord(word) && "line-through"}>

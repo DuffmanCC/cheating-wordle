@@ -19,19 +19,21 @@ const App = () => {
   const { isWin, isSettingsPanelOpen } = useGame();
 
   return (
-    <div className="container mx-auto items-center h-screen py-4 px-1 relative max-w-sm">
+    <div className="container mx-auto items-center h-screen py-4 px-1 relative max-w-sm flex flex-col gap-2">
       <Header />
 
-      <Board />
+      <main className="grow flex flex-col gap-2">
+        <Board />
+
+        <Keyboard />
+
+        {isWin ||
+          isArchivePanelOpen ||
+          isSettingsPanelOpen ||
+          isStatsPanelOpen || <RemainingWords />}
+      </main>
 
       {message !== "" && <Message />}
-
-      <Keyboard />
-
-      {isWin ||
-        isArchivePanelOpen ||
-        isSettingsPanelOpen ||
-        isStatsPanelOpen || <RemainingWords />}
 
       {isSettingsPanelOpen && <SettingsPanel />}
 

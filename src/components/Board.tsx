@@ -5,7 +5,7 @@ const Board = () => {
   const { game, activeRow, activeTile } = useGame();
 
   return (
-    <div className="mb-4">
+    <div className="">
       {game.map((el, rowIndex) => (
         <Row
           key={rowIndex}

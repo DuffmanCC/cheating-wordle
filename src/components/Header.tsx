@@ -13,7 +13,7 @@ export default function Header() {
   const { setIsSettingsPanelOpen } = useGame();
 
   return (
-    <div className="flex gap-8 mb-4 px-4 justify-between items-center">
+    <header className="flex gap-8 px-4 justify-between items-center">
       <div className="flex gap-4">
         <RefreshButton />
 
@@ -46,6 +46,6 @@ export default function Header() {
           <StatsIcon width="1.25rem" />
         </button>
       </div>
-    </div>
+    </header>
   );
 }

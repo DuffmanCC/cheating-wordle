@@ -10,7 +10,7 @@ const Keyboard = () => {
 
   return (
     <div className="mb-2 flex flex-col gap-1">
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-1">
         {firstRow.map((key) => (
           <Key
             key={key}
@@ -21,7 +21,7 @@ const Keyboard = () => {
         ))}
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-1">
         {secondRow.map((key) => (
           <Key
             key={key}
@@ -32,7 +32,7 @@ const Keyboard = () => {
         ))}
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-1">
         <Key width={48} value="Enter" onClick={handleKeyDown} state="">
           <svg
             focusable={false}
