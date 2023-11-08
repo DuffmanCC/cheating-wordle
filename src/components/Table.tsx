@@ -129,6 +129,9 @@ const Table = ({ data }: PropsInterface) => {
                   DRS
                 </th>
               )}
+              <th scope="col" className="px-2 py-1 text-right">
+                Player
+              </th>
             </tr>
           </thead>
 
@@ -187,6 +190,8 @@ const Table = ({ data }: PropsInterface) => {
                     {playerData.drs}
                   </td>
                 )}
+
+                <td className="px-2 py-1 text-right">{playerData.name}</td>
               </tr>
             ))}
           </tbody>
