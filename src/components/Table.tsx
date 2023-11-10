@@ -19,6 +19,8 @@ const Table = ({ data }: PropsInterface) => {
     weeksBetweenDates,
     monthsBetweenDates,
     setIsPeriod,
+    numberOfRoundsToShow,
+    setNumberOfRoundsToShow,
   } = useTable(data);
 
   return (
@@ -30,6 +32,8 @@ const Table = ({ data }: PropsInterface) => {
         monthsBetweenDates={monthsBetweenDates}
         isPeriod={isPeriod}
         setIsPeriod={setIsPeriod}
+        numberOfRoundsToShow={numberOfRoundsToShow}
+        setNumberOfRoundsToShow={setNumberOfRoundsToShow}
       />
 
       <div className="inline-block py-1 overflow-auto">

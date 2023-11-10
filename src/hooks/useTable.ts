@@ -22,9 +22,12 @@ import { DataInterface } from "../interfaces/interfaces";
 export default function useTable(data: DataInterface) {
   const numberOfRounds = data.JORNADA.length;
 
+  const [numberOfRoundsToShow, setNumberOfRoundsToShow] = useState<number>(
+    LAST_NUMBER_OF_ROUNDS_TO_SHOW
+  );
   const [week, setWeek] = useState<number>(0);
   const [month, setMonth] = useState<string>("0");
-  const [from, setFrom] = useState<number>(-7);
+  const [from, setFrom] = useState<number>(-1 * numberOfRoundsToShow);
   const [dataFrom, setDataFrom] = useState<number>(0);
   const [to, setTo] = useState<number>(numberOfRounds);
   const [dataTo, setDataTo] = useState<number>(numberOfRounds);
@@ -133,7 +136,7 @@ export default function useTable(data: DataInterface) {
     if (!month) return;
 
     if (month === "0") {
-      setFrom(LAST_NUMBER_OF_ROUNDS_TO_SHOW);
+      setFrom(numberOfRoundsToShow);
       setTo(data.JORNADA.length);
       setWeek(0);
       return;
@@ -170,14 +173,14 @@ export default function useTable(data: DataInterface) {
 
   useEffect(() => {
     if (!isPeriod) {
-      setFrom(LAST_NUMBER_OF_ROUNDS_TO_SHOW);
+      setFrom(-1 * numberOfRoundsToShow);
       setTo(data.JORNADA.length);
       setDataFrom(0);
       setDataTo(data.JORNADA.length);
       setWeek(0);
       setMonth("0");
     }
-  }, [isPeriod]);
+  }, [isPeriod, numberOfRoundsToShow]);
 
   return {
     from,
@@ -192,5 +195,7 @@ export default function useTable(data: DataInterface) {
     players,
     isPeriod,
     setIsPeriod,
+    numberOfRoundsToShow,
+    setNumberOfRoundsToShow,
   };
 }

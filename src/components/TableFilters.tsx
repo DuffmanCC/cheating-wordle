@@ -8,6 +8,8 @@ interface PropsInterface {
   monthsBetweenDates: MonthInterface[];
   isPeriod: boolean;
   setIsPeriod: Dispatch<SetStateAction<boolean>>;
+  numberOfRoundsToShow: number;
+  setNumberOfRoundsToShow: Dispatch<SetStateAction<number>>;
 }
 
 export default function TableFilters({
@@ -17,6 +19,8 @@ export default function TableFilters({
   monthsBetweenDates,
   isPeriod,
   setIsPeriod,
+  numberOfRoundsToShow,
+  setNumberOfRoundsToShow,
 }: PropsInterface) {
   return (
     <div className="flex gap-4 mb-4 flex-col items-start">
@@ -68,6 +72,19 @@ export default function TableFilters({
       >
         {isPeriod ? "All" : "By period"}
       </button>
+
+      {!isPeriod && (
+        <label className="flex gap-2 items-center">
+          <div>Number of rounds to show:</div>
+          <input
+            type="number"
+            className="border px-3 py-1 rounded-md w-24"
+            value={numberOfRoundsToShow}
+            min={3}
+            onChange={(e) => setNumberOfRoundsToShow(parseInt(e.target.value))}
+          />
+        </label>
+      )}
     </div>
   );
 }
