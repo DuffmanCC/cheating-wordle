@@ -19,10 +19,10 @@ const App = () => {
   const { isWin, isSettingsPanelOpen } = useGame();
 
   return (
-    <div className="container mx-auto items-center h-screen py-4 px-1 relative max-w-sm flex flex-col gap-2">
+    <div className="container mx-auto items-center h-screen py-4 px-1 relative flex flex-col gap-2">
       <Header />
 
-      <main className="grow flex flex-col gap-2">
+      <main className="grow flex flex-col gap-2 max-w-sm">
         <Board />
 
         <Keyboard />

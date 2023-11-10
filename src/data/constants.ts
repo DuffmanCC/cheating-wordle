@@ -3,7 +3,6 @@ export const GOOGLE_SPREADSHEET_URL: string =
 
 export const PLAYERS: string[] = [
   "Ort",
-  "Javi1",
   "Qemi",
   "Paco",
   "Vivu",
@@ -14,6 +13,6 @@ export const PLAYERS: string[] = [
   "Sao",
 ];
 
-export const LAST_NUMBER_OF_ROUNDS_TO_SHOW: number = -7;
+export const LAST_NUMBER_OF_ROUNDS_TO_SHOW: number = -5;
 export const NUMBER_OF_DECIMALS: number = 4;
 export const STARTING_DATE: string = "2022-01-12";
