@@ -136,8 +136,10 @@ export default function useTable(data: DataInterface) {
     if (!month) return;
 
     if (month === "0") {
-      setFrom(numberOfRoundsToShow);
+      setFrom(-1 * numberOfRoundsToShow);
+      setDataFrom(0);
       setTo(data.JORNADA.length);
+      setDataTo(data.JORNADA.length);
       setWeek(0);
       return;
     }

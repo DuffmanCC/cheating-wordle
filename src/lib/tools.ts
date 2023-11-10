@@ -532,6 +532,17 @@ export function getMonthsBetweenDates(startDate: Date): MonthInterface[] {
     currentMonth.setMonth(currentMonth.getMonth() + 1);
   }
 
+  const firstDayOfLastMonth = new Date();
+  firstDayOfLastMonth.setDate(1);
+  firstDayOfLastMonth.setHours(0, 0, 0, 0);
+
+  months.push({
+    monthName: firstDayOfLastMonth.toLocaleString("en-US", { month: "long" }),
+    monthYear: firstDayOfLastMonth.getFullYear(),
+    start: firstDayOfLastMonth,
+    end: new Date(),
+  });
+
   return months;
 }
 
