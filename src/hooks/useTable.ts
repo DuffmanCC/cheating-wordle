@@ -25,9 +25,9 @@ export default function useTable(data: DataInterface) {
   const [week, setWeek] = useState<number>(0);
   const [month, setMonth] = useState<string>("0");
   const [from, setFrom] = useState<number>(-7);
-  const [mediaFrom, setMediaFrom] = useState<number>(0);
-  const [to, setTo] = useState<number>(data.JORNADA.length);
-  const [mediaTo, setMediaTo] = useState<number>(numberOfRounds);
+  const [dataFrom, setDataFrom] = useState<number>(0);
+  const [to, setTo] = useState<number>(numberOfRounds);
+  const [dataTo, setDataTo] = useState<number>(numberOfRounds);
   const [isPeriod, setIsPeriod] = useState<boolean>(false);
 
   const dataWithoutJornada = useMemo(
@@ -38,57 +38,49 @@ export default function useTable(data: DataInterface) {
   const medias = useMemo(
     () =>
       dataWithoutJornada.map((player) => {
-        const attempts = data[player].map((item: any) => item.attempts);
+        const attempts = data[player]
+          .map((item: any) => item.attempts)
+          .slice(dataFrom, dataTo);
 
         return media(attempts);
       }),
-    [data]
-  );
-
-  const mediasPeriod = useMemo(
-    () =>
-      dataWithoutJornada.map((player) => {
-        const attempts = data[player].map((item: any) => item.attempts);
-
-        return media(attempts.slice(mediaFrom, mediaTo));
-      }),
-    [data, mediaFrom, mediaTo]
+    [data, dataFrom, dataTo]
   );
 
   const mediasPrev = useMemo(
     () =>
       dataWithoutJornada.map((player) =>
-        mediaPrev(data[player].map((item: any) => item.attempts))
+        mediaPrev(
+          data[player].map((item: any) => item.attempts).slice(dataFrom, dataTo)
+        )
       ),
-    [data]
+    [data, dataFrom, dataTo]
   );
 
   const players = useMemo(
     () =>
       dataWithoutJornada.map((player) => {
-        const attempts = data[player].map((item: any) => item.attempts);
-        const attemptsPeriod = attempts.slice(mediaFrom, mediaTo);
+        const attempts = data[player]
+          .map((item: any) => item.attempts)
+          .slice(dataFrom, dataTo);
 
         return {
           name: player,
           media: media(attempts),
-          mediaPeriod: media(attemptsPeriod),
           mediaPrev: mediaPrev(attempts),
           rank: rank(media(attempts), medias),
-          rankPeriod: rank(media(attemptsPeriod), mediasPeriod),
           rankPrev: rank(mediaPrev(attempts), mediasPrev),
           symbol: symbol(
             rank(mediaPrev(attempts), mediasPrev),
             rank(media(attempts), medias)
           ),
           roundsPlayed: roundsPlayed(attempts),
-          roundsPlayedPeriod: roundsPlayed(attemptsPeriod),
           attempts: attempts,
           diff: null,
           drs: null,
         };
       }),
-    [data, medias, mediasPeriod, mediasPrev, mediaFrom, mediaTo]
+    [data, medias, mediasPrev, dataFrom, dataTo]
   );
 
   const mediaAllJornadasArr = useMemo(() => mediaAllJornadas(data), [data]);
@@ -101,11 +93,7 @@ export default function useTable(data: DataInterface) {
     player.drs = drs(players, player.rank);
   });
 
-  if (isPeriod) {
-    players.sort((a: any, b: any) => a.rankPeriod - b.rankPeriod);
-  } else {
-    players.sort((a: any, b: any) => a.media - b.media);
-  }
+  players.sort((a: any, b: any) => a.media - b.media);
 
   const startingDate = new Date(STARTING_DATE);
 
@@ -134,9 +122,9 @@ export default function useTable(data: DataInterface) {
     const daysTo = daysUntilToday(to, numberOfRounds);
 
     setFrom(daysFrom - 1);
-    setMediaFrom(daysFrom - 1);
+    setDataFrom(daysFrom - 1);
     setTo(daysTo);
-    setMediaTo(daysTo);
+    setDataTo(daysTo);
     setMonth("0");
     setIsPeriod(true);
   }, [week]);
@@ -153,9 +141,9 @@ export default function useTable(data: DataInterface) {
 
     if (month === "January-2022") {
       setFrom(0);
-      setMediaFrom(0);
+      setDataFrom(0);
       setTo(21);
-      setMediaTo(21);
+      setDataTo(21);
     } else {
       const from = monthsBetweenDates.filter(
         (monthObject) =>
@@ -171,9 +159,9 @@ export default function useTable(data: DataInterface) {
       const daysTo = daysUntilToday(to, numberOfRounds);
 
       setFrom(daysFrom - 1);
-      setMediaFrom(daysFrom - 1);
+      setDataFrom(daysFrom - 1);
       setTo(daysTo);
-      setMediaTo(daysTo);
+      setDataTo(daysTo);
     }
 
     setWeek(0);
@@ -184,6 +172,8 @@ export default function useTable(data: DataInterface) {
     if (!isPeriod) {
       setFrom(LAST_NUMBER_OF_ROUNDS_TO_SHOW);
       setTo(data.JORNADA.length);
+      setDataFrom(0);
+      setDataTo(data.JORNADA.length);
       setWeek(0);
       setMonth("0");
     }

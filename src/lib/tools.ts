@@ -532,11 +532,6 @@ export function getMonthsBetweenDates(startDate: Date): MonthInterface[] {
     currentMonth.setMonth(currentMonth.getMonth() + 1);
   }
 
-  // console.log(
-  //   "🚀 ~ file: tools.ts:530 ~ getMonthsBetweenDates ~ months:",
-  //   months
-  // );
-
   return months;
 }
 

@@ -67,25 +67,19 @@ const Table = ({ data }: PropsInterface) => {
                 {isPeriod ? "Media Period" : "Media"}
               </th>
 
-              {!isPeriod && (
-                <th scope="col" className="px-2 py-1 text-right"></th>
-              )}
+              <th scope="col" className="px-2 py-1 text-right"></th>
 
               <th scope="col" className="px-2 py-1 text-right">
                 PJ
               </th>
 
-              {!isPeriod && (
-                <th scope="col" className="px-2 py-1 text-right">
-                  Diff
-                </th>
-              )}
+              <th scope="col" className="px-2 py-1 text-right">
+                Diff
+              </th>
 
-              {!isPeriod && (
-                <th scope="col" className="px-2 py-1 text-right">
-                  DRS
-                </th>
-              )}
+              <th scope="col" className="px-2 py-1 text-right">
+                DRS
+              </th>
               <th scope="col" className="px-2 py-1 text-right">
                 Player
               </th>
@@ -95,9 +89,7 @@ const Table = ({ data }: PropsInterface) => {
           <tbody>
             {players.map((playerData, index) => (
               <tr className="border-b" key={index}>
-                <td className="px-2 py-1 text-right">
-                  {isPeriod ? playerData.rankPeriod : playerData.rank}
-                </td>
+                <td className="px-2 py-1 text-right">{playerData.rank}</td>
                 <td className="px-2 py-1">{playerData.name}</td>
                 {data[playerData.name].slice(from, to).map((item: any) => (
                   <td
@@ -111,42 +103,32 @@ const Table = ({ data }: PropsInterface) => {
                   </td>
                 ))}
                 <td className="px-2 py-1 text-right font-mono">
-                  {isPeriod
-                    ? playerData.mediaPeriod.toFixed(4)
-                    : playerData.media.toFixed(4)}
+                  {playerData.media.toFixed(4)}
                 </td>
 
-                {!isPeriod && (
-                  <td
-                    className={[
-                      "px-2 py-1 text-right",
-                      arrowColor(playerData.symbol),
-                    ].join(" ")}
-                  >
-                    {playerData.symbol}
-                  </td>
-                )}
+                <td
+                  className={[
+                    "px-2 py-1 text-right",
+                    arrowColor(playerData.symbol),
+                  ].join(" ")}
+                >
+                  {playerData.symbol}
+                </td>
 
                 <td className="px-2 py-1 text-right">
-                  {!isPeriod
-                    ? playerData.roundsPlayed
-                    : playerData.roundsPlayedPeriod}
+                  {playerData.roundsPlayed}
                 </td>
 
-                {!isPeriod && (
-                  <td className="px-2 py-1 text-right">{playerData.diff}</td>
-                )}
+                <td className="px-2 py-1 text-right">{playerData.diff}</td>
 
-                {!isPeriod && (
-                  <td
-                    className={[
-                      bgDrsColor(playerData.drs),
-                      "px-2 py-1 text-right",
-                    ].join(" ")}
-                  >
-                    {playerData.drs}
-                  </td>
-                )}
+                <td
+                  className={[
+                    bgDrsColor(playerData.drs),
+                    "px-2 py-1 text-right",
+                  ].join(" ")}
+                >
+                  {playerData.drs}
+                </td>
 
                 <td className="px-2 py-1 text-right">{playerData.name}</td>
               </tr>
