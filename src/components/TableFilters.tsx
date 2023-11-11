@@ -76,13 +76,30 @@ export default function TableFilters({
       {!isPeriod && (
         <label className="flex gap-2 items-center">
           <div>Number of rounds to show:</div>
-          <input
-            type="number"
-            className="border px-3 py-1 rounded-md w-24"
-            value={numberOfRoundsToShow}
-            min={3}
-            onChange={(e) => setNumberOfRoundsToShow(parseInt(e.target.value))}
-          />
+
+          {numberOfRoundsToShow}
+
+          <button
+            onClick={() => {
+              if (numberOfRoundsToShow >= 31) return;
+
+              setNumberOfRoundsToShow(numberOfRoundsToShow + 1);
+            }}
+            className="flex justify-center items-center w-8 h-8 border rounded-md"
+          >
+            +
+          </button>
+
+          <button
+            onClick={() => {
+              if (numberOfRoundsToShow <= 3) return;
+
+              setNumberOfRoundsToShow(numberOfRoundsToShow - 1);
+            }}
+            className="flex justify-center items-center w-8 h-8 border rounded-md"
+          >
+            -
+          </button>
         </label>
       )}
     </div>
