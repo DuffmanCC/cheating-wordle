@@ -536,12 +536,13 @@ export function getMonthsBetweenDates(startDate: Date): MonthInterface[] {
   firstDayOfLastMonth.setDate(1);
   firstDayOfLastMonth.setHours(0, 0, 0, 0);
 
-  months.push({
-    monthName: firstDayOfLastMonth.toLocaleString("en-US", { month: "long" }),
-    monthYear: firstDayOfLastMonth.getFullYear(),
-    start: firstDayOfLastMonth,
-    end: new Date(),
-  });
+  // there is a bug here, fix it
+  // months.push({
+  //   monthName: firstDayOfLastMonth.toLocaleString("en-US", { month: "long" }),
+  //   monthYear: firstDayOfLastMonth.getFullYear(),
+  //   start: firstDayOfLastMonth,
+  //   end: new Date(),
+  // });
 
   return months;
 }

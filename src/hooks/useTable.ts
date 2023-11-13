@@ -174,14 +174,14 @@ export default function useTable(data: DataInterface) {
   }, [month]);
 
   useEffect(() => {
-    if (!isPeriod) {
-      setFrom(-1 * numberOfRoundsToShow);
-      setTo(data.JORNADA.length);
-      setDataFrom(0);
-      setDataTo(data.JORNADA.length);
-      setWeek(0);
-      setMonth("0");
-    }
+    if (!isPeriod) return;
+
+    setFrom(-1 * numberOfRoundsToShow);
+    setTo(data.JORNADA.length);
+    setDataFrom(0);
+    setDataTo(data.JORNADA.length);
+    setWeek(0);
+    setMonth("0");
   }, [isPeriod, numberOfRoundsToShow]);
 
   return {

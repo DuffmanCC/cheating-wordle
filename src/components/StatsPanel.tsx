@@ -6,15 +6,14 @@ import { mapStats } from "../lib/tools";
 import HeaderPanel from "./HeaderPanel";
 import Panel from "./Panel";
 import Table from "./Table";
+import TableTopChamp from "./TableTopChamp";
 import TableTopWords from "./TableTopWords";
 import CloseIcon from "./icons/CloseIcon";
 
 const StatsPanel = () => {
   const { setIsStatsPanelOpen } = useContext(GameContext);
   const spreadsheetUrl: string = GOOGLE_SPREADSHEET_URL;
-
   const [mappedStats, setMappedStats] = useState(null);
-
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -41,6 +40,7 @@ const StatsPanel = () => {
 
       <div>
         {isLoading && <p>Loading...</p>}
+
         {mappedStats && (
           <div className="flex flex-col gap-8">
             <Table data={mappedStats} />
@@ -49,6 +49,8 @@ const StatsPanel = () => {
               <TableTopWords data={mappedStats} title="Top words ⬇" />
               <TableTopWords data={mappedStats} reverse title="Top words ⬆" />
             </div>
+
+            <TableTopChamp data={mappedStats} />
           </div>
         )}
       </div>

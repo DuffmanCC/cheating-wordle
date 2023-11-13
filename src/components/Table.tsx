@@ -51,6 +51,12 @@ const Table = ({ data }: PropsInterface) => {
                   {item.date}
                 </th>
               ))}
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
             </tr>
 
             <tr>
