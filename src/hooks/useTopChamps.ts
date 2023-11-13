@@ -22,6 +22,10 @@ export default function useTopChamps(data: DataInterface) {
     [startingDate]
   );
 
+  // delete first month, because it's not complete
+  // and there is no champion yet
+  monthsBetweenDates.shift();
+
   // get data without the jornada
   const dataWithoutJornada = useMemo(
     () => Object.keys(data).filter((player) => player !== "JORNADA"),
@@ -32,28 +36,39 @@ export default function useTopChamps(data: DataInterface) {
 
   // loop through all the months
   monthsBetweenDates.forEach((monthObject) => {
-    const daysFrom = daysUntilToday(monthObject.start, numberOfRounds);
-    const daysTo = daysUntilToday(monthObject.end, numberOfRounds);
+    const dataFrom = daysUntilToday(monthObject.start, numberOfRounds) - 1;
+    const dataTo = daysUntilToday(monthObject.end, numberOfRounds);
 
     // get the media of each player for every month
     const medias = dataWithoutJornada.map((player) => {
       const attempts = data[player]
         .map((item: any) => item.attempts)
-        .slice(daysFrom, daysTo);
+        .slice(dataFrom, dataTo);
 
       return media(attempts);
     });
 
-    results.push({
-      month: `${monthObject.monthName}-${monthObject.monthYear}`,
-      playersRank1: [],
-    });
+    // exception for first month,
+    // TODO, fix ranking on first month
+    if (
+      `${monthObject.monthName}-${monthObject.monthYear}` === "January-2022"
+    ) {
+      results.push({
+        month: `${monthObject.monthName}-${monthObject.monthYear}`,
+        playersRank1: ["Pati"],
+      });
+    } else {
+      results.push({
+        month: `${monthObject.monthName}-${monthObject.monthYear}`,
+        playersRank1: [],
+      });
+    }
 
     // loop through all the players and get the rank
-    Object.keys(data).forEach((player) => {
+    dataWithoutJornada.forEach((player) => {
       const attempts = data[player]
         .map((item: any) => item.attempts)
-        .slice(daysFrom, daysTo);
+        .slice(dataFrom, dataTo);
 
       if (rank(media(attempts), medias) === 1) {
         results[results.length - 1].playersRank1.push(player);
@@ -61,18 +76,22 @@ export default function useTopChamps(data: DataInterface) {
     });
   });
 
-  const mesesCampeones: { nombre: string; numeroMesesCampeon: number }[] = [];
+  const monthChampionships: { nombre: string; numeroMesesCampeon: number }[] =
+    [];
 
   dataWithoutJornada.forEach((player) => {
-    mesesCampeones.push({ nombre: player, numeroMesesCampeon: 0 });
+    monthChampionships.push({ nombre: player, numeroMesesCampeon: 0 });
+
     results.forEach((month) => {
       if (month.playersRank1.includes(player)) {
-        mesesCampeones[mesesCampeones.length - 1].numeroMesesCampeon++;
+        monthChampionships[monthChampionships.length - 1].numeroMesesCampeon++;
       }
     });
   });
 
-  mesesCampeones.sort((a, b) => b.numeroMesesCampeon - a.numeroMesesCampeon);
+  monthChampionships.sort(
+    (a, b) => b.numeroMesesCampeon - a.numeroMesesCampeon
+  );
 
-  return { mesesCampeones };
+  return { monthChampionships };
 }
