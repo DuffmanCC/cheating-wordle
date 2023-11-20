@@ -26,12 +26,12 @@ export default function useTable(data: DataInterface) {
     LAST_NUMBER_OF_ROUNDS_TO_SHOW
   );
   const [week, setWeek] = useState<number>(0);
-  const [month, setMonth] = useState<string>("0");
+  const [month, setMonth] = useState<string>("November-2023");
   const [from, setFrom] = useState<number>(-1 * numberOfRoundsToShow);
   const [dataFrom, setDataFrom] = useState<number>(0);
   const [to, setTo] = useState<number>(numberOfRounds);
   const [dataTo, setDataTo] = useState<number>(numberOfRounds);
-  const [isPeriod, setIsPeriod] = useState<boolean>(false);
+  const [isPeriod, setIsPeriod] = useState<boolean>(true);
 
   const dataWithoutJornada = useMemo(
     () => Object.keys(data).filter((player) => player !== "JORNADA"),
@@ -52,11 +52,13 @@ export default function useTable(data: DataInterface) {
 
   const mediasPrev = useMemo(
     () =>
-      dataWithoutJornada.map((player) =>
-        mediaPrev(
-          data[player].map((item: any) => item.attempts).slice(dataFrom, dataTo)
-        )
-      ),
+      dataWithoutJornada.map((player) => {
+        const attempts = data[player]
+          .map((item: any) => item.attempts)
+          .slice(dataFrom, dataTo);
+
+        return mediaPrev(attempts);
+      }),
     [data, dataFrom, dataTo]
   );
 

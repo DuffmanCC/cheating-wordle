@@ -156,8 +156,8 @@ export function setLetterStates(
     submittedWord.map((tile) => tile.letter).join("")
   );
 
-  console.log("repeatedLettersWordOfTheDay: ", repeatedLettersWordOfTheDay);
-  console.log("repeatedLettersSubmittedWord: ", repeatedLettersSubmittedWord);
+  // console.log("repeatedLettersWordOfTheDay: ", repeatedLettersWordOfTheDay);
+  // console.log("repeatedLettersSubmittedWord: ", repeatedLettersSubmittedWord);
 
   submittedWord.forEach((tile, index) => {
     if (tile.letter === wordOfTheDay[index]) {
@@ -381,7 +381,7 @@ export function symbol(a: number, b: number) {
 }
 
 export function media(arr: number[]) {
-  const sum = arr.reduce((acc, curr) => acc + curr, 0);
+  const sum = arr.reduce((acc, ccv) => acc + ccv, 0);
   const rawResult = sum / roundsPlayed(arr);
   const roundedResult = rawResult.toFixed(NUMBER_OF_DECIMALS);
 
@@ -391,9 +391,8 @@ export function media(arr: number[]) {
 export function mediaPrev(arr: number[]) {
   const newArr = arr.slice(0, arr.length - 1);
 
-  const sum = newArr.reduce((acc, curr) => acc + curr, 0);
-
-  const rawResult = sum / (roundsPlayed(arr) - 1);
+  const sum = newArr.reduce((acc, ccv) => acc + ccv, 0);
+  const rawResult = sum / roundsPlayed(newArr);
   const roundedResult = rawResult.toFixed(NUMBER_OF_DECIMALS);
 
   return parseFloat(roundedResult);

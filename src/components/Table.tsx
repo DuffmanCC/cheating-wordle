@@ -74,7 +74,7 @@ const Table = ({ data }: PropsInterface) => {
                 </th>
               ))}
               <th scope="col" className="px-2 py-1 text-right">
-                {isPeriod ? "Media Period" : "Media"}
+                Media
               </th>
 
               <th scope="col" className="px-2 py-1 text-right"></th>
