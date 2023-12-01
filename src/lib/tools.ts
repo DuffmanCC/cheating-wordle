@@ -360,15 +360,18 @@ export function bgColorFromAttemps(attempts: string | number) {
 export function rank(value: number, values: number[], descending = false) {
   const clonedValues = [...values];
 
+  // delete NaN values
+  const filteredValues = clonedValues.filter((value) => !isNaN(value));
+
   // Sort the cloned array in descending order if needed
   if (descending) {
-    clonedValues.sort((a, b) => b - a);
+    filteredValues.sort((a, b) => b - a);
   } else {
-    clonedValues.sort((a, b) => a - b);
+    filteredValues.sort((a, b) => a - b);
   }
 
   // Find the index of the value in the sorted array
-  const sortedIndex = clonedValues.indexOf(value);
+  const sortedIndex = filteredValues.indexOf(value);
 
   // Calculate the rank (add 1 to start from 1-based ranking)
   const rank = sortedIndex + 1;
@@ -536,12 +539,12 @@ export function getMonthsBetweenDates(startDate: Date): MonthInterface[] {
   firstDayOfLastMonth.setHours(0, 0, 0, 0);
 
   // there is a bug here, fix it
-  // months.push({
-  //   monthName: firstDayOfLastMonth.toLocaleString("en-US", { month: "long" }),
-  //   monthYear: firstDayOfLastMonth.getFullYear(),
-  //   start: firstDayOfLastMonth,
-  //   end: new Date(),
-  // });
+  months.push({
+    monthName: firstDayOfLastMonth.toLocaleString("en-US", { month: "long" }),
+    monthYear: firstDayOfLastMonth.getFullYear(),
+    start: firstDayOfLastMonth,
+    end: new Date(),
+  });
 
   return months;
 }

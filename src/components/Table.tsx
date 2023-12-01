@@ -113,7 +113,7 @@ const Table = ({ data }: PropsInterface) => {
                   </td>
                 ))}
                 <td className="px-2 py-1 text-right font-mono">
-                  {playerData.media.toFixed(4)}
+                  {isNaN(playerData.media) ? 0 : playerData.media.toFixed(4)}
                 </td>
 
                 <td

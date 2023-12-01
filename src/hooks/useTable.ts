@@ -26,7 +26,7 @@ export default function useTable(data: DataInterface) {
     LAST_NUMBER_OF_ROUNDS_TO_SHOW
   );
   const [week, setWeek] = useState<number>(0);
-  const [month, setMonth] = useState<string>("November-2023");
+  const [month, setMonth] = useState<string>("December-2023");
   const [from, setFrom] = useState<number>(-1 * numberOfRoundsToShow);
   const [dataFrom, setDataFrom] = useState<number>(0);
   const [to, setTo] = useState<number>(numberOfRounds);
@@ -91,14 +91,18 @@ export default function useTable(data: DataInterface) {
   const mediaAllJornadasArr = useMemo(() => mediaAllJornadas(data), [data]);
 
   players.forEach((player: any) => {
-    player.diff = diffPlayer(players, player.rank);
+    const diff = diffPlayer(players, player.rank);
+
+    player.diff = isNaN(diff) ? 0 : diff;
   });
 
   players.forEach((player: any) => {
-    player.drs = drs(players, player.rank);
+    const Drs = drs(players, player.rank);
+
+    player.drs = isNaN(Drs) ? 0 : Drs;
   });
 
-  players.sort((a: any, b: any) => a.media - b.media);
+  players.sort((a: any, b: any) => a.rank - b.rank);
 
   const startingDate = new Date(STARTING_DATE);
 
