@@ -65,3 +65,16 @@ export type GameContextType = {
   game: TileInterface[][];
   setGame: Dispatch<SetStateAction<TileInterface[][]>>;
 };
+
+export interface Player {
+  name: string;
+  media: number;
+  mediaPrev: number;
+  rank: number;
+  rankPrev: number;
+  symbol: string;
+  roundsPlayed: number;
+  attempts: number[];
+  diff: null;
+  drs: null;
+}

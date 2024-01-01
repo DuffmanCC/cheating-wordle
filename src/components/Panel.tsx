@@ -6,7 +6,7 @@ type PropsInterface = {
 
 export default function Panel({ children }: PropsInterface) {
   return (
-    <section className="absolute inset-0 bg-white p-4 flex flex-col gap-4">
+    <section className="absolute min-h-screen bg-white p-4 flex flex-col gap-4">
       {children}
     </section>
   );

@@ -17,6 +17,8 @@ import {
   symbol,
 } from "../lib/tools";
 
+import { Player } from "../interfaces/interfaces";
+
 import { DataInterface } from "../interfaces/interfaces";
 
 export default function useTable(data: DataInterface) {
@@ -25,8 +27,16 @@ export default function useTable(data: DataInterface) {
   const [numberOfRoundsToShow, setNumberOfRoundsToShow] = useState<number>(
     LAST_NUMBER_OF_ROUNDS_TO_SHOW
   );
+
+  const currentDate = new Date();
+  const monthName = new Intl.DateTimeFormat("en-US", { month: "long" }).format(
+    currentDate
+  );
+  const year = currentDate.getFullYear();
+  const formattedDate = `${monthName}-${year}`;
+
   const [week, setWeek] = useState<number>(0);
-  const [month, setMonth] = useState<string>("December-2023");
+  const [month, setMonth] = useState<string>(formattedDate);
   const [from, setFrom] = useState<number>(-1 * numberOfRoundsToShow);
   const [dataFrom, setDataFrom] = useState<number>(0);
   const [to, setTo] = useState<number>(numberOfRounds);
@@ -102,7 +112,7 @@ export default function useTable(data: DataInterface) {
     player.drs = isNaN(Drs) ? 0 : Drs;
   });
 
-  players.sort((a: any, b: any) => a.rank - b.rank);
+  players.sort((a: Player, b: Player) => a.rank - b.rank);
 
   const startingDate = new Date(STARTING_DATE);
 
