@@ -40,8 +40,9 @@ type PropsInterface = {
 
 export function GameProvider({ children }: PropsInterface) {
   const wordOfTheDayDefault = removeTildes(
-    solutions[358 + dayOfTheYear()].solution
+    solutions[358 + 365 + dayOfTheYear()].solution
   );
+
   const uniqueArrWithoutTildes = [...new Set(validWords.map(removeTildes))];
   const [wordOfTheDay, setWordOfTheDay] = useState(wordOfTheDayDefault);
   const [displayRemainingWords, setDisplayRemainingWords] = useState(false);
