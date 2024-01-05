@@ -38,7 +38,7 @@ export default function useTable(data: DataInterface) {
   const [week, setWeek] = useState<number>(0);
   const [month, setMonth] = useState<string>(formattedDate);
   const [from, setFrom] = useState<number>(-1 * numberOfRoundsToShow);
-  const [dataFrom, setDataFrom] = useState<number>(0);
+  const [dataFrom, setDataFrom] = useState<number>(719);
   const [to, setTo] = useState<number>(numberOfRounds);
   const [dataTo, setDataTo] = useState<number>(numberOfRounds);
   const [isPeriod, setIsPeriod] = useState<boolean>(true);
@@ -95,18 +95,18 @@ export default function useTable(data: DataInterface) {
           drs: null,
         };
       }),
-    [data, medias, mediasPrev, dataFrom, dataTo]
+    [data, dataFrom, dataTo, medias, mediasPrev]
   );
 
   const mediaAllJornadasArr = useMemo(() => mediaAllJornadas(data), [data]);
 
-  players.forEach((player: any) => {
+  players.forEach((player: Player) => {
     const diff = diffPlayer(players, player.rank);
 
     player.diff = isNaN(diff) ? 0 : diff;
   });
 
-  players.forEach((player: any) => {
+  players.forEach((player: Player) => {
     const Drs = drs(players, player.rank);
 
     player.drs = isNaN(Drs) ? 0 : Drs;

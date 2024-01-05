@@ -75,6 +75,6 @@ export interface Player {
   symbol: string;
   roundsPlayed: number;
   attempts: number[];
-  diff: null;
-  drs: null;
+  diff: number | null;
+  drs: number | null;
 }

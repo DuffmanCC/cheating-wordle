@@ -3,6 +3,7 @@ import {
   DataInterface,
   KeyboardKeysStateInterface,
   MonthInterface,
+  Player,
   RegexInterface,
   TileInterface,
   WeekInterface,
@@ -407,11 +408,14 @@ export function roundsPlayed(arr: number[]) {
   return elementosNoNulos.length;
 }
 
-export function diffPlayer(players: any, rank: number) {
-  const currentPlayer = players.find((player: any) => player.rank === rank);
-  const prevPlayer = players.find((player: any) => player.rank === rank - 1);
+export function diffPlayer(players: Player[], rank: number) {
+  const currentPlayer = players.find((player: Player) => player.rank === rank);
+  // sort players by rank
+  players.sort((a: Player, b: Player) => a.rank - b.rank);
 
-  if (prevPlayer === undefined) {
+  const prevPlayer = players.find((_, index) => players[index - 1]);
+
+  if (prevPlayer === undefined || currentPlayer === undefined) {
     return 0;
   }
 
@@ -422,9 +426,13 @@ export function diffPlayer(players: any, rank: number) {
   return parseFloat(rawResult);
 }
 
-export function drs(players: any, rank: number) {
-  const currentPlayer = players.find((player: any) => player.rank === rank);
-  const prevPlayer = players.find((player: any) => player.rank === rank - 1);
+export function drs(players: Player[], rank: number) {
+  const currentPlayer = players.find((player: Player) => player.rank === rank);
+
+  // sort players by rank
+  players.sort((a: Player, b: Player) => a.rank - b.rank);
+
+  const prevPlayer = players.find((_, index) => players[index - 1]);
 
   if (prevPlayer === undefined || currentPlayer === undefined) {
     return 0;
