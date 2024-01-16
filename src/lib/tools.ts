@@ -410,14 +410,17 @@ export function roundsPlayed(arr: number[]) {
 
 export function diffPlayer(players: Player[], rank: number) {
   const currentPlayer = players.find((player: Player) => player.rank === rank);
+
+  if (currentPlayer === undefined) return 0;
+
   // sort players by rank
   players.sort((a: Player, b: Player) => a.rank - b.rank);
 
-  const prevPlayer = players.find((_, index) => players[index - 1]);
+  const indexCurrentPlayer = players.indexOf(currentPlayer);
 
-  if (prevPlayer === undefined || currentPlayer === undefined) {
-    return 0;
-  }
+  if (indexCurrentPlayer === 0) return 0;
+
+  const prevPlayer = players[indexCurrentPlayer - 1];
 
   const rawResult = (prevPlayer.media - currentPlayer.media).toFixed(
     NUMBER_OF_DECIMALS
@@ -429,14 +432,16 @@ export function diffPlayer(players: Player[], rank: number) {
 export function drs(players: Player[], rank: number) {
   const currentPlayer = players.find((player: Player) => player.rank === rank);
 
+  if (currentPlayer === undefined) return 0;
+
   // sort players by rank
   players.sort((a: Player, b: Player) => a.rank - b.rank);
 
-  const prevPlayer = players.find((_, index) => players[index - 1]);
+  const indexCurrentPlayer = players.indexOf(currentPlayer);
 
-  if (prevPlayer === undefined || currentPlayer === undefined) {
-    return 0;
-  }
+  if (indexCurrentPlayer === 0) return 0;
+
+  const prevPlayer = players[indexCurrentPlayer - 1];
 
   const mediaPreviousPlayer = prevPlayer.media;
   const roundsPlayed = currentPlayer.roundsPlayed;
@@ -447,8 +452,7 @@ export function drs(players: Player[], rank: number) {
       } else {
         return acc + curr;
       }
-    },
-    0
+    }
   );
 
   const rawResult =
@@ -541,18 +545,6 @@ export function getMonthsBetweenDates(startDate: Date): MonthInterface[] {
 
     currentMonth.setMonth(currentMonth.getMonth() + 1);
   }
-
-  const firstDayOfLastMonth = new Date();
-  firstDayOfLastMonth.setDate(1);
-  firstDayOfLastMonth.setHours(0, 0, 0, 0);
-
-  // there is a bug here, fix it
-  months.push({
-    monthName: firstDayOfLastMonth.toLocaleString("en-US", { month: "long" }),
-    monthYear: firstDayOfLastMonth.getFullYear(),
-    start: firstDayOfLastMonth,
-    end: new Date(),
-  });
 
   return months;
 }
