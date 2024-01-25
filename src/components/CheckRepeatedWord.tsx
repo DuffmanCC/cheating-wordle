@@ -2,11 +2,15 @@ import { useState } from "react";
 import solutions from "../data/solutions";
 import { dayOfTheYear, removeTildes } from "../lib/tools";
 
+interface Word {
+  id: number;
+  solution: string;
+  desc: string;
+}
+
 const CheckRepeatedWord = () => {
   const [repeatedWord, setRepeatedWord] = useState("");
-  const [repeatedWordId, setRepeatedWordId] = useState<undefined | number>(
-    undefined
-  );
+  const [repeatedWordId, setRepeatedWordId] = useState<Word[]>([]);
 
   const handleRepeatedWord = (word: string): void => {
     if (word.length !== 5) return;
@@ -18,11 +22,11 @@ const CheckRepeatedWord = () => {
       358 + 365 + dayOfTheYear()
     );
 
-    const id = solutionsToWordOfTheDay.find(
+    const ids = solutionsToWordOfTheDay.filter(
       (solution) => removeTildes(solution.solution) === word
-    )?.id;
+    );
 
-    setRepeatedWordId(id);
+    setRepeatedWordId(ids);
   };
 
   return (
@@ -54,7 +58,9 @@ const CheckRepeatedWord = () => {
 
       {repeatedWord.length === 5 && (
         <div className="">
-          {repeatedWordId ? `Solution number #${repeatedWordId}` : `Not found`}
+          {repeatedWordId.length > 0
+            ? `Solution number ${repeatedWordId.map((w) => ` #${w.id}`)}`
+            : `Not found`}
         </div>
       )}
     </div>
