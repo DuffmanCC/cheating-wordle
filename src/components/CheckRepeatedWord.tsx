@@ -13,7 +13,10 @@ const CheckRepeatedWord = () => {
 
     word = word.toLocaleLowerCase();
 
-    const solutionsToWordOfTheDay = solutions.slice(0, 358 + dayOfTheYear());
+    const solutionsToWordOfTheDay = solutions.slice(
+      0,
+      358 + 365 + dayOfTheYear()
+    );
 
     const id = solutionsToWordOfTheDay.find(
       (solution) => removeTildes(solution.solution) === word

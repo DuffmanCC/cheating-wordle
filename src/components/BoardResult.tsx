@@ -11,7 +11,7 @@ const BoardResult = ({ game }: PropsInterface) => {
   return (
     <div className="flex flex-col items-center">
       <h3 className="">
-        Cheating Wordle: #{359 + dayOfTheYear()} {gameTilesHtml.length}/6
+        Cheating Wordle: #{359 + 365 + dayOfTheYear()} {gameTilesHtml.length}/6
       </h3>
 
       <div>

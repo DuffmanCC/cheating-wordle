@@ -263,7 +263,9 @@ export function createGameBoardResult(game: TileInterface[][]): Array<string> {
 export function createClipboardString(gameBoardResult: string[]) {
   const gameTiles = gameBoardResult.join("\n");
   return (
-    `Cheating Wordle #${359 + dayOfTheYear()} ${gameTiles.length + 1}/6 \n\n` +
+    `Cheating Wordle #${359 + 365 + dayOfTheYear()} ${
+      gameTiles.length + 1
+    }/6 \n\n` +
     gameTiles +
     `\n\n` +
     `To keep cheating: \n` +

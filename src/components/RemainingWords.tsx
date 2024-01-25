@@ -10,7 +10,10 @@ const RemainingWords = () => {
   const { displayRemainingWords, setDisplayRemainingWords } =
     useContext(GameContext);
 
-  const solutionsToWordOfTheDay = solutions.slice(0, 358 + dayOfTheYear());
+  const solutionsToWordOfTheDay = solutions.slice(
+    0,
+    358 + 365 + dayOfTheYear()
+  );
 
   const { remainingWords } = useGame();
 
