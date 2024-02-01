@@ -524,17 +524,20 @@ export function getMonthsBetweenDates(startDate: Date): MonthInterface[] {
   const today = new Date();
   const months = [];
 
-  let currentMonth = startDate;
+  let startingDayObject = startDate;
 
-  while (currentMonth <= today) {
-    const monthName = currentMonth.toLocaleString("en-US", { month: "long" });
-    const monthYear = currentMonth.getFullYear();
+  while (startingDayObject <= today) {
+    const monthName = startingDayObject.toLocaleString("en-US", {
+      month: "long",
+    });
+    const monthYear = startingDayObject.getFullYear();
 
-    const firstDayOfMonth = new Date(currentMonth);
+    const firstDayOfMonth = new Date(startingDayObject);
     firstDayOfMonth.setDate(1);
-    const lastDayOfMonth = new Date(currentMonth);
-    lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1);
-    lastDayOfMonth.setDate(0);
+    const lastDayOfMonth = new Date(startingDayObject);
+    //first day of the next month
+    lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1, 1);
+    lastDayOfMonth.setDate(lastDayOfMonth.getDate() - 1);
 
     const monthObject = {
       monthName,
@@ -545,8 +548,26 @@ export function getMonthsBetweenDates(startDate: Date): MonthInterface[] {
 
     months.push(monthObject);
 
-    currentMonth.setMonth(currentMonth.getMonth() + 1);
+    startingDayObject.setMonth(startingDayObject.getMonth() + 1);
   }
+
+  // add current month
+  // first day of current month
+  const firstDayOfMonth = new Date(today);
+  firstDayOfMonth.setDate(1);
+
+  // last day of current month
+  const lastDayOfMonth = new Date(today);
+  //first day of the next month
+  lastDayOfMonth.setMonth(today.getMonth() + 1, 1);
+  lastDayOfMonth.setDate(lastDayOfMonth.getDate() - 1);
+
+  months.push({
+    monthName: today.toLocaleString("en-US", { month: "long" }),
+    monthYear: today.getFullYear(),
+    start: firstDayOfMonth,
+    end: lastDayOfMonth,
+  });
 
   return months;
 }
