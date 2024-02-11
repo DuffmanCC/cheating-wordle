@@ -387,6 +387,8 @@ export function symbol(a: number, b: number) {
 }
 
 export function media(arr: number[]) {
+  if (arr.length === 0) return 0;
+
   const sum = arr.reduce((acc, ccv) => acc + ccv, 0);
   const rawResult = sum / roundsPlayed(arr);
   const roundedResult = rawResult.toFixed(NUMBER_OF_DECIMALS);
@@ -521,53 +523,23 @@ export function getFullWeeksStartingOnMondayBetweenDates(
 }
 
 export function getMonthsBetweenDates(startDate: Date): MonthInterface[] {
-  const today = new Date();
   const months = [];
+  const today = new Date();
 
-  let startingDayObject = startDate;
+  while (
+    startDate.getFullYear() < today.getFullYear() ||
+    (startDate.getFullYear() === today.getFullYear() &&
+      startDate.getMonth() <= today.getMonth())
+  ) {
+    const start = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+    const end = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+    const monthName = startDate.toLocaleString("default", { month: "long" });
+    const monthYear = startDate.getFullYear();
 
-  while (startingDayObject <= today) {
-    const monthName = startingDayObject.toLocaleString("en-US", {
-      month: "long",
-    });
-    const monthYear = startingDayObject.getFullYear();
+    months.push({ monthName, monthYear, start, end });
 
-    const firstDayOfMonth = new Date(startingDayObject);
-    firstDayOfMonth.setDate(1);
-    const lastDayOfMonth = new Date(startingDayObject);
-    //first day of the next month
-    lastDayOfMonth.setMonth(lastDayOfMonth.getMonth() + 1, 1);
-    lastDayOfMonth.setDate(lastDayOfMonth.getDate() - 1);
-
-    const monthObject = {
-      monthName,
-      monthYear,
-      start: firstDayOfMonth,
-      end: lastDayOfMonth,
-    };
-
-    months.push(monthObject);
-
-    startingDayObject.setMonth(startingDayObject.getMonth() + 1);
+    startDate.setMonth(startDate.getMonth() + 1);
   }
-
-  // add current month
-  // first day of current month
-  const firstDayOfMonth = new Date(today);
-  firstDayOfMonth.setDate(1);
-
-  // last day of current month
-  const lastDayOfMonth = new Date(today);
-  //first day of the next month
-  lastDayOfMonth.setMonth(today.getMonth() + 1, 1);
-  lastDayOfMonth.setDate(lastDayOfMonth.getDate() - 1);
-
-  months.push({
-    monthName: today.toLocaleString("en-US", { month: "long" }),
-    monthYear: today.getFullYear(),
-    start: firstDayOfMonth,
-    end: lastDayOfMonth,
-  });
 
   return months;
 }

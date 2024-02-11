@@ -27,32 +27,8 @@ export default function TableFilters({
       {isPeriod && (
         <select
           className="border px-4 py-2 rounded-md"
-          onChange={(e) => setWeek(Number(e.target.value))}
-          defaultValue={0}
-        >
-          <option value={0} disabled hidden>
-            Select week
-          </option>
-
-          {weeksBetweenDates.map(({ weekNumber }) => {
-            return (
-              <option value={weekNumber} key={weekNumber}>
-                Week - {weekNumber}
-              </option>
-            );
-          })}
-        </select>
-      )}
-      {isPeriod && (
-        <select
-          className="border px-4 py-2 rounded-md"
           onChange={(e) => setMonth(e.target.value)}
-          defaultValue={0}
         >
-          <option value={0} disabled hidden>
-            Select month
-          </option>
-
           {monthsBetweenDates.map(({ monthName, monthYear }) => {
             return (
               <option
