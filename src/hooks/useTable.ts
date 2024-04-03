@@ -199,7 +199,6 @@ export default function useTable(data: DataInterface) {
     setWeek(0);
     setMonth("0");
   }, [isPeriod, numberOfRoundsToShow]);
-  console.log("🚀 ~ useEffect ~ data.JORNADA.length:", data.JORNADA.length);
 
   return {
     from,
