@@ -97,52 +97,57 @@ const Table = ({ data }: PropsInterface) => {
           </thead>
 
           <tbody>
-            {players.map((playerData, index) => (
-              <tr className="border-b" key={index}>
-                <td className="px-2 py-1 text-right">{playerData.rank}</td>
-                <td className="px-2 py-1">{playerData.name}</td>
-                {data[playerData.name].slice(from, to).map((item: any) => (
-                  <td
-                    className={[
-                      bgColorFromAttemps(item.attempts),
-                      "px-2 py-1 text-right border-white border",
-                    ].join(" ")}
-                    key={item.jornada}
-                  >
-                    {item.attempts}
-                  </td>
-                ))}
-                <td className="px-2 py-1 text-right font-mono">
-                  {isNaN(playerData.media) ? 0 : playerData.media.toFixed(4)}
-                </td>
+            {players.map(
+              (playerData, index) =>
+                playerData.roundsPlayed > 0 && (
+                  <tr className="border-b" key={index}>
+                    <td className="px-2 py-1 text-right">{playerData.rank}</td>
+                    <td className="px-2 py-1">{playerData.name}</td>
+                    {data[playerData.name].slice(from, to).map((item: any) => (
+                      <td
+                        className={[
+                          bgColorFromAttemps(item.attempts),
+                          "px-2 py-1 text-right border-white border",
+                        ].join(" ")}
+                        key={item.jornada}
+                      >
+                        {item.attempts}
+                      </td>
+                    ))}
+                    <td className="px-2 py-1 text-right font-mono">
+                      {isNaN(playerData.media)
+                        ? 0
+                        : playerData.media.toFixed(4)}
+                    </td>
 
-                <td
-                  className={[
-                    "px-2 py-1 text-right",
-                    arrowColor(playerData.symbol),
-                  ].join(" ")}
-                >
-                  {playerData.symbol}
-                </td>
+                    <td
+                      className={[
+                        "px-2 py-1 text-right",
+                        arrowColor(playerData.symbol),
+                      ].join(" ")}
+                    >
+                      {playerData.symbol}
+                    </td>
 
-                <td className="px-2 py-1 text-right">
-                  {playerData.roundsPlayed}
-                </td>
+                    <td className="px-2 py-1 text-right">
+                      {playerData.roundsPlayed}
+                    </td>
 
-                <td className="px-2 py-1 text-right">{playerData.diff}</td>
+                    <td className="px-2 py-1 text-right">{playerData.diff}</td>
 
-                <td
-                  className={[
-                    bgDrsColor(playerData.drs),
-                    "px-2 py-1 text-right",
-                  ].join(" ")}
-                >
-                  {playerData.drs}
-                </td>
+                    <td
+                      className={[
+                        bgDrsColor(playerData.drs),
+                        "px-2 py-1 text-right",
+                      ].join(" ")}
+                    >
+                      {playerData.drs}
+                    </td>
 
-                <td className="px-2 py-1 text-right">{playerData.name}</td>
-              </tr>
-            ))}
+                    <td className="px-2 py-1 text-right">{playerData.name}</td>
+                  </tr>
+                )
+            )}
           </tbody>
 
           <tfoot>

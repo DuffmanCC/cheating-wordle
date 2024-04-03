@@ -41,7 +41,7 @@ export default function Header() {
 
         <button
           onClick={() => setIsStatsPanelOpen(true)}
-          className="hover:text-blue-800 focus:text-blue-800 text-gray-500"
+          className="hover:text-blue-800 focus:text-blue-800 text-gray-500 relative top-px"
         >
           <StatsIcon width="1.25rem" />
         </button>
