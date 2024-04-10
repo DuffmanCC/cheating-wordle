@@ -11,6 +11,9 @@ export const PLAYERS: string[] = [
   "Marksete",
   "Pati",
   "Sao",
+  "Fri",
+  "Javi1",
+  "Jancker",
 ];
 
 export const LAST_NUMBER_OF_ROUNDS_TO_SHOW: number = 5;
