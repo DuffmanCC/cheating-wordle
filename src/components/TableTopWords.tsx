@@ -39,10 +39,10 @@ const tableTopWords = ({ data, reverse, title }: PropsInterface) => {
             key={item.jornada}
             className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
           >
-            <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <td className="px-4 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
               {item.word}
             </td>
-            <td className="px-4 py-2 ">{item.mediaJornada.toFixed(3)}</td>
+            <td className="px-4 py-1 ">{item.mediaJornada.toFixed(3)}</td>
           </tr>
         ))}
       </tbody>

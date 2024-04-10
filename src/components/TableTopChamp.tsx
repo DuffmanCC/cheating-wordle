@@ -23,6 +23,7 @@ export default function TableTopChamp({ data, title }: PropsInterface) {
           </th>
         </tr>
       </thead>
+
       <tbody>
         {monthChampionships.map((mes) => (
           <tr
@@ -31,11 +32,11 @@ export default function TableTopChamp({ data, title }: PropsInterface) {
           >
             <td
               scope="row"
-              className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              className="px-6 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white"
             >
               {mes.nombre}
             </td>
-            <td className="px-6 py-3">{mes.numeroMesesCampeon}</td>
+            <td className="px-6 py-1">{mes.numeroMesesCampeon}</td>
           </tr>
         ))}
       </tbody>
