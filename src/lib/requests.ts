@@ -12,11 +12,11 @@ export const fetchGoogleSheet = async (url: string) => {
 
     let rowsArr: string[][] = [];
 
-    let jornadaRow = rows[12].split(",");
+    let jornadaRow = rows[15].split(",");
     jornadaRow = jornadaRow.slice(2, jornadaRow.length);
     const lastColumn = jornadaRow.findIndex((value) => value === "");
 
-    for (let i = 3; i < 13; i++) {
+    for (let i = 3; i < 16; i++) {
       let arr = rows[i].split(",");
       arr = arr.slice(2, arr.length);
       arr = arr.slice(0, lastColumn);
