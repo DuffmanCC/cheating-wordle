@@ -76,22 +76,5 @@ export default function useTopChamps(data: DataInterface) {
     });
   });
 
-  const monthChampionships: { nombre: string; numeroMesesCampeon: number }[] =
-    [];
-
-  dataWithoutJornada.forEach((player) => {
-    monthChampionships.push({ nombre: player, numeroMesesCampeon: 0 });
-
-    results.forEach((month) => {
-      if (month.playersRank1[0] === player) {
-        monthChampionships[monthChampionships.length - 1].numeroMesesCampeon++;
-      }
-    });
-  });
-
-  monthChampionships.sort(
-    (a, b) => b.numeroMesesCampeon - a.numeroMesesCampeon
-  );
-
-  return { monthChampionships };
+  return { results };
 }

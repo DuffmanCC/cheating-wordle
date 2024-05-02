@@ -7,6 +7,7 @@ export interface PlayerInterface {
   jornada: string;
   word: string;
   attempts: number | null;
+  date: string;
 }
 
 export interface DataInterface {

@@ -6,6 +6,7 @@ import { mapStats } from "../lib/tools";
 import HeaderPanel from "./HeaderPanel";
 import Panel from "./Panel";
 import Table from "./Table";
+import TableChampByMoths from "./TableChampByMoths";
 import TableTopChamp from "./TableTopChamp";
 import TableTopWords from "./TableTopWords";
 import CloseIcon from "./icons/CloseIcon";
@@ -46,9 +47,18 @@ const StatsPanel = () => {
             <Table data={mappedStats} />
 
             <div className="flex flex-wrap gap-8 justify-center sm:justify-start">
-              <TableTopWords data={mappedStats} title="Top words ⬇" />
-              <TableTopWords data={mappedStats} reverse title="Top words ⬆" />
-              <TableTopChamp data={mappedStats} title="Championships" />
+              <div>
+                <TableTopWords data={mappedStats} title="Top words ⬇" />
+              </div>
+              <div>
+                <TableTopWords data={mappedStats} reverse title="Top words ⬆" />
+              </div>
+              <div>
+                <TableChampByMoths data={mappedStats} title="Champs by month" />
+              </div>
+              <div>
+                <TableTopChamp data={mappedStats} title="Top champs" />
+              </div>
             </div>
           </div>
         )}

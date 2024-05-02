@@ -48,21 +48,24 @@ const ArchivePanel = () => {
         <div className="flex gap-1 flex-wrap">
           {player === "default"
             ? "no player selected, please select a player from the dropdown"
-            : (mappedStats[player] || []).map(({ jornada, word, attempts }) => {
-                return (
-                  <div
-                    key={jornada}
-                    className={[
-                      bgColor(attempts),
-                      "p-1 border flex flex-col items-center text-xs rounded-md text-white w-16 h-20",
-                    ].join(" ")}
-                  >
-                    <div className="text-4xl">{attempts || "X"}</div>
-                    <div className="flex font-mono">{jornada}</div>
-                    <div className="flex font-mono">{word}</div>
-                  </div>
-                );
-              })}
+            : (mappedStats[player] || []).map(
+                ({ jornada, word, attempts, date }) => {
+                  return (
+                    <div
+                      key={jornada}
+                      className={[
+                        bgColor(attempts),
+                        "p-1 border flex flex-col items-center text-xs rounded-md text-white w-20 h-24 font-mono",
+                      ].join(" ")}
+                    >
+                      <div>{date}</div>
+                      <div className="text-3xl">{attempts || "X"}</div>
+                      <div>{jornada}</div>
+                      <div>{word}</div>
+                    </div>
+                  );
+                }
+              )}
         </div>
       </div>
     </Panel>
