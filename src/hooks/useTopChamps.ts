@@ -48,21 +48,10 @@ export default function useTopChamps(data: DataInterface) {
       return media(attempts);
     });
 
-    // exception for first month,
-    // TODO, fix ranking on first month
-    if (
-      `${monthObject.monthName}-${monthObject.monthYear}` === "January-2022"
-    ) {
-      results.push({
-        month: `${monthObject.monthName}-${monthObject.monthYear}`,
-        playersRank1: ["Pati"],
-      });
-    } else {
-      results.push({
-        month: `${monthObject.monthName}-${monthObject.monthYear}`,
-        playersRank1: [],
-      });
-    }
+    results.push({
+      month: `${monthObject.monthName}-${monthObject.monthYear}`,
+      playersRank1: [],
+    });
 
     // loop through all the players and get the rank
     dataWithoutJornada.forEach((player) => {
@@ -74,6 +63,13 @@ export default function useTopChamps(data: DataInterface) {
         results[results.length - 1].playersRank1.push(player);
       }
     });
+
+    // override the first month champion
+    if (
+      `${monthObject.monthName}-${monthObject.monthYear}` === "January-2022"
+    ) {
+      results[results.length - 1].playersRank1 = ["Pati"];
+    }
   });
 
   const monthChampionships: { nombre: string; numeroMesesCampeon: number }[] =
@@ -83,7 +79,7 @@ export default function useTopChamps(data: DataInterface) {
     monthChampionships.push({ nombre: player, numeroMesesCampeon: 0 });
 
     results.forEach((month) => {
-      if (month.playersRank1[0] === player) {
+      if (month.playersRank1.includes(player)) {
         monthChampionships[monthChampionships.length - 1].numeroMesesCampeon++;
       }
     });

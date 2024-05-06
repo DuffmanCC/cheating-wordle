@@ -36,7 +36,7 @@ export default function TableTopChamp({ data, title }: PropsInterface) {
             >
               {mes.month}
             </td>
-            <td className="px-6 py-1">{mes.playersRank1[0]}</td>
+            <td className="px-6 py-1">{mes.playersRank1.join(", ")}</td>
           </tr>
         ))}
       </tbody>

@@ -360,13 +360,18 @@ export function bgColorFromAttemps(attempts: string | number) {
   return "bg-gray-600";
 }
 
+/**
+ *
+ * @param value media of the players of all attemps
+ * @param values medias of the other players
+ * @param descending
+ * @returns
+ */
 export function rank(value: number, values: number[], descending = false) {
-  const clonedValues = [...values];
-
   // delete NaN values
-  const filteredValues = clonedValues.filter((value) => !isNaN(value));
+  const filteredValues = values.filter((value) => !isNaN(value));
 
-  // Sort the cloned array in descending order if needed
+  // Sort the filtered array in descending order if needed
   if (descending) {
     filteredValues.sort((a, b) => b - a);
   } else {
@@ -380,6 +385,28 @@ export function rank(value: number, values: number[], descending = false) {
   const rank = sortedIndex + 1;
 
   return rank;
+}
+
+export function newRank(
+  attemps: number[],
+  medias: number[],
+  descending = false
+): number {
+  const mediaPleyer = media(attemps);
+
+  // delete NaN values
+  const filteredMedias = medias.filter((media) => !isNaN(media));
+
+  // Sort the filtered array in descending order if needed
+  if (descending) {
+    filteredMedias.sort((a, b) => b - a);
+  } else {
+    filteredMedias.sort((a, b) => a - b);
+  }
+
+  // TODO - desempatar cuando haya empate
+
+  return 1;
 }
 
 export function symbol(a: number, b: number) {

@@ -79,15 +79,18 @@ export default function useTable(data: DataInterface) {
           .map((item: any) => item.attempts)
           .slice(dataFrom, dataTo);
 
+        const mediaValue: number = media(attempts);
+        const mediaPrevValue: number = mediaPrev(attempts);
+
         return {
           name: player,
           media: media(attempts),
           mediaPrev: mediaPrev(attempts),
-          rank: rank(media(attempts), medias),
-          rankPrev: rank(mediaPrev(attempts), mediasPrev),
+          rank: rank(mediaValue, medias),
+          rankPrev: rank(mediaPrevValue, mediasPrev),
           symbol: symbol(
-            rank(mediaPrev(attempts), mediasPrev),
-            rank(media(attempts), medias)
+            rank(mediaPrevValue, mediasPrev),
+            rank(mediaValue, medias)
           ),
           roundsPlayed: roundsPlayed(attempts),
           attempts: attempts,
