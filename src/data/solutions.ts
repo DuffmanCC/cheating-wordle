@@ -126,7 +126,7 @@ const solutions = [
   },
   {
     id: 26,
-    solution: "lider",
+    solution: "l\xedder",
     desc: "",
   },
   {
@@ -4332,6 +4332,266 @@ const solutions = [
   {
     id: 867,
     solution: "doblo",
+    desc: "",
+  },
+  {
+    id: 868,
+    solution: "felpa",
+    desc: "",
+  },
+  {
+    id: 869,
+    solution: "zanca",
+    desc: "",
+  },
+  {
+    id: 870,
+    solution: "mil\xe1n",
+    desc: "",
+  },
+  {
+    id: 871,
+    solution: "atlas",
+    desc: "",
+  },
+  {
+    id: 872,
+    solution: "celda",
+    desc: "",
+  },
+  {
+    id: 873,
+    solution: "doral",
+    desc: "",
+  },
+  {
+    id: 874,
+    solution: "cinta",
+    desc: "",
+  },
+  {
+    id: 875,
+    solution: "jam\xf3n",
+    desc: "",
+  },
+  {
+    id: 876,
+    solution: "ojal\xe1",
+    desc: "",
+  },
+  {
+    id: 877,
+    solution: "sumar",
+    desc: "",
+  },
+  {
+    id: 878,
+    solution: "cista",
+    desc: "",
+  },
+  {
+    id: 879,
+    solution: "vagar",
+    desc: "",
+  },
+  {
+    id: 880,
+    solution: "lindo",
+    desc: "",
+  },
+  {
+    id: 881,
+    solution: "focal",
+    desc: "",
+  },
+  {
+    id: 882,
+    solution: "aguar",
+    desc: "",
+  },
+  {
+    id: 883,
+    solution: "\xe1cimo",
+    desc: "",
+  },
+  {
+    id: 884,
+    solution: "t\xf3rax",
+    desc: "",
+  },
+  {
+    id: 885,
+    solution: "rodio",
+    desc: "",
+  },
+  {
+    id: 886,
+    solution: "talco",
+    desc: "",
+  },
+  {
+    id: 887,
+    solution: "trigo",
+    desc: "",
+  },
+  {
+    id: 888,
+    solution: "bucal",
+    desc: "",
+  },
+  {
+    id: 889,
+    solution: "flojo",
+    desc: "",
+  },
+  {
+    id: 890,
+    solution: "ameno",
+    desc: "",
+  },
+  {
+    id: 891,
+    solution: "falto",
+    desc: "",
+  },
+  {
+    id: 892,
+    solution: "zarpa",
+    desc: "",
+  },
+  {
+    id: 893,
+    solution: "nitro",
+    desc: "",
+  },
+  {
+    id: 894,
+    solution: "ciclo",
+    desc: "",
+  },
+  {
+    id: 895,
+    solution: "falaz",
+    desc: "",
+  },
+  {
+    id: 896,
+    solution: "guiso",
+    desc: "",
+  },
+  {
+    id: 897,
+    solution: "ayuno",
+    desc: "",
+  },
+  {
+    id: 898,
+    solution: "\xf3vulo",
+    desc: "",
+  },
+  {
+    id: 899,
+    solution: "burda",
+    desc: "",
+  },
+  {
+    id: 900,
+    solution: "digna",
+    desc: "",
+  },
+  {
+    id: 901,
+    solution: "cetro",
+    desc: "",
+  },
+  {
+    id: 902,
+    solution: "sueca",
+    desc: "",
+  },
+  {
+    id: 903,
+    solution: "vocal",
+    desc: "",
+  },
+  {
+    id: 904,
+    solution: "ungir",
+    desc: "",
+  },
+  {
+    id: 905,
+    solution: "tinto",
+    desc: "",
+  },
+  {
+    id: 906,
+    solution: "lejos",
+    desc: "",
+  },
+  {
+    id: 907,
+    solution: "fular",
+    desc: "",
+  },
+  {
+    id: 908,
+    solution: "pulir",
+    desc: "",
+  },
+  {
+    id: 909,
+    solution: "gal\xf3n",
+    desc: "",
+  },
+  {
+    id: 910,
+    solution: "libio",
+    desc: "",
+  },
+  {
+    id: 911,
+    solution: "tosco",
+    desc: "",
+  },
+  {
+    id: 912,
+    solution: "astro",
+    desc: "",
+  },
+  {
+    id: 913,
+    solution: "casal",
+    desc: "",
+  },
+  {
+    id: 914,
+    solution: "torda",
+    desc: "",
+  },
+  {
+    id: 915,
+    solution: "agave",
+    desc: "",
+  },
+  {
+    id: 916,
+    solution: "elite",
+    desc: "",
+  },
+  {
+    id: 917,
+    solution: "pomar",
+    desc: "",
+  },
+  {
+    id: 918,
+    solution: "costo",
+    desc: "",
+  },
+  {
+    id: 919,
+    solution: "verm\xfa",
     desc: "",
   },
 ];
